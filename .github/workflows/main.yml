@@ -1,0 +1,22 @@
+name: Test Flutter
+on: 
+    push: 
+      branches: test
+jobs:
+ build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '2.10.0'
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
