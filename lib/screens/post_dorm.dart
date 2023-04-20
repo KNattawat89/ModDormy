@@ -41,16 +41,6 @@ class MyCustomForm extends StatefulWidget {
   State<MyCustomForm> createState() => _MyCustomFormState();
 }
 
-// class TikCheckbox {
-//   String title;
-//   bool value;
-//   TikCheckbox(this.title, this.value);
-//   @override
-//   String toString() {
-//     return 'MyClass{title: $title, value: $value}';
-//   }
-// }
-
 List<String> selected = [];
 
 class _MyCustomFormState extends State<MyCustomForm> {
@@ -79,6 +69,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     dormName.addListener(_printDormName);
     address.addListener(_printAddress);
     dormDesc.addListener(_printDormDesc);
+    advPayment.addListener(_printAdvPayment);
   }
 
   void _printDormName() {
@@ -91,6 +82,10 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
   void _printDormDesc() {
     print('dormdesc: ${dormDesc}');
+  }
+
+  void _printAdvPayment() {
+    print('advpayment: ${advPayment}');
   }
 
   @override
@@ -328,29 +323,27 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ],
             ),
           ),
-
-          // ListView(
-          //   children: [
-          //     Text('Contract Detail'),
-          //     Padding(
-          //         //dormname
-          //         padding: EdgeInsets.all(16.0),
-          //         child: TextFormField(
-          //           controller: ,
-          //           decoration:
-          //               const InputDecoration(border: OutlineInputBorder(),labelText: 'Advance payment'
-          //               ,
-          //           validator: (value) {
-          //             if (value == null || value.isEmpty) {
-          //               return 'Enter';
-          //             }
-          //             return null;
-          //           },
-          //         ),
-          //       ),
-          //   ],
-          // ),
-
+          Column(
+            children: [
+              Text('Contract Detail'),
+              Padding(
+                //dormname
+                padding: EdgeInsets.all(16.0),
+                child: TextFormField(
+                  controller: advPayment,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Advance payment'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ],
+          ),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -362,26 +355,17 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         MaterialPageRoute(
                             builder: (context) => DetailScreen(
                                   info: Info(
-                                      dormName.text,
-                                      address.text,
-                                      dormDesc.text,
-                                      parking,
-                                      wifi,
-                                      smokefree,
-                                      securityguard,
-                                      cctv,
-                                      keycard,
-                                      lift,
-                                      petfriendly,
-                                      pool,
-                                      fitness),
+                                    dormName.text,
+                                    address.text,
+                                    dormDesc.text,
+                                  ),
                                 )));
                   }
                 },
                 child: const Text('Submit Data'),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -392,31 +376,12 @@ class Info {
   final String dormname;
   final String address;
   final String dormdesc;
-  final bool parking;
-  final bool wifi;
-  final bool smokefree;
-  final bool securityguard;
-  final bool cctv;
-  final bool keycard;
-  final bool lift;
-  final bool petfriendly;
-  final bool pool;
-  final bool fitness;
 
   const Info(
-      this.dormname,
-      this.address,
-      this.dormdesc,
-      this.parking,
-      this.wifi,
-      this.smokefree,
-      this.securityguard,
-      this.cctv,
-      this.keycard,
-      this.lift,
-      this.petfriendly,
-      this.pool,
-      this.fitness);
+    this.dormname,
+    this.address,
+    this.dormdesc,
+  );
 }
 
 class DetailScreen extends StatelessWidget {
@@ -433,15 +398,15 @@ class DetailScreen extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Text(
-            //     '${info.dormname}\n'
-            //     '${info.address}\n'
-            //     '${info.dormdesc}',
-            //     textAlign: TextAlign.center,
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                '${info.dormname}\n'
+                '${info.address}\n'
+                '${info.dormdesc}',
+                textAlign: TextAlign.center,
+              ),
+            ),
             ListView(
               children: selected.map((e) {
                 return Text(e);
