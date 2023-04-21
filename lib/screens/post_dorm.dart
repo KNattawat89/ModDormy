@@ -46,7 +46,14 @@ List<String> selected = [];
 class _MyCustomFormState extends State<MyCustomForm> {
   final _formKey = GlobalKey<FormState>();
   final dormName = TextEditingController();
-  final address = TextEditingController();
+
+  final houseNo = TextEditingController();
+  final street = TextEditingController();
+  final subDistrict = TextEditingController();
+  final district = TextEditingController();
+  final city = TextEditingController();
+  final zipcode = TextEditingController();
+
   final dormDesc = TextEditingController();
   bool parking = false;
   bool wifi = false;
@@ -67,7 +74,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
   void initState() {
     super.initState();
     dormName.addListener(_printDormName);
-    address.addListener(_printAddress);
+    houseNo.addListener(_printHouseNo);
+    street.addListener(_printStreet);
+    subDistrict.addListener(_printSubDistrict);
+    district.addListener(_printDistrict);
+    city.addListener(_printCity);
+    zipcode.addListener(_printZipcode);
     dormDesc.addListener(_printDormDesc);
     advPayment.addListener(_printAdvPayment);
     electric.addListener(_printElectric);
@@ -79,8 +91,28 @@ class _MyCustomFormState extends State<MyCustomForm> {
     print('dormname: ${dormName}');
   }
 
-  void _printAddress() {
-    print('address: ${address}');
+  void _printHouseNo() {
+    print('address: ${houseNo}');
+  }
+
+  void _printStreet() {
+    print('address: ${street}');
+  }
+
+  void _printSubDistrict() {
+    print('address: ${subDistrict}');
+  }
+
+  void _printDistrict() {
+    print('address: ${district}');
+  }
+
+  void _printCity() {
+    print('address: ${city}');
+  }
+
+  void _printZipcode() {
+    print('address: ${zipcode}');
   }
 
   void _printDormDesc() {
@@ -132,7 +164,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                           const InputDecoration(border: OutlineInputBorder()),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Enter';
+                          return 'required';
                         }
                         return null;
                       },
@@ -156,14 +188,99 @@ class _MyCustomFormState extends State<MyCustomForm> {
               Expanded(
                 child: Padding(
                   //address
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.only(left: 16.0, right: 8),
                   child: TextFormField(
-                    controller: address,
-                    decoration:
-                        const InputDecoration(border: OutlineInputBorder()),
+                    controller: houseNo,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'House Number'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Enter';
+                        return 'required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  //address
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: street,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Street'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  //address
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: subDistrict,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Sub District'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: 100,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 8),
+                  child: TextFormField(
+                    controller: district,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'District'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: city,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'City'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: zipcode,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Zipcode'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'required';
                       }
                       return null;
                     },
@@ -194,7 +311,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       const InputDecoration(border: OutlineInputBorder()),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Enter';
+                      return 'required';
                     }
                     return null;
                   },
@@ -439,12 +556,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Electric price'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter';
-                    }
-                    return null;
-                  },
                 ),
               ),
               Padding(
@@ -454,12 +565,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
                   controller: water,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Water price'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter';
-                    }
-                    return null;
-                  },
                 ),
               ),
               Padding(
@@ -469,12 +574,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
                   controller: other,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: 'other'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter';
-                    }
-                    return null;
-                  },
                 ),
               ),
             ],
@@ -491,7 +590,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
                             builder: (context) => DetailScreen(
                                   info: Info(
                                     dormName.text,
-                                    address.text,
+                                    houseNo.text,
+                                    street.text,
+                                    subDistrict.text,
+                                    district.text,
+                                    city.text,
+                                    zipcode.text,
                                     dormDesc.text,
                                     advPayment.text,
                                     electric.text,
@@ -501,7 +605,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                                 )));
                   }
                 },
-                child: const Text('Submit Data'),
+                child: const Text('Confirm'),
               ),
             ),
           ),
@@ -513,7 +617,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
 class Info {
   final String dormname;
-  final String address;
+  final String houseNo;
+  final String street;
+  final String subDistrict;
+  final String district;
+  final String city;
+  final String zipcode;
   final String dormdesc;
   final String advPayment;
   final String electric;
@@ -522,7 +631,12 @@ class Info {
 
   const Info(
     this.dormname,
-    this.address,
+    this.houseNo,
+    this.street,
+    this.subDistrict,
+    this.district,
+    this.city,
+    this.zipcode,
     this.dormdesc,
     this.advPayment,
     this.electric,
@@ -587,7 +701,7 @@ class DetailScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  info.address,
+                  '${info.houseNo} ${info.street} ${info.subDistrict} ${info.district} ${info.city} ${info.zipcode}',
                   style: const TextStyle(color: Colors.grey),
                 ),
               ],
@@ -703,36 +817,6 @@ class DetailScreen extends StatelessWidget {
           ],
         ),
       ),
-
-      // Center(
-      //   child: Column(
-      //     children: [
-
-      //       Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child: Text(
-      //           '${info.dormname}\n'
-      //           '${info.address}\n'
-      //           '${info.dormdesc}\n'
-      //           '${info.advPayment}\n'
-      //           '${info.electric}\n'
-      //           '${info.water}\n'
-      //           '${info.other}\n',
-      //           textAlign: TextAlign.center,
-      //         ),
-      //       ),
-      //       Container(
-      //         child: ListView.builder(
-      //           shrinkWrap: true,
-      //           itemCount: selected.length,
-      //           itemBuilder: (BuildContext context, int index) {
-      //             return Text('${selected[index]}');
-      //           },
-      //         ),
-      //       )
-      //     ],
-      //   ),
-      // ),
     );
   }
 }
