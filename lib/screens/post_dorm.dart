@@ -114,7 +114,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const SizedBox(
-                  width: 100, child: Center(child: Text('Dorm name'))),
+                  width: 100,
+                  child: Center(
+                      child: Text(
+                    'Dorm name',
+                    textAlign: TextAlign.start,
+                  ))),
               Expanded(
                 child: Padding(
                   //dormname
@@ -140,7 +145,14 @@ class _MyCustomFormState extends State<MyCustomForm> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const SizedBox(width: 100, child: Center(child: Text('Address'))),
+              const SizedBox(
+                  width: 100,
+                  child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        'Address',
+                        textAlign: TextAlign.start,
+                      ))),
               Expanded(
                 child: Padding(
                   //address
@@ -530,34 +542,197 @@ class DetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('The Second Screen'),
       ),
-      body: Center(
-        child: Column(
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.only(top: 16),
               child: Text(
-                '${info.dormname}\n'
-                '${info.address}\n'
-                '${info.dormdesc}\n'
-                '${info.advPayment}\n'
-                '${info.electric}\n'
-                '${info.water}\n'
-                '${info.other}\n',
+                'Dorm Information',
                 textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
               ),
             ),
-            Container(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: selected.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Text('${selected[index]}');
-                },
-              ),
-            )
+            Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: 87,
+                    child: Text(
+                      'Dorm name :',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Text(
+                  info.dormname,
+                  style: const TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: 87,
+                    child: Text(
+                      'Address :',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Text(
+                  info.address,
+                  style: const TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Dorm Description :',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Text(
+                    info.dormdesc,
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('Images :',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                const Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Text('No image',
+                        // Image here
+                        style: TextStyle(color: Colors.grey))),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Features :',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: selected.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Text('${selected[index]}');
+                          },
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Contract Detail',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          const Text('Advance payment : '),
+                          Text(
+                            info.advPayment,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          const Text('Electric price : '),
+                          Text(
+                            info.electric,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          const Text('Water price :'),
+                          Text(
+                            info.water,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          const Text('Other :'),
+                          Text(
+                            info.other,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ],
         ),
       ),
+
+      // Center(
+      //   child: Column(
+      //     children: [
+
+      //       Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child: Text(
+      //           '${info.dormname}\n'
+      //           '${info.address}\n'
+      //           '${info.dormdesc}\n'
+      //           '${info.advPayment}\n'
+      //           '${info.electric}\n'
+      //           '${info.water}\n'
+      //           '${info.other}\n',
+      //           textAlign: TextAlign.center,
+      //         ),
+      //       ),
+      //       Container(
+      //         child: ListView.builder(
+      //           shrinkWrap: true,
+      //           itemCount: selected.length,
+      //           itemBuilder: (BuildContext context, int index) {
+      //             return Text('${selected[index]}');
+      //           },
+      //         ),
+      //       )
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
