@@ -70,6 +70,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
     address.addListener(_printAddress);
     dormDesc.addListener(_printDormDesc);
     advPayment.addListener(_printAdvPayment);
+    electric.addListener(_printElectric);
+    water.addListener(_printWater);
+    other.addListener(_printOther);
   }
 
   void _printDormName() {
@@ -88,6 +91,18 @@ class _MyCustomFormState extends State<MyCustomForm> {
     print('advpayment: ${advPayment}');
   }
 
+  void _printElectric() {
+    print('electric: ${electric}');
+  }
+
+  void _printWater() {
+    print('water: ${water}');
+  }
+
+  void _printOther() {
+    print('other: ${other}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -95,49 +110,67 @@ class _MyCustomFormState extends State<MyCustomForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Stack(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Text('Dorm name'),
-              Padding(
-                //dormname
-                padding: const EdgeInsets.all(16.0),
-                child: TextFormField(
-                  controller: dormName,
-                  decoration:
-                      const InputDecoration(border: OutlineInputBorder()),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter';
-                    }
-                    return null;
-                  },
+              const SizedBox(
+                  width: 100, child: Center(child: Text('Dorm name'))),
+              Expanded(
+                child: Padding(
+                  //dormname
+                  padding: const EdgeInsets.all(16.0),
+                  child: SizedBox(
+                    width: 50,
+                    child: TextFormField(
+                      controller: dormName,
+                      decoration:
+                          const InputDecoration(border: OutlineInputBorder()),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Enter';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
-          Stack(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Text('Address'),
-              Padding(
-                //address
-                padding: const EdgeInsets.all(16.0),
-                child: TextFormField(
-                  controller: address,
-                  decoration:
-                      const InputDecoration(border: OutlineInputBorder()),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter';
-                    }
-                    return null;
-                  },
+              const SizedBox(width: 100, child: Center(child: Text('Address'))),
+              Expanded(
+                child: Padding(
+                  //address
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextFormField(
+                    controller: address,
+                    decoration:
+                        const InputDecoration(border: OutlineInputBorder()),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
               ),
             ],
           ),
-          Stack(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Dorm description'),
+              const Padding(
+                padding: EdgeInsets.only(top: 8.0, left: 16),
+                child: Text(
+                  'Dorm description',
+                  textAlign: TextAlign.start,
+                ),
+              ),
               Padding(
                 //dorm desc
                 padding: const EdgeInsets.all(16.0),
@@ -184,6 +217,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
                           parking = value!;
                           if (parking) {
                             selected.add('parking');
+                          } else {
+                            selected.remove('parking');
                           }
                         });
                       },
@@ -201,6 +236,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
                           wifi = value!;
                           if (wifi) {
                             selected.add('wifi');
+                          } else {
+                            selected.remove('wifi');
                           }
                         });
                       },
@@ -216,6 +253,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       onChanged: (bool? value) {
                         setState(() {
                           smokefree = value!;
+                          if (smokefree) {
+                            selected.add('smokefree');
+                          } else {
+                            selected.remove('smokefree');
+                          }
                         });
                       },
                     ),
@@ -230,6 +272,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       onChanged: (bool? value) {
                         setState(() {
                           securityguard = value!;
+                          if (securityguard) {
+                            selected.add('securityguard');
+                          } else {
+                            selected.remove('securityguard');
+                          }
                         });
                       },
                     ),
@@ -244,6 +291,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       onChanged: (bool? value) {
                         setState(() {
                           cctv = value!;
+                          if (cctv) {
+                            selected.add('cctv');
+                          } else {
+                            selected.remove('cctv');
+                          }
                         });
                       },
                     ),
@@ -258,6 +310,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       onChanged: (bool? value) {
                         setState(() {
                           keycard = value!;
+                          if (keycard) {
+                            selected.add('keycard');
+                          } else {
+                            selected.remove('keycard');
+                          }
                         });
                       },
                     ),
@@ -265,13 +322,18 @@ class _MyCustomFormState extends State<MyCustomForm> {
                   ],
                 ),
                 Row(
-                  //Wifi
+                  //lift
                   children: [
                     Checkbox(
                       value: lift,
                       onChanged: (bool? value) {
                         setState(() {
                           lift = value!;
+                          if (lift) {
+                            selected.add('lift');
+                          } else {
+                            selected.remove('lift');
+                          }
                         });
                       },
                     ),
@@ -286,6 +348,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       onChanged: (bool? value) {
                         setState(() {
                           petfriendly = value!;
+                          if (petfriendly) {
+                            selected.add('petfriendly');
+                          } else {
+                            selected.remove('petfriendly');
+                          }
                         });
                       },
                     ),
@@ -300,6 +367,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       onChanged: (bool? value) {
                         setState(() {
                           pool = value!;
+                          if (pool) {
+                            selected.add('pool');
+                          } else {
+                            selected.remove('pool');
+                          }
                         });
                       },
                     ),
@@ -314,6 +386,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       onChanged: (bool? value) {
                         setState(() {
                           fitness = value!;
+                          if (fitness) {
+                            selected.add('fitness');
+                          } else {
+                            selected.remove('fitness');
+                          }
                         });
                       },
                     ),
@@ -325,15 +402,61 @@ class _MyCustomFormState extends State<MyCustomForm> {
           ),
           Column(
             children: [
-              Text('Contract Detail'),
+              const Text('Contract Detail'),
               Padding(
-                //dormname
-                padding: EdgeInsets.all(16.0),
+                //advance payment
+                padding: const EdgeInsets.all(16.0),
                 child: TextFormField(
                   controller: advPayment,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Advance payment'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                //electric price
+                padding: const EdgeInsets.all(16.0),
+                child: TextFormField(
+                  controller: electric,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Electric price'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                //water price
+                padding: const EdgeInsets.all(16.0),
+                child: TextFormField(
+                  controller: water,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'Water price'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                //other
+                padding: const EdgeInsets.all(16.0),
+                child: TextFormField(
+                  controller: other,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'other'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Enter';
@@ -358,6 +481,10 @@ class _MyCustomFormState extends State<MyCustomForm> {
                                     dormName.text,
                                     address.text,
                                     dormDesc.text,
+                                    advPayment.text,
+                                    electric.text,
+                                    water.text,
+                                    other.text,
                                   ),
                                 )));
                   }
@@ -376,11 +503,19 @@ class Info {
   final String dormname;
   final String address;
   final String dormdesc;
+  final String advPayment;
+  final String electric;
+  final String water;
+  final String other;
 
   const Info(
     this.dormname,
     this.address,
     this.dormdesc,
+    this.advPayment,
+    this.electric,
+    this.water,
+    this.other,
   );
 }
 
@@ -403,14 +538,22 @@ class DetailScreen extends StatelessWidget {
               child: Text(
                 '${info.dormname}\n'
                 '${info.address}\n'
-                '${info.dormdesc}',
+                '${info.dormdesc}\n'
+                '${info.advPayment}\n'
+                '${info.electric}\n'
+                '${info.water}\n'
+                '${info.other}\n',
                 textAlign: TextAlign.center,
               ),
             ),
-            ListView(
-              children: selected.map((e) {
-                return Text(e);
-              }).toList(),
+            Container(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: selected.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Text('${selected[index]}');
+                },
+              ),
             )
           ],
         ),
