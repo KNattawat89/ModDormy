@@ -1,9 +1,10 @@
-import 'dart:html';
+// import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter/widgets.dart';
+// import 'package:flutter/src/widgets/framework.dart';
+// import 'package:flutter/src/widgets/placeholder.dart';
+// import 'package:flutter/widgets.dart';
+// import 'package:flutter/foundation.dart';
 
 class PostForm extends StatelessWidget {
   const PostForm({super.key});
@@ -88,51 +89,51 @@ class _MyCustomFormState extends State<MyCustomForm> {
   }
 
   void _printDormName() {
-    print('dormname: ${dormName}');
+    debugPrint('dormname: $dormName');
   }
 
   void _printHouseNo() {
-    print('address: ${houseNo}');
+    debugPrint('address: $houseNo');
   }
 
   void _printStreet() {
-    print('address: ${street}');
+    debugPrint('address: $street');
   }
 
   void _printSubDistrict() {
-    print('address: ${subDistrict}');
+   debugPrint('address: $subDistrict');
   }
 
   void _printDistrict() {
-    print('address: ${district}');
+    debugPrint('address: $district');
   }
 
   void _printCity() {
-    print('address: ${city}');
+    debugPrint('address: $city');
   }
 
   void _printZipcode() {
-    print('address: ${zipcode}');
+    debugPrint('address: $zipcode');
   }
 
   void _printDormDesc() {
-    print('dormdesc: ${dormDesc}');
+    debugPrint('dormdesc: $dormDesc');
   }
 
   void _printAdvPayment() {
-    print('advpayment: ${advPayment}');
+    debugPrint('advpayment: $advPayment');
   }
 
   void _printElectric() {
-    print('electric: ${electric}');
+    debugPrint('electric: $electric');
   }
 
   void _printWater() {
-    print('water: ${water}');
+    debugPrint('water: $water');
   }
 
   void _printOther() {
-    print('other: ${other}');
+    debugPrint('other: $other');
   }
 
   @override
@@ -236,7 +237,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
           ),
           Row(
             children: [
-              SizedBox(
+            const  SizedBox(
                 width: 100,
               ),
               Expanded(
@@ -747,16 +748,14 @@ class DetailScreen extends StatelessWidget {
                         textAlign: TextAlign.start,
                       ),
                     ),
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: selected.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Text('${selected[index]}');
-                          },
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: selected.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Text('$selected[index]');
+                        },
                       ),
                     ),
                     const Padding(
