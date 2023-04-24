@@ -50,6 +50,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
   final houseNo = TextEditingController();
   final street = TextEditingController();
+  final soi = TextEditingController();
   final subDistrict = TextEditingController();
   final district = TextEditingController();
   final city = TextEditingController();
@@ -76,6 +77,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     super.initState();
     dormName.addListener(_printDormName);
     houseNo.addListener(_printHouseNo);
+    soi.addListener(_printSoi);
     street.addListener(_printStreet);
     subDistrict.addListener(_printSubDistrict);
     district.addListener(_printDistrict);
@@ -96,12 +98,16 @@ class _MyCustomFormState extends State<MyCustomForm> {
     debugPrint('address: $houseNo');
   }
 
+  void _printSoi() {
+    debugPrint('address: $soi');
+  }
+
   void _printStreet() {
     debugPrint('address: $street');
   }
 
   void _printSubDistrict() {
-   debugPrint('address: $subDistrict');
+    debugPrint('address: $subDistrict');
   }
 
   void _printDistrict() {
@@ -177,6 +183,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
                   width: 100,
@@ -187,105 +194,128 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         textAlign: TextAlign.start,
                       ))),
               Expanded(
-                child: Padding(
-                  //address
-                  padding: const EdgeInsets.only(left: 16.0, right: 8),
-                  child: TextFormField(
-                    controller: houseNo,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'House Number'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  //address
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: street,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Street'),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  //address
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: subDistrict,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Sub District'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-            const  SizedBox(
-                width: 100,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0, right: 8),
-                  child: TextFormField(
-                    controller: district,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'District'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: city,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'City'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: zipcode,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Zipcode'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
-                  ),
+                child: Wrap(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            //address
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: houseNo,
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'House Number'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'required';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            //address
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: soi,
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Soi'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: Padding(
+                        //address
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: street,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Street'),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: district,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'District'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'required';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        //address
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: subDistrict,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Sub District'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'required';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: city,
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'City'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'required';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: zipcode,
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Zipcode'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'required';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -592,6 +622,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                                   info: Info(
                                     dormName.text,
                                     houseNo.text,
+                                    soi.text,
                                     street.text,
                                     subDistrict.text,
                                     district.text,
@@ -619,6 +650,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
 class Info {
   final String dormname;
   final String houseNo;
+  final String soi;
   final String street;
   final String subDistrict;
   final String district;
@@ -633,6 +665,7 @@ class Info {
   const Info(
     this.dormname,
     this.houseNo,
+    this.soi,
     this.street,
     this.subDistrict,
     this.district,
@@ -702,7 +735,7 @@ class DetailScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${info.houseNo} ${info.street} ${info.subDistrict} ${info.district} ${info.city} ${info.zipcode}',
+                  '${info.houseNo} ${info.soi} ${info.street} ${info.subDistrict} ${info.district} ${info.city} ${info.zipcode}',
                   style: const TextStyle(color: Colors.grey),
                 ),
               ],
@@ -754,7 +787,7 @@ class DetailScreen extends StatelessWidget {
                         shrinkWrap: true,
                         itemCount: selected.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Text('$selected[index]');
+                          return Text('${selected[index]} ');
                         },
                       ),
                     ),
