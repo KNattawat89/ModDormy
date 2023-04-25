@@ -6,6 +6,64 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
 // import 'package:flutter/foundation.dart';
 
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+
+class UploadPhotoButton extends StatefulWidget {
+  const UploadPhotoButton({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _UploadPhotoButtonState createState() => _UploadPhotoButtonState();
+}
+
+class _UploadPhotoButtonState extends State<UploadPhotoButton> {
+  // File? _image;
+  final ImagePicker picker = ImagePicker();
+  final List<XFile> _imageList = [];
+
+  void getImageFromGallery() async {
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile!.path.isNotEmpty) {
+        // _image = File(pickedFile.path);
+        _imageList.add(pickedFile);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 175,
+      width: 300,
+      child: Row(
+        children: [
+          Expanded(
+            child: ListView.builder(
+                itemCount: _imageList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Image.file(
+                    File(_imageList[index].path),
+                    fit: BoxFit.cover,
+                  );
+                  // Image.network(
+                  //     Uri.file(_imageList[index].path).toString());
+                }),
+          ),
+          Expanded(
+            child: ElevatedButton(
+              onPressed: getImageFromGallery,
+              child: const Text('Add Image'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class PostForm extends StatelessWidget {
   const PostForm({super.key});
 
@@ -154,168 +212,171 @@ class _MyCustomFormState extends State<MyCustomForm> {
             children: [
               const SizedBox(
                   width: 100,
-                  child: Center(
-                      child: Text(
+                  child: Text(
                     'Dorm name',
-                    textAlign: TextAlign.start,
-                  ))),
+                    textAlign: TextAlign.center,
+                  )),
               Expanded(
                 child: Padding(
                   //dormname
-                  padding: const EdgeInsets.all(16.0),
-                  child: SizedBox(
-                    width: 50,
-                    child: TextFormField(
-                      controller: dormName,
-                      decoration:
-                          const InputDecoration(border: OutlineInputBorder()),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'required';
-                        }
-                        return null;
-                      },
-                    ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: dormName,
+                    decoration:
+                        const InputDecoration(border: OutlineInputBorder()),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'required';
+                      }
+                      return null;
+                    },
                   ),
                 ),
               ),
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
                   width: 100,
-                  child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        'Address',
-                        textAlign: TextAlign.start,
-                      ))),
+                  child: Text(
+                    'Address',
+                    textAlign: TextAlign.center,
+                  )),
               Expanded(
-                child: Wrap(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            //address
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: houseNo,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'House Number'),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'required';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            //address
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: soi,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Soi'),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: Padding(
-                        //address
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: street,
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Street'),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: district,
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'District'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'required';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        //address
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: subDistrict,
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Sub District'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'required';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: city,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'City'),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'required';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: zipcode,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Zipcode'),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'required';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: houseNo,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'House No.'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  //address
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: soi,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Soi'),
+                  ),
+                ),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              const SizedBox(
+                width: 100,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: street,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Street'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              const SizedBox(
+                width: 100,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: subDistrict,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Sub-district'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              const SizedBox(
+                width: 100,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: district,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'District'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              const SizedBox(
+                width: 100,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: city,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'City'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: zipcode,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Zipcode'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'required';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
               ),
             ],
@@ -356,7 +417,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 padding: EdgeInsets.all(8.0),
                 child: Text('Images'),
               ),
-              ElevatedButton(onPressed: null, child: Text('Add Image'))
+              UploadPhotoButton(),
             ],
           ),
           Padding(
