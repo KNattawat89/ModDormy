@@ -8,6 +8,49 @@ import 'package:flutter/material.dart';
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:moddormy_flutter/screens/confirm_page.dart';
+
+class CoverImageUploadButton extends StatefulWidget {
+  const CoverImageUploadButton({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _CoverImageUploadButtonState createState() => _CoverImageUploadButtonState();
+}
+
+class _CoverImageUploadButtonState extends State<CoverImageUploadButton> {
+  File? _image;
+
+  Future getImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: getImage,
+          child: const Text('Add Cover Image'),
+        ),
+        _image == null
+            ? const Text('No image selected.')
+            : Image.file(
+                _image!,
+                height: 200,
+              ),
+      ],
+    );
+  }
+}
 
 class UploadPhotoButton extends StatefulWidget {
   const UploadPhotoButton({super.key});
@@ -17,10 +60,11 @@ class UploadPhotoButton extends StatefulWidget {
   _UploadPhotoButtonState createState() => _UploadPhotoButtonState();
 }
 
+final List<XFile> _imageList = [];
+
 class _UploadPhotoButtonState extends State<UploadPhotoButton> {
   // File? _image;
   final ImagePicker picker = ImagePicker();
-  final List<XFile> _imageList = [];
 
   void getImageFromGallery() async {
     final XFile? pickedFile =
@@ -36,26 +80,38 @@ class _UploadPhotoButtonState extends State<UploadPhotoButton> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 175,
-      width: 300,
-      child: Row(
+      width: MediaQuery.of(context).size.width * 0.8,
+      height: MediaQuery.of(context).size.height * 0.25,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: ListView.builder(
-                itemCount: _imageList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Image.file(
-                    File(_imageList[index].path),
-                    fit: BoxFit.cover,
-                  );
-                  // Image.network(
-                  //     Uri.file(_imageList[index].path).toString());
-                }),
+          ElevatedButton(
+            onPressed: getImageFromGallery,
+            child: const Text('Add Image'),
           ),
           Expanded(
-            child: ElevatedButton(
-              onPressed: getImageFromGallery,
-              child: const Text('Add Image'),
+            child: GridView.builder(
+              itemCount: _imageList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child:
+                      //   Image.file(
+                      //   File(_imageList[index].path),
+                      //   fit: BoxFit.cover,
+                      //   width: 200,
+                      //   height: 200,
+                      // );
+                      Image.network(
+                    Uri.file(_imageList[index].path).toString(),
+                    width: 100,
+                    height: 100,
+                  ),
+                );
+                // Image.network(
+              },
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3),
             ),
           ),
         ],
@@ -131,76 +187,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
   final other = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    dormName.addListener(_printDormName);
-    houseNo.addListener(_printHouseNo);
-    soi.addListener(_printSoi);
-    street.addListener(_printStreet);
-    subDistrict.addListener(_printSubDistrict);
-    district.addListener(_printDistrict);
-    city.addListener(_printCity);
-    zipcode.addListener(_printZipcode);
-    dormDesc.addListener(_printDormDesc);
-    advPayment.addListener(_printAdvPayment);
-    electric.addListener(_printElectric);
-    water.addListener(_printWater);
-    other.addListener(_printOther);
-  }
-
-  void _printDormName() {
-    debugPrint('dormname: $dormName');
-  }
-
-  void _printHouseNo() {
-    debugPrint('address: $houseNo');
-  }
-
-  void _printSoi() {
-    debugPrint('address: $soi');
-  }
-
-  void _printStreet() {
-    debugPrint('address: $street');
-  }
-
-  void _printSubDistrict() {
-    debugPrint('address: $subDistrict');
-  }
-
-  void _printDistrict() {
-    debugPrint('address: $district');
-  }
-
-  void _printCity() {
-    debugPrint('address: $city');
-  }
-
-  void _printZipcode() {
-    debugPrint('address: $zipcode');
-  }
-
-  void _printDormDesc() {
-    debugPrint('dormdesc: $dormDesc');
-  }
-
-  void _printAdvPayment() {
-    debugPrint('advpayment: $advPayment');
-  }
-
-  void _printElectric() {
-    debugPrint('electric: $electric');
-  }
-
-  void _printWater() {
-    debugPrint('water: $water');
-  }
-
-  void _printOther() {
-    debugPrint('other: $other');
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
@@ -224,12 +210,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     controller: dormName,
                     decoration:
                         const InputDecoration(border: OutlineInputBorder()),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'required';
+                    //   }
+                    //   return null;
+                    // },
                   ),
                 ),
               ),
@@ -250,12 +236,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     controller: houseNo,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: 'House No.'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'required';
+                    //   }
+                    //   return null;
+                    // },
                   ),
                 ),
               ),
@@ -284,12 +270,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     controller: street,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: 'Street'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'required';
+                    //   }
+                    //   return null;
+                    // },
                   ),
                 ),
               ),
@@ -308,12 +294,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Sub-district'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'required';
+                    //   }
+                    //   return null;
+                    // },
                   ),
                 ),
               ),
@@ -331,12 +317,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     controller: district,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: 'District'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'required';
+                    //   }
+                    //   return null;
+                    // },
                   ),
                 ),
               ),
@@ -354,12 +340,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     controller: city,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: 'City'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'required';
+                    //   }
+                    //   return null;
+                    // },
                   ),
                 ),
               ),
@@ -370,12 +356,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     controller: zipcode,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: 'Zipcode'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'required';
+                    //   }
+                    //   return null;
+                    // },
                   ),
                 ),
               ),
@@ -401,23 +387,42 @@ class _MyCustomFormState extends State<MyCustomForm> {
                   controller: dormDesc,
                   decoration:
                       const InputDecoration(border: OutlineInputBorder()),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'required';
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'required';
+                  //   }
+                  //   return null;
+                  // },
                 ),
               ),
             ],
           ),
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Cover Image'),
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: CoverImageUploadButton(),
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: const [
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text('Images'),
               ),
-              UploadPhotoButton(),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: UploadPhotoButton(),
+              ),
             ],
           ),
           Padding(
@@ -632,12 +637,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Advance payment'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter';
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'Enter';
+                  //   }
+                  //   return null;
+                  // },
                 ),
               ),
               Padding(
@@ -670,6 +675,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ),
             ],
           ),
+          MyWidget(),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -694,6 +700,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
                                     electric.text,
                                     water.text,
                                     other.text,
+                                    selected,
+                                    _imageList,
+                                    roomNameList,
                                   ),
                                 )));
                   }
@@ -708,208 +717,84 @@ class _MyCustomFormState extends State<MyCustomForm> {
   }
 }
 
-class Info {
-  final String dormname;
-  final String houseNo;
-  final String soi;
-  final String street;
-  final String subDistrict;
-  final String district;
-  final String city;
-  final String zipcode;
-  final String dormdesc;
-  final String advPayment;
-  final String electric;
-  final String water;
-  final String other;
+// ignore: must_be_immutable
+class MyWidget extends StatefulWidget {
+  MyWidget({super.key});
 
-  const Info(
-    this.dormname,
-    this.houseNo,
-    this.soi,
-    this.street,
-    this.subDistrict,
-    this.district,
-    this.city,
-    this.zipcode,
-    this.dormdesc,
-    this.advPayment,
-    this.electric,
-    this.water,
-    this.other,
-  );
+  @override
+  // ignore: library_private_types_in_public_api
+  _MyWidgetState createState() => _MyWidgetState();
+  TextEditingController roomName = TextEditingController();
 }
 
-class DetailScreen extends StatelessWidget {
-  const DetailScreen({super.key, required this.info});
+List<String> roomNameList = [];
 
-  final Info info;
+class _MyWidgetState extends State<MyWidget> {
+  List<Widget> widgets = []; // list of widgets to be displayed
+
+  void _addNewWidget() {
+    setState(() {
+      widgets.add(Form(
+          child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const SizedBox(
+                  width: 100,
+                  child: Text(
+                    'Room name',
+                    textAlign: TextAlign.center,
+                  )),
+              Expanded(
+                child: Padding(
+                  //dormname
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: widget.roomName,
+                        onChanged: (value) => roomNameList,
+                        decoration:
+                            const InputDecoration(border: OutlineInputBorder()),
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return 'required';
+                        //   }
+                        //   return null;
+                        // },
+                      ),
+                      Text(widget.roomName.text)
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row()
+        ],
+      ))); // add a new Text widget to the list
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('The Second Screen'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ListView(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 16),
-              child: Text(
-                'Dorm Information',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-              ),
-            ),
-            Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    width: 87,
-                    child: Text(
-                      'Dorm name :',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                Text(
-                  info.dormname,
-                  style: const TextStyle(color: Colors.grey),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    width: 87,
-                    child: Text(
-                      'Address :',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                Text(
-                  '${info.houseNo} ${info.soi} ${info.street} ${info.subDistrict} ${info.district} ${info.city} ${info.zipcode}',
-                  style: const TextStyle(color: Colors.grey),
-                ),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Dorm Description :',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: Text(
-                    info.dormdesc,
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text('Images :',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                ),
-                const Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: Text('No image',
-                        // Image here
-                        style: TextStyle(color: Colors.grey))),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Features :',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: selected.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Text('${selected[index]} ');
-                        },
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Contract Detail',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          const Text('Advance payment : '),
-                          Text(
-                            info.advPayment,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          const Text('Electric price : '),
-                          Text(
-                            info.electric,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          const Text('Water price :'),
-                          Text(
-                            info.water,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          const Text('Other :'),
-                          Text(
-                            info.other,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+    return Column(
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.25,
+          child: ListView.builder(
+            itemCount: widgets.length,
+            itemBuilder: (BuildContext context, int index) {
+              return widgets[index]; // display the widgets in the list
+            },
+          ),
         ),
-      ),
+        ElevatedButton(
+          onPressed: _addNewWidget,
+          child: const Text("Add Room"),
+        ),
+      ],
     );
   }
 }
