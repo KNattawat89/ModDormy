@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/screens/post_dorm.dart';
+import 'package:moddormy_flutter/screens/post_form.dart';
 
 void main() {
   runApp(const MyApp());

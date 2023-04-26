@@ -1,11 +1,4 @@
-// import 'dart:html';
-
 import 'package:flutter/material.dart';
-// import 'package:flutter/src/widgets/framework.dart';
-// import 'package:flutter/src/widgets/placeholder.dart';
-// import 'package:flutter/widgets.dart';
-// import 'package:flutter/foundation.dart';
-
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:moddormy_flutter/screens/confirm_page.dart';
@@ -115,35 +108,6 @@ class _UploadPhotoButtonState extends State<UploadPhotoButton> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class PostForm extends StatelessWidget {
-  const PostForm({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      home: Scaffold(
-        appBar: AppBar(),
-        body: Center(
-          child: ListView(
-            children: const [
-              Padding(
-                padding: EdgeInsets.all(32),
-                child: Text(
-                  'Dorm Information',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                ),
-              ),
-              MyCustomForm(),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -675,7 +639,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ),
             ],
           ),
-          MyWidget(),
+          const MyWidget(),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -703,6 +667,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                                     selected,
                                     _imageList,
                                     roomNameList,
+                                    priceList,
                                   ),
                                 )));
                   }
@@ -719,20 +684,29 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
 // ignore: must_be_immutable
 class MyWidget extends StatefulWidget {
-  MyWidget({super.key});
+  const MyWidget({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
   _MyWidgetState createState() => _MyWidgetState();
-  TextEditingController roomName = TextEditingController();
 }
 
 List<String> roomNameList = [];
+List<String> priceList = [];
+var count = 0;
 
 class _MyWidgetState extends State<MyWidget> {
   List<Widget> widgets = []; // list of widgets to be displayed
+  List<TextEditingController> roomNames = [];
+  List<TextEditingController> prices = [];
 
   void _addNewWidget() {
+    TextEditingController roomName = TextEditingController();
+    TextEditingController price = TextEditingController();
+
+    roomNames.add(roomName);
+    prices.add(price);
+
     setState(() {
       widgets.add(Form(
           child: Column(
@@ -753,8 +727,11 @@ class _MyWidgetState extends State<MyWidget> {
                   child: Column(
                     children: [
                       TextFormField(
-                        controller: widget.roomName,
-                        onChanged: (value) => roomNameList,
+                        controller: roomName,
+                        onEditingComplete: () {
+                          roomNameList.add(roomName.text);
+                        },
+
                         decoration:
                             const InputDecoration(border: OutlineInputBorder()),
                         // validator: (value) {
@@ -764,14 +741,48 @@ class _MyWidgetState extends State<MyWidget> {
                         //   return null;
                         // },
                       ),
-                      Text(widget.roomName.text)
                     ],
                   ),
                 ),
               ),
             ],
           ),
-          Row()
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const SizedBox(
+                  width: 100,
+                  child: Text(
+                    'Price',
+                    textAlign: TextAlign.center,
+                  )),
+              Expanded(
+                child: Padding(
+                  //dormname
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: price,
+                        onEditingComplete: () {
+                          priceList.add(price.text);
+                        },
+
+                        decoration:
+                            const InputDecoration(border: OutlineInputBorder()),
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return 'required';
+                        //   }
+                        //   return null;
+                        // },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ))); // add a new Text widget to the list
     });
@@ -791,7 +802,10 @@ class _MyWidgetState extends State<MyWidget> {
           ),
         ),
         ElevatedButton(
-          onPressed: _addNewWidget,
+          onPressed: () {
+            _addNewWidget();
+            count = count + 1;
+          },
           child: const Text("Add Room"),
         ),
       ],

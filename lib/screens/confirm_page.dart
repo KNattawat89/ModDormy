@@ -21,26 +21,28 @@ class Info {
   final String other;
   final List<String> selected;
   final List<XFile> _imageList;
-  final List<String> roomName;
+  final List<String> roomNameList;
+  final List<String> priceList;
 
   const Info(
-    this.dormname,
-    this.houseNo,
-    this.soi,
-    this.street,
-    this.subDistrict,
-    this.district,
-    this.city,
-    this.zipcode,
-    this.dormdesc,
-    this.advPayment,
-    this.electric,
-    this.water,
-    this.other,
-    this.selected,
-    this._imageList,
-    this.roomName,
-  );
+      this.dormname,
+      this.houseNo,
+      this.soi,
+      this.street,
+      this.subDistrict,
+      this.district,
+      this.city,
+      this.zipcode,
+      this.dormdesc,
+      this.advPayment,
+      this.electric,
+      this.water,
+      this.other,
+      this.selected,
+      this._imageList,
+      this.roomNameList,
+      this.priceList,
+      );
 }
 
 class DetailScreen extends StatelessWidget {
@@ -246,22 +248,39 @@ class DetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const Text('Room name :'),
-                  Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: info.roomName.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Text('${info.roomName[index]} hi');
-                      },
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: info.roomNameList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Room name :',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Text(info.roomNameList[index]),
+                      ],
                     ),
-                  ),
-                ],
-              ),
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.00),
+                          child: Text(
+                            'Price',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Text(info.priceList[index]),
+                      ],
+                    )
+                  ],
+                );
+              },
             ),
           ],
         ),
