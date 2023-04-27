@@ -19,10 +19,13 @@ class Info {
   final String electric;
   final String water;
   final String other;
-  final List<String> selected;
+  final List<String> dormFeatures;
   final List<XFile> _imageList;
   final List<String> roomNameList;
   final List<String> priceList;
+  final List<String> roomSizeList;
+  final List<String> roomDescList;
+  final List<List<String>> roomFeatureList;
 
   const Info(
       this.dormname,
@@ -38,11 +41,13 @@ class Info {
       this.electric,
       this.water,
       this.other,
-      this.selected,
+      this.dormFeatures,
       this._imageList,
       this.roomNameList,
       this.priceList,
-      );
+      this.roomSizeList,
+      this.roomDescList,
+      this.roomFeatureList);
 }
 
 class DetailScreen extends StatelessWidget {
@@ -187,9 +192,9 @@ class DetailScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: info.selected.length,
+                        itemCount: info.dormFeatures.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Text('${info.selected[index]} ');
+                          return Text('${info.dormFeatures[index]} ');
                         },
                       ),
                     ),
@@ -253,6 +258,8 @@ class DetailScreen extends StatelessWidget {
               itemCount: info.roomNameList.length,
               itemBuilder: (BuildContext context, int index) {
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Row(
                       children: [
@@ -271,11 +278,62 @@ class DetailScreen extends StatelessWidget {
                         const Padding(
                           padding: EdgeInsets.all(8.00),
                           child: Text(
-                            'Price',
+                            'Price :',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
                         Text(info.priceList[index]),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.00),
+                          child: Text(
+                            'Room size :',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Text(info.roomSizeList[index])
+                      ],
+                    ),
+                    Row(children: [
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Room Description :',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Text(
+                          info.roomDescList[index],
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    ]),
+                    Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Features :',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: info.roomFeatureList.length,
+                            itemBuilder: (BuildContext context, int j) {
+                              return Text('${info.roomFeatureList[j]} ');
+                            },
+                          ),
+                        ),
                       ],
                     )
                   ],
