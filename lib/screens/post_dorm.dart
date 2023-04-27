@@ -13,16 +13,16 @@ class CoverImageUploadButton extends StatefulWidget {
   _CoverImageUploadButtonState createState() => _CoverImageUploadButtonState();
 }
 
-class _CoverImageUploadButtonState extends State<CoverImageUploadButton> {
-  File? _image;
+XFile? coverImage;
 
+class _CoverImageUploadButtonState extends State<CoverImageUploadButton> {
   Future getImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        coverImage = XFile(pickedFile.path);
       }
     });
   }
@@ -30,17 +30,19 @@ class _CoverImageUploadButtonState extends State<CoverImageUploadButton> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ElevatedButton(
           onPressed: getImage,
           child: const Text('Add Cover Image'),
         ),
-        _image == null
+        coverImage == null
             ? const Text('No image selected.')
             : Image.file(
-                _image!,
+                File(coverImage!.path),
+                fit: BoxFit.cover,
                 height: 200,
+                width: 200,
               ),
       ],
     );
@@ -58,7 +60,6 @@ class UploadPhotoButton extends StatefulWidget {
 final List<XFile> _imageList = [];
 
 class _UploadPhotoButtonState extends State<UploadPhotoButton> {
-  // File? _image;
   final ImagePicker picker = ImagePicker();
 
   void getImageFromGallery() async {
@@ -96,11 +97,6 @@ class _UploadPhotoButtonState extends State<UploadPhotoButton> {
                     width: 200,
                     height: 200,
                   ),
-                  //     Image.network(
-                  //   Uri.file(_imageList[index].path).toString(),
-                  //   width: 100,
-                  //   height: 100,
-                  // ),
                 );
               },
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -362,12 +358,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ),
             ],
           ),
-          Column(
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: const [
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.fromLTRB(8, 25, 8, 8),
                 child: Text('Cover Image'),
               ),
               Padding(
@@ -376,12 +371,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ),
             ],
           ),
-          Column(
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: const [
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.fromLTRB(8, 25, 8, 8),
                 child: Text('Images'),
               ),
               Padding(
@@ -666,6 +661,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                                     water.text,
                                     other.text,
                                     dormfeatures,
+                                    coverImage,
                                     _imageList,
                                     roomNameList,
                                     priceList,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
@@ -20,6 +22,7 @@ class Info {
   final String water;
   final String other;
   final List<String> dormFeatures;
+  final XFile? coverImage;
   final List<XFile> _imageList;
   final List<String> roomNameList;
   final List<String> priceList;
@@ -42,6 +45,7 @@ class Info {
     this.water,
     this.other,
     this.dormFeatures,
+    this.coverImage,
     this._imageList,
     this.roomNameList,
     this.priceList,
@@ -144,6 +148,17 @@ class DetailScreen extends StatelessWidget {
                 ),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
+                  child: Text('Cover Images :',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                Image.file(
+                  File(info.coverImage!.path),
+                  fit: BoxFit.cover,
+                  height: 125,
+                  width: 125,
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Text('Images :',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
@@ -156,20 +171,13 @@ class DetailScreen extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child:
-                              //   Image.file(
-                              //   File(info._imageList[index].path),
-                              //   fit: BoxFit.cover,
-                              //   width: 200,
-                              //   height: 200,
-                              // );
-                              Image.network(
-                            Uri.file(info._imageList[index].path).toString(),
-                            width: 100,
-                            height: 100,
+                          child: Image.file(
+                            File(info._imageList[index].path),
+                            fit: BoxFit.cover,
+                            width: 200,
+                            height: 200,
                           ),
                         );
-                        // Image.network(
                       },
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
