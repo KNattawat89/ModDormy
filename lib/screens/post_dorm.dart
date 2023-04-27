@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:moddormy_flutter/models/room.dart';
 import 'package:moddormy_flutter/screens/confirm_page.dart';
 
 class CoverImageUploadButton extends StatefulWidget {
@@ -89,20 +90,18 @@ class _UploadPhotoButtonState extends State<UploadPhotoButton> {
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child:
-                      //   Image.file(
-                      //   File(_imageList[index].path),
-                      //   fit: BoxFit.cover,
-                      //   width: 200,
-                      //   height: 200,
-                      // );
-                      Image.network(
-                    Uri.file(_imageList[index].path).toString(),
-                    width: 100,
-                    height: 100,
+                  child: Image.file(
+                    File(_imageList[index].path),
+                    fit: BoxFit.cover,
+                    width: 200,
+                    height: 200,
                   ),
+                  //     Image.network(
+                  //   Uri.file(_imageList[index].path).toString(),
+                  //   width: 100,
+                  //   height: 100,
+                  // ),
                 );
-                // Image.network(
               },
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3),
@@ -700,7 +699,11 @@ List<String> roomNameList = [];
 List<String> priceList = [];
 List<String> roomSizeList = [];
 List<String> roomDescList = [];
-List<List<String>> roomFeatureList = [[]];
+List<List<String>> roomFeatureList = [[]]; //
+// [
+//  [air , fan ,etc ],
+//  [fan ,etc ],
+// ]
 var count = 0;
 
 class _MyWidgetState extends State<MyWidget> {
@@ -709,19 +712,24 @@ class _MyWidgetState extends State<MyWidget> {
   List<TextEditingController> prices = [];
   List<TextEditingController> roomSizes = [];
   List<TextEditingController> roomDescs = [];
-  bool airC = false;
-  bool fan = false;
+  List<bool> airCs = [];
+  List<bool> fans = [];
 
+  List<Room> rooms = [];
   void _addNewWidget() {
     TextEditingController roomName = TextEditingController();
     TextEditingController price = TextEditingController();
     TextEditingController roomSize = TextEditingController();
     TextEditingController roomDesc = TextEditingController();
+    bool airC = false;
+    bool fan = false;
 
     roomNames.add(roomName);
     prices.add(price);
     roomSizes.add(roomSize);
     roomDescs.add(roomDesc);
+    airCs.add(airC);
+    fans.add(fan);
 
     setState(() {
       widgets.add(Form(
@@ -753,10 +761,6 @@ class _MyWidgetState extends State<MyWidget> {
                             print(roomNameList);
                           }
                         },
-                        // onEditingComplete: () {
-                        //   roomNameList.add(roomName.text);
-                        // },
-
                         decoration:
                             const InputDecoration(border: OutlineInputBorder()),
                         validator: (value) {
@@ -798,10 +802,6 @@ class _MyWidgetState extends State<MyWidget> {
                             print(priceList);
                           }
                         },
-                        // onEditingComplete: () {
-                        //   priceList.add(price.text);
-                        // },
-
                         decoration:
                             const InputDecoration(border: OutlineInputBorder()),
                         validator: (value) {
@@ -840,9 +840,6 @@ class _MyWidgetState extends State<MyWidget> {
                           }
                           roomSizeList.add(roomSize.text);
                         },
-                        // onEditingComplete: () {
-                        //   priceList.add(price.text);
-                        // },
                         decoration:
                             const InputDecoration(border: OutlineInputBorder()),
                         validator: (value) {
@@ -931,11 +928,10 @@ class _MyWidgetState extends State<MyWidget> {
                     onChanged: (bool? value) {
                       setState(() {
                         airC = value!;
-                        print(airC);
                         if (airC) {
-                          roomFeatureList.add(['airC']);
+                          roomFeatureList[count - 1].add('airC');
                         } else {
-                          roomFeatureList.remove(['airC']);
+                          roomFeatureList[count - 1].remove('airC');
                         }
                       });
                     },
@@ -951,9 +947,9 @@ class _MyWidgetState extends State<MyWidget> {
                       setState(() {
                         fan = value!;
                         if (fan) {
-                          roomFeatureList.add(['fan']);
+                          roomFeatureList[count - 1].add('fan');
                         } else {
-                          roomFeatureList.remove(['fan']);
+                          roomFeatureList[count - 1].remove('fan');
                         }
                       });
                     },

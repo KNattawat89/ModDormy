@@ -28,26 +28,27 @@ class Info {
   final List<List<String>> roomFeatureList;
 
   const Info(
-      this.dormname,
-      this.houseNo,
-      this.soi,
-      this.street,
-      this.subDistrict,
-      this.district,
-      this.city,
-      this.zipcode,
-      this.dormdesc,
-      this.advPayment,
-      this.electric,
-      this.water,
-      this.other,
-      this.dormFeatures,
-      this._imageList,
-      this.roomNameList,
-      this.priceList,
-      this.roomSizeList,
-      this.roomDescList,
-      this.roomFeatureList);
+    this.dormname,
+    this.houseNo,
+    this.soi,
+    this.street,
+    this.subDistrict,
+    this.district,
+    this.city,
+    this.zipcode,
+    this.dormdesc,
+    this.advPayment,
+    this.electric,
+    this.water,
+    this.other,
+    this.dormFeatures,
+    this._imageList,
+    this.roomNameList,
+    this.priceList,
+    this.roomSizeList,
+    this.roomDescList,
+    this.roomFeatureList,
+  );
 }
 
 class DetailScreen extends StatelessWidget {
@@ -328,9 +329,9 @@ class DetailScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: info.roomFeatureList.length,
+                            itemCount: info.roomFeatureList[index].length,
                             itemBuilder: (BuildContext context, int j) {
-                              return Text('${info.roomFeatureList[j]} ');
+                              return Text('${info.roomFeatureList[index][j]} ');
                             },
                           ),
                         ),
