@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -728,9 +729,18 @@ class _MyWidgetState extends State<MyWidget> {
                     children: [
                       TextFormField(
                         controller: roomName,
-                        onEditingComplete: () {
+                        onChanged: (value) {
+                          if (roomNameList.length > count - 1) {
+                            roomNameList.removeLast();
+                          }
                           roomNameList.add(roomName.text);
+                          if (kDebugMode) {
+                            print(roomNameList);
+                          }
                         },
+                        // onEditingComplete: () {
+                        //   roomNameList.add(roomName.text);
+                        // },
 
                         decoration:
                             const InputDecoration(border: OutlineInputBorder()),
@@ -764,9 +774,18 @@ class _MyWidgetState extends State<MyWidget> {
                     children: [
                       TextFormField(
                         controller: price,
-                        onEditingComplete: () {
+                        onChanged: (value) {
+                          if (priceList.length > count - 1) {
+                            priceList.removeLast();
+                          }
                           priceList.add(price.text);
+                          if (kDebugMode) {
+                            print(priceList);
+                          }
                         },
+                        // onEditingComplete: () {
+                        //   priceList.add(price.text);
+                        // },
 
                         decoration:
                             const InputDecoration(border: OutlineInputBorder()),
