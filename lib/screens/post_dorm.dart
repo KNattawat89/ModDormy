@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:moddormy_flutter/models/room.dart';
 import 'package:moddormy_flutter/screens/confirm_page.dart';
 
 class CoverImageUploadButton extends StatefulWidget {
@@ -11,16 +13,16 @@ class CoverImageUploadButton extends StatefulWidget {
   _CoverImageUploadButtonState createState() => _CoverImageUploadButtonState();
 }
 
-class _CoverImageUploadButtonState extends State<CoverImageUploadButton> {
-  File? _image;
+XFile? coverImage;
 
+class _CoverImageUploadButtonState extends State<CoverImageUploadButton> {
   Future getImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        coverImage = XFile(pickedFile.path);
       }
     });
   }
@@ -28,17 +30,19 @@ class _CoverImageUploadButtonState extends State<CoverImageUploadButton> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ElevatedButton(
           onPressed: getImage,
           child: const Text('Add Cover Image'),
         ),
-        _image == null
+        coverImage == null
             ? const Text('No image selected.')
             : Image.file(
-                _image!,
+                File(coverImage!.path),
+                fit: BoxFit.cover,
                 height: 200,
+                width: 200,
               ),
       ],
     );
@@ -56,7 +60,6 @@ class UploadPhotoButton extends StatefulWidget {
 final List<XFile> _imageList = [];
 
 class _UploadPhotoButtonState extends State<UploadPhotoButton> {
-  // File? _image;
   final ImagePicker picker = ImagePicker();
 
   void getImageFromGallery() async {
@@ -88,20 +91,13 @@ class _UploadPhotoButtonState extends State<UploadPhotoButton> {
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child:
-                      //   Image.file(
-                      //   File(_imageList[index].path),
-                      //   fit: BoxFit.cover,
-                      //   width: 200,
-                      //   height: 200,
-                      // );
-                      Image.network(
-                    Uri.file(_imageList[index].path).toString(),
-                    width: 100,
-                    height: 100,
+                  child: Image.file(
+                    File(_imageList[index].path),
+                    fit: BoxFit.cover,
+                    width: 200,
+                    height: 200,
                   ),
                 );
-                // Image.network(
               },
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3),
@@ -120,8 +116,6 @@ class MyCustomForm extends StatefulWidget {
   State<MyCustomForm> createState() => _MyCustomFormState();
 }
 
-List<String> selected = [];
-
 class _MyCustomFormState extends State<MyCustomForm> {
   final _formKey = GlobalKey<FormState>();
   final dormName = TextEditingController();
@@ -135,6 +129,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
   final zipcode = TextEditingController();
 
   final dormDesc = TextEditingController();
+
+  List<String> dormfeatures = [];
   bool parking = false;
   bool wifi = false;
   bool smokefree = false;
@@ -145,6 +141,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
   bool petfriendly = false;
   bool pool = false;
   bool fitness = false;
+
   final advPayment = TextEditingController();
   final electric = TextEditingController();
   final water = TextEditingController();
@@ -361,12 +358,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ),
             ],
           ),
-          Column(
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: const [
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.fromLTRB(8, 25, 8, 8),
                 child: Text('Cover Image'),
               ),
               Padding(
@@ -375,12 +371,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ),
             ],
           ),
-          Column(
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: const [
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.fromLTRB(8, 25, 8, 8),
                 child: Text('Images'),
               ),
               Padding(
@@ -406,9 +402,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         setState(() {
                           parking = value!;
                           if (parking) {
-                            selected.add('parking');
+                            dormfeatures.add('parking');
                           } else {
-                            selected.remove('parking');
+                            dormfeatures.remove('parking');
                           }
                         });
                       },
@@ -425,9 +421,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         setState(() {
                           wifi = value!;
                           if (wifi) {
-                            selected.add('wifi');
+                            dormfeatures.add('wifi');
                           } else {
-                            selected.remove('wifi');
+                            dormfeatures.remove('wifi');
                           }
                         });
                       },
@@ -444,9 +440,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         setState(() {
                           smokefree = value!;
                           if (smokefree) {
-                            selected.add('smokefree');
+                            dormfeatures.add('smokefree');
                           } else {
-                            selected.remove('smokefree');
+                            dormfeatures.remove('smokefree');
                           }
                         });
                       },
@@ -463,9 +459,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         setState(() {
                           securityguard = value!;
                           if (securityguard) {
-                            selected.add('securityguard');
+                            dormfeatures.add('securityguard');
                           } else {
-                            selected.remove('securityguard');
+                            dormfeatures.remove('securityguard');
                           }
                         });
                       },
@@ -482,9 +478,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         setState(() {
                           cctv = value!;
                           if (cctv) {
-                            selected.add('cctv');
+                            dormfeatures.add('cctv');
                           } else {
-                            selected.remove('cctv');
+                            dormfeatures.remove('cctv');
                           }
                         });
                       },
@@ -501,9 +497,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         setState(() {
                           keycard = value!;
                           if (keycard) {
-                            selected.add('keycard');
+                            dormfeatures.add('keycard');
                           } else {
-                            selected.remove('keycard');
+                            dormfeatures.remove('keycard');
                           }
                         });
                       },
@@ -520,9 +516,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         setState(() {
                           lift = value!;
                           if (lift) {
-                            selected.add('lift');
+                            dormfeatures.add('lift');
                           } else {
-                            selected.remove('lift');
+                            dormfeatures.remove('lift');
                           }
                         });
                       },
@@ -539,9 +535,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         setState(() {
                           petfriendly = value!;
                           if (petfriendly) {
-                            selected.add('petfriendly');
+                            dormfeatures.add('petfriendly');
                           } else {
-                            selected.remove('petfriendly');
+                            dormfeatures.remove('petfriendly');
                           }
                         });
                       },
@@ -558,9 +554,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         setState(() {
                           pool = value!;
                           if (pool) {
-                            selected.add('pool');
+                            dormfeatures.add('pool');
                           } else {
-                            selected.remove('pool');
+                            dormfeatures.remove('pool');
                           }
                         });
                       },
@@ -577,9 +573,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         setState(() {
                           fitness = value!;
                           if (fitness) {
-                            selected.add('fitness');
+                            dormfeatures.add('fitness');
                           } else {
-                            selected.remove('fitness');
+                            dormfeatures.remove('fitness');
                           }
                         });
                       },
@@ -643,7 +639,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
+              child: FloatingActionButton.extended(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     Navigator.push(
@@ -664,15 +660,19 @@ class _MyCustomFormState extends State<MyCustomForm> {
                                     electric.text,
                                     water.text,
                                     other.text,
-                                    selected,
+                                    dormfeatures,
+                                    coverImage,
                                     _imageList,
                                     roomNameList,
                                     priceList,
+                                    roomSizeList,
+                                    roomDescList,
+                                    roomFeatureList,
                                   ),
                                 )));
                   }
                 },
-                child: const Text('Confirm'),
+                label: const Text('Confirm'),
               ),
             ),
           ),
@@ -693,19 +693,39 @@ class MyWidget extends StatefulWidget {
 
 List<String> roomNameList = [];
 List<String> priceList = [];
+List<String> roomSizeList = [];
+List<String> roomDescList = [];
+List<List<String>> roomFeatureList = [[]]; //
+// [
+//  [air , fan ,etc ],
+//  [fan ,etc ],
+// ]
 var count = 0;
 
 class _MyWidgetState extends State<MyWidget> {
   List<Widget> widgets = []; // list of widgets to be displayed
   List<TextEditingController> roomNames = [];
   List<TextEditingController> prices = [];
+  List<TextEditingController> roomSizes = [];
+  List<TextEditingController> roomDescs = [];
+  List<bool> airCs = [];
+  List<bool> fans = [];
 
+  List<Room> rooms = [];
   void _addNewWidget() {
     TextEditingController roomName = TextEditingController();
     TextEditingController price = TextEditingController();
+    TextEditingController roomSize = TextEditingController();
+    TextEditingController roomDesc = TextEditingController();
+    bool airC = false;
+    bool fan = false;
 
     roomNames.add(roomName);
     prices.add(price);
+    roomSizes.add(roomSize);
+    roomDescs.add(roomDesc);
+    airCs.add(airC);
+    fans.add(fan);
 
     setState(() {
       widgets.add(Form(
@@ -728,18 +748,23 @@ class _MyWidgetState extends State<MyWidget> {
                     children: [
                       TextFormField(
                         controller: roomName,
-                        onEditingComplete: () {
+                        onChanged: (value) {
+                          if (roomNameList.length > count - 1) {
+                            roomNameList.removeLast();
+                          }
                           roomNameList.add(roomName.text);
+                          if (kDebugMode) {
+                            print(roomNameList);
+                          }
                         },
-
                         decoration:
                             const InputDecoration(border: OutlineInputBorder()),
-                        // validator: (value) {
-                        //   if (value == null || value.isEmpty) {
-                        //     return 'required';
-                        //   }
-                        //   return null;
-                        // },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'required';
+                          }
+                          return null;
+                        },
                       ),
                     ],
                   ),
@@ -764,22 +789,169 @@ class _MyWidgetState extends State<MyWidget> {
                     children: [
                       TextFormField(
                         controller: price,
-                        onEditingComplete: () {
+                        onChanged: (value) {
+                          if (priceList.length > count - 1) {
+                            priceList.removeLast();
+                          }
                           priceList.add(price.text);
+                          if (kDebugMode) {
+                            print(priceList);
+                          }
                         },
-
                         decoration:
                             const InputDecoration(border: OutlineInputBorder()),
-                        // validator: (value) {
-                        //   if (value == null || value.isEmpty) {
-                        //     return 'required';
-                        //   }
-                        //   return null;
-                        // },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'required';
+                          }
+                          return null;
+                        },
                       ),
                     ],
                   ),
                 ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const SizedBox(
+                  width: 100,
+                  child: Text(
+                    'Room size',
+                    textAlign: TextAlign.center,
+                  )),
+              Expanded(
+                child: Padding(
+                  //dormname
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: roomSize,
+                        onChanged: (value) {
+                          if (roomSizeList.length > count - 1) {
+                            roomSizeList.removeLast();
+                          }
+                          roomSizeList.add(roomSize.text);
+                        },
+                        decoration:
+                            const InputDecoration(border: OutlineInputBorder()),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'required';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 8.0, left: 16),
+                child: Text(
+                  'Room description',
+                  textAlign: TextAlign.start,
+                ),
+              ),
+              Padding(
+                //dorm desc
+                padding: const EdgeInsets.all(16.0),
+                child: TextFormField(
+                  maxLines: 10,
+                  minLines: 7,
+                  controller: roomDesc,
+                  onChanged: (value) {
+                    if (roomDescList.length > count - 1) {
+                      roomDescList.removeLast();
+                    }
+                    roomDescList.add(roomDesc.text);
+                  },
+                  decoration:
+                      const InputDecoration(border: OutlineInputBorder()),
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'required';
+                  //   }
+                  //   return null;
+                  // },
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: const [
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Cover Image :'),
+              ),
+              Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('how?') //CoverImageUploadButton(),
+                  ),
+            ],
+          ),
+          Row(
+            children: const [
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Images :'),
+              ),
+              Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('how?') //UploadPhotoButton(),
+                  ),
+            ],
+          ),
+          Column(
+            children: [
+              const Text(
+                'Features',
+                textAlign: TextAlign.start,
+              ),
+              Row(
+                children: [
+                  Checkbox(
+                    value: airC,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        airC = value!;
+                        if (airC) {
+                          roomFeatureList[count - 1].add('airC');
+                        } else {
+                          roomFeatureList[count - 1].remove('airC');
+                        }
+                      });
+                    },
+                  ),
+                  const Text('Air Conditioner')
+                ],
+              ),
+              Row(
+                children: [
+                  Checkbox(
+                    value: fan,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        fan = value!;
+                        if (fan) {
+                          roomFeatureList[count - 1].add('fan');
+                        } else {
+                          roomFeatureList[count - 1].remove('fan');
+                        }
+                      });
+                    },
+                  ),
+                  const Text('Fan')
+                ],
               ),
             ],
           ),
@@ -791,10 +963,13 @@ class _MyWidgetState extends State<MyWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.25,
+          height: MediaQuery.of(context).size.height * count * 1,
           child: ListView.builder(
+            shrinkWrap: false,
             itemCount: widgets.length,
             itemBuilder: (BuildContext context, int index) {
               return widgets[index]; // display the widgets in the list
