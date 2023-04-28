@@ -12,9 +12,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Flutter Demo',
+        color: const Color(0xFFDC6E46),
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+            primarySwatch: Colors.orange,
+            primaryColor: const Color(0xFFDC6E46)),
         home: const PostForm());
   }
 }

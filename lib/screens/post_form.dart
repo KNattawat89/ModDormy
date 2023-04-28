@@ -9,7 +9,18 @@ class PostForm extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       home: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/logo/Logo.png',
+                scale: 10,
+              ),
+            ],
+          ),
+          backgroundColor: const Color(0xFFDC6E46),
+        ),
         body: Center(
           child: ListView(
             children: const [

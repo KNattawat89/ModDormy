@@ -21,7 +21,7 @@ class _CoverImageUploadButtonState extends State<CoverImageUploadButton> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
-      if (pickedFile != null) {
+      if (pickedFile!.path.isNotEmpty) {
         coverImage = XFile(pickedFile.path);
       }
     });
@@ -712,6 +712,7 @@ class _MyWidgetState extends State<MyWidget> {
   List<bool> fans = [];
 
   List<Room> rooms = [];
+
   void _addNewWidget() {
     TextEditingController roomName = TextEditingController();
     TextEditingController price = TextEditingController();
