@@ -21,7 +21,7 @@ class _CoverImageUploadButtonState extends State<CoverImageUploadButton> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
-      if (pickedFile != null) {
+      if (pickedFile!.path.isNotEmpty) {
         coverImage = XFile(pickedFile.path);
       }
     });
@@ -76,7 +76,7 @@ class _UploadPhotoButtonState extends State<UploadPhotoButton> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.8,
+      width: MediaQuery.of(context).size.width * 0.7,
       height: MediaQuery.of(context).size.height * 0.25,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -712,6 +712,7 @@ class _MyWidgetState extends State<MyWidget> {
   List<bool> fans = [];
 
   List<Room> rooms = [];
+
   void _addNewWidget() {
     TextEditingController roomName = TextEditingController();
     TextEditingController price = TextEditingController();

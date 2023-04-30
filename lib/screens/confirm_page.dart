@@ -64,7 +64,16 @@ class DetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('The Second Screen'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Image.asset(
+              'assets/logo/Logo.png',
+              scale: 10,
+            ),
+          ],
+        ),
+        backgroundColor: const Color(0xFFDC6E46),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
