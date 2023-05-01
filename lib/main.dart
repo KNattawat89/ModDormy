@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/screens/ResetPassPage.dart';
-import 'package:moddormy_flutter/screens/forgotpass_page.dart';
+import 'package:moddormy_flutter/screens/favorite.dart';
+import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
-import 'package:moddormy_flutter/screens/register.dart';
-// import 'package:moddormy_flutter/screens/post_form.dart';
+import 'package:moddormy_flutter/screens/post_form.dart';
+import 'package:moddormy_flutter/screens/profile.dart';
+import 'package:moddormy_flutter/widgets/MyAppbar.dart';
+import 'package:moddormy_flutter/widgets/MyDrawer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,11 +17,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        color: const Color(0xFFDC6E46),
-        theme: ThemeData(
-            primarySwatch: Colors.orange,
-            primaryColor: const Color(0xFFDC6E46)),
-        home: const ResetPassPage());
+      title: 'ModDormy app',
+      initialRoute: '/',
+      routes: {
+        '/fav' : (context) => const FavoritePage(),
+        '/profile' : (context) => const ProfilePage(),
+      },
+      home: const LoginPage(),
+      // home: const Scaffold(
+      //   endDrawer: MyDrawer(),
+      //   appBar: MyAppbar(),
+      //   body: HomePage(),
+      // ),
+    );
   }
 }
+
+
