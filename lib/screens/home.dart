@@ -1,7 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/widgets/build_star_rate.dart';
 import 'package:moddormy_flutter/widgets/dormInfo_home.dart';
-
 import '../widgets/MyAppbar.dart';
 import '../widgets/MyDrawer.dart';
 
@@ -14,25 +13,36 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
+  final dio = Dio();
+  List<dynamic> dormName = [];
+  final List<String> _data = [];
+  bool isFav = false;
+
+  void updateIsFav(){
+    setState(() {
+      isFav = !isFav;
+    });
+  }
+
+  void getAllDorm() async {
+    try {
+      final response =
+          await dio.get('http://localhost:8000/api/manage-dorm/getAllDorm');
+      if (response.statusCode == 200) {
+        dormName = response.data["data"];
+        for (var map in dormName) {
+          _data.add(map["DormName"]);
+        }
+        // print(_data);
+      } else {
+        print('Request failed with status code: ${response.statusCode}.');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   // ดึงชื่อหอมาจาก db มาใส่ตรงนี้
-  final List<String> _data = [
-    'Apple',
-    'Banana',
-    'Cherry',
-    'Date',
-    'Fig',
-    'Grape',
-    'Lemon',
-    'Mango',
-    'Orange',
-    'Papaya',
-    'Peach',
-    'Plum',
-    'Raspberry',
-    'Strawberry',
-    'Watermelon',
-  ];
   List<String> _filteredData = [];
   bool _isLoading = false;
   int rate = 4;
@@ -42,6 +52,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _filteredData = _data;
     _searchController.addListener(_performSearch);
+    getAllDorm();
   }
 
   @override
@@ -79,6 +90,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Row(
               children: [
+                // search bar
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(
@@ -114,11 +126,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(width: 10),
+                // filter icon
                 CircleAvatar(
                   radius: 25,
                   backgroundColor: const Color(0xFFE2E2E2),
                   child: IconButton(
                     onPressed: () {
+                      // does not dev with filter yet
                       print("hi");
                     },
                     icon: const Icon(
@@ -132,20 +146,24 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 20,
             ),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-                childAspectRatio: (8 / 10),
-                children: List.generate(10, (index) {
-                  return Container(
-                    child: dormInfoHome(rate, 'dorm $index', 5000, 6500,
-                        'assets/images/dorm.jpg'),
-                  );
-                }),
-              ),
-            )
+            _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(color: Color(0xFFDC6E46)),
+                  )
+                : Expanded(
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
+                      childAspectRatio: (8 / 10),
+                      children: List.generate(_filteredData.length, (index) {
+                        return Container(
+                          child: dormInfoHome(rate, _filteredData[index], 5000,
+                              6500, 'assets/images/dorm.jpg',isFav,updateIsFav),
+                        );
+                      }),
+                    ),
+                  )
           ],
         ),
       ),
