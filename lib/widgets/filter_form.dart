@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/FilterController.dart';
 import 'package:moddormy_flutter/models/filter_item.dart';
+import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/widgets/CustomTextFormField.dart';
 import 'package:moddormy_flutter/widgets/filter_facility.dart';
 import 'package:moddormy_flutter/widgets/rate_in_filter.dart';
@@ -217,21 +218,22 @@ class _FilterFormState extends State<FilterForm> {
                       onTap: () {
                         selectFaci("Parking");
                       },
-                      child:
-                          filterFacility(getFacilitySelection("Parking"), "Parking", Icons.car_crash),
+                      child: filterFacility(getFacilitySelection("Parking"),
+                          "Parking", Icons.car_crash),
                     ),
                     GestureDetector(
                       onTap: () {
                         selectFaci("Wifi");
                       },
-                      child: filterFacility(getFacilitySelection("Wifi"), "Wifi", Icons.wifi),
+                      child: filterFacility(
+                          getFacilitySelection("Wifi"), "Wifi", Icons.wifi),
                     ),
                     GestureDetector(
                       onTap: () {
                         selectFaci("Smoke-free");
                       },
-                      child: filterFacility(
-                          getFacilitySelection("Smoke-free"), "Smoke-free", Icons.smoke_free),
+                      child: filterFacility(getFacilitySelection("Smoke-free"),
+                          "Smoke-free", Icons.smoke_free),
                     ),
                   ],
                 ),
@@ -246,7 +248,9 @@ class _FilterFormState extends State<FilterForm> {
                         selectFaci("Security guard");
                       },
                       child: filterFacility(
-                          getFacilitySelection("Security guard"), "Security guard", Icons.security),
+                          getFacilitySelection("Security guard"),
+                          "Security guard",
+                          Icons.security),
                     ),
                     const SizedBox(
                       width: 10,
@@ -255,8 +259,10 @@ class _FilterFormState extends State<FilterForm> {
                       onTap: () {
                         selectFaci("Pet friendly");
                       },
-                      child:
-                          filterFacility(getFacilitySelection("Pet friendly"), "Pet friendly", Icons.pets),
+                      child: filterFacility(
+                          getFacilitySelection("Pet friendly"),
+                          "Pet friendly",
+                          Icons.pets),
                     ),
                   ],
                 ),
@@ -271,7 +277,9 @@ class _FilterFormState extends State<FilterForm> {
                         selectFaci("Air conditioner");
                       },
                       child: filterFacility(
-                          getFacilitySelection("Air conditioner"), "Air conditioner", Icons.air_outlined),
+                          getFacilitySelection("Air conditioner"),
+                          "Air conditioner",
+                          Icons.air_outlined),
                     ),
                     const SizedBox(
                       width: 10,
@@ -280,7 +288,8 @@ class _FilterFormState extends State<FilterForm> {
                       onTap: () {
                         selectFaci("Fan");
                       },
-                      child: filterFacility(getFacilitySelection("Fan"), "Fan", FontAwesome5.fan),
+                      child: filterFacility(
+                          getFacilitySelection("Fan"), "Fan", FontAwesome5.fan),
                     ),
                   ],
                 ),
@@ -292,8 +301,21 @@ class _FilterFormState extends State<FilterForm> {
             GestureDetector(
               onTap: () {
                 if (_formKey.currentState!.validate()) {
-                  // print(filterItem.overallRating);
-                  Navigator.pop(context);
+                  filterItem = FilterItem(
+                      minPrice: int.parse(controller.minPriceController.text),
+                      maxPrice: int.parse(controller.maxPriceController.text),
+                      distant: double.parse(controller.maxPriceController.text),
+                      overallRating: filterItem.overallRating,
+                      facilities: filterItem.facilities);
+                  // Navigator.pop(context, filterItem);
+                  print('min-max price: ${controller.minPriceController.text} - ${controller.maxPriceController.text}');
+                  print('distant from KMUTT: ${controller.distantController.text}');
+                  print('overall rating: ${filterItem.overallRating}');
+                  print(filterItem.facilities);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => HomePage(dataFilter: filterItem,)),
+                  // );
                 }
               },
               child: Container(
