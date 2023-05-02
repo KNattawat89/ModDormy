@@ -18,6 +18,7 @@ class _FilterFormState extends State<FilterForm> {
   final _formKey = GlobalKey<FormState>();
   final FilterTextEditingController controller = FilterTextEditingController();
   List<String> facilities = [];
+
   // String rating = '';
   bool rate = false;
   bool isSelect = false;
@@ -31,11 +32,21 @@ class _FilterFormState extends State<FilterForm> {
     });
   }
 
-  void selectFaci() {
+  void selectFaci(String selectItem) {
+    if (filterItem.facilities.contains(selectItem)) {
+      filterItem.facilities.remove(selectItem);
+    } else {
+      filterItem.facilities.add(selectItem);
+    }
     setState(() {
       isSelect = !isSelect;
     });
   }
+
+  bool getFacilitySelection(String selectItem) {
+    return filterItem.facilities.contains(selectItem);
+  }
+
   bool getRateSelection(int index) {
     String actualNumber = filterItem.overallRating.replaceAll("≥", "");
     try {
@@ -46,7 +57,6 @@ class _FilterFormState extends State<FilterForm> {
       return false;
     }
   }
-
 
   @override
   void dispose() {
@@ -180,9 +190,11 @@ class _FilterFormState extends State<FilterForm> {
                       5,
                       (index) => GestureDetector(
                             onTap: () {
-                              selectRate((5-index) == 5 ? "5" : "≥${5 - index}");
+                              selectRate(
+                                  (5 - index) == 5 ? "5" : "≥${5 - index}");
                             },
-                            child: rateFilter(getRateSelection(5-index), 5 - index),
+                            child: rateFilter(
+                                getRateSelection(5 - index), 5 - index),
                           )),
                 )
               ],
@@ -202,18 +214,24 @@ class _FilterFormState extends State<FilterForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: selectFaci,
+                      onTap: () {
+                        selectFaci("Parking");
+                      },
                       child:
-                          filterFacility(isSelect, "Parking", Icons.car_crash),
+                          filterFacility(getFacilitySelection("Parking"), "Parking", Icons.car_crash),
                     ),
                     GestureDetector(
-                      onTap: selectFaci,
-                      child: filterFacility(isSelect, "Wifi", Icons.wifi),
+                      onTap: () {
+                        selectFaci("Wifi");
+                      },
+                      child: filterFacility(getFacilitySelection("Wifi"), "Wifi", Icons.wifi),
                     ),
                     GestureDetector(
-                      onTap: selectFaci,
+                      onTap: () {
+                        selectFaci("Smoke-free");
+                      },
                       child: filterFacility(
-                          isSelect, "Smoke-free", Icons.smoke_free),
+                          getFacilitySelection("Smoke-free"), "Smoke-free", Icons.smoke_free),
                     ),
                   ],
                 ),
@@ -224,17 +242,21 @@ class _FilterFormState extends State<FilterForm> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     GestureDetector(
-                      onTap: selectFaci,
+                      onTap: () {
+                        selectFaci("Security guard");
+                      },
                       child: filterFacility(
-                          isSelect, "Security guard", Icons.security),
+                          getFacilitySelection("Security guard"), "Security guard", Icons.security),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
                     GestureDetector(
-                      onTap: selectFaci,
+                      onTap: () {
+                        selectFaci("Pet friendly");
+                      },
                       child:
-                          filterFacility(isSelect, "Pet friendly", Icons.pets),
+                          filterFacility(getFacilitySelection("Pet friendly"), "Pet friendly", Icons.pets),
                     ),
                   ],
                 ),
@@ -245,16 +267,20 @@ class _FilterFormState extends State<FilterForm> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     GestureDetector(
-                      onTap: selectFaci,
+                      onTap: () {
+                        selectFaci("Air conditioner");
+                      },
                       child: filterFacility(
-                          isSelect, "Air conditioner", Icons.air_outlined),
+                          getFacilitySelection("Air conditioner"), "Air conditioner", Icons.air_outlined),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
                     GestureDetector(
-                      onTap: selectFaci,
-                      child: filterFacility(isSelect, "Fan", FontAwesome5.fan),
+                      onTap: () {
+                        selectFaci("Fan");
+                      },
+                      child: filterFacility(getFacilitySelection("Fan"), "Fan", FontAwesome5.fan),
                     ),
                   ],
                 ),
@@ -266,6 +292,7 @@ class _FilterFormState extends State<FilterForm> {
             GestureDetector(
               onTap: () {
                 if (_formKey.currentState!.validate()) {
+                  // print(filterItem.overallRating);
                   Navigator.pop(context);
                 }
               },
