@@ -13,7 +13,7 @@ Column dormInfoHome(
             borderRadius: BorderRadius.circular(20),
             child: SizedBox.fromSize(
               size: const Size.fromRadius(80), // Image radius
-              child: Image.asset(
+              child: Image.network(
                 pathImage,
                 fit: BoxFit.cover,
                 height: 80,

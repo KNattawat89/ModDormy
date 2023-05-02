@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/models/dorm_item.dart';
+import 'package:moddormy_flutter/models/dorm_list.dart';
+import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/dormInfo_home.dart';
 import '../widgets/MyAppbar.dart';
 import '../widgets/MyDrawer.dart';
@@ -14,8 +17,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
   final dio = Dio();
-  List<dynamic> dormName = [];
-  final List<String> _data = [];
+  List<DormItem> _filteredData = [];
+  List<DormItem> _data=[];
   bool isFav = false;
 
   void updateIsFav(){
@@ -26,31 +29,23 @@ class _HomePageState extends State<HomePage> {
 
   void getAllDorm() async {
     try {
-      final response =
-          await dio.get('http://localhost:8000/api/manage-dorm/getAllDorm');
-      if (response.statusCode == 200) {
-        dormName = response.data["data"];
-        for (var map in dormName) {
-          _data.add(map["DormName"]);
-        }
-        // print(_data);
-      } else {
-        print('Request failed with status code: ${response.statusCode}.');
-      }
+      final response = await Caller.dio.get('/api/manage-dorm/getAllDorm');
+      DormList d = DormList.fromJson(response.data);
+      _data = d.data;
+      setState(() {
+        _filteredData = _data;
+      });
     } catch (e) {
       print(e);
     }
   }
 
-  // ดึงชื่อหอมาจาก db มาใส่ตรงนี้
-  List<String> _filteredData = [];
+
   bool _isLoading = false;
-  int rate = 4;
 
   @override
   void initState() {
     super.initState();
-    _filteredData = _data;
     _searchController.addListener(_performSearch);
     getAllDorm();
   }
@@ -69,15 +64,15 @@ class _HomePageState extends State<HomePage> {
     //Simulates waiting for an API call
     await Future.delayed(const Duration(milliseconds: 1000));
 
-    setState(() {
-      _filteredData = _data
-          .where((element) => element
-              .toLowerCase()
-              .contains(_searchController.text.toLowerCase()))
-          .toList();
-      _isLoading = false;
-    });
-  }
+      setState(() {
+        _filteredData = _data
+            .where((element) => element.dormName
+                .toLowerCase()
+                .contains(_searchController.text.toLowerCase()))
+            .toList();
+        _isLoading = false;
+      });
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -158,8 +153,8 @@ class _HomePageState extends State<HomePage> {
                       childAspectRatio: (8 / 10),
                       children: List.generate(_filteredData.length, (index) {
                         return Container(
-                          child: dormInfoHome(rate, _filteredData[index], 5000,
-                              6500, 'assets/images/dorm.jpg',isFav,updateIsFav),
+                          child: dormInfoHome(_filteredData[index].rating, _filteredData[index].dormName, _filteredData[index].minPrice,
+                             _filteredData[index].maxPrice, _filteredData[index].coverImage,isFav,updateIsFav),
                         );
                       }),
                     ),
