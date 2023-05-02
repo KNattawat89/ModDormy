@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/screens/favorite.dart';
 import 'package:moddormy_flutter/screens/home.dart';
+import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/screens/post_form.dart';
 import 'package:moddormy_flutter/screens/profile.dart';
 import 'package:moddormy_flutter/widgets/MyAppbar.dart';
@@ -22,11 +23,12 @@ class MyApp extends StatelessWidget {
         '/fav' : (context) => const FavoritePage(),
         '/profile' : (context) => const ProfilePage(),
       },
-      home: const Scaffold(
-        endDrawer: MyDrawer(),
-        appBar: MyAppbar(),
-        body: HomePage(),
-      ),
+      home: const LoginPage(),
+      // home: const Scaffold(
+      //   endDrawer: MyDrawer(),
+      //   appBar: MyAppbar(),
+      //   body: HomePage(),
+      // ),
     );
   }
 }

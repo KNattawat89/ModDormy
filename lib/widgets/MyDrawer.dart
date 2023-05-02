@@ -29,8 +29,8 @@ class MyDrawer extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
-                          Text("Kenglnwza007",style: TextStyle(fontSize:20 ,fontWeight: FontWeight.bold),),
-                          Text("kengza007@gmail.com",style: TextStyle(fontSize: 14),)
+                          Text("Kenglnwza007",style: TextStyle(color:Colors.white,fontSize:20 ,fontWeight: FontWeight.bold),),
+                          Text("kengza007@gmail.com",style: TextStyle(color:Colors.white,fontSize: 14),)
                         ],
                       )
                     ],
