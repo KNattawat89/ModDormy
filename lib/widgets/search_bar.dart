@@ -57,7 +57,7 @@ Row searchBar(TextEditingController searchController, BuildContext context) {
               isScrollControlled: true,
               builder: (BuildContext context) {
                 return FractionallySizedBox(
-                  heightFactor: 0.7,
+                  heightFactor: 0.8,
                   child: Container(
                     padding: const EdgeInsets.all(25),
                     child: Column(children: [
@@ -82,29 +82,6 @@ Row searchBar(TextEditingController searchController, BuildContext context) {
                         ],
                       ),
                       const FilterForm(),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          print("hi");
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 80),
-                          decoration: BoxDecoration(
-                              color: const Color(0xFFDC6E46),
-                              borderRadius: BorderRadius.circular(30)),
-                          child: const Text(
-                            "Apply",
-                            style: TextStyle(
-                              fontSize: 16,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      )
                     ]),
                   ),
                 );
