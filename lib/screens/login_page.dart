@@ -61,8 +61,8 @@ class _LoginFormState extends State<LoginForm> {
                 ],
               ),
             ),
-           SizedBox(
-            height: 65,
+            SizedBox(
+              height: 65,
               child: TextFormField(
                 controller: _user,
                 style: const TextStyle(fontSize: 18),
@@ -73,11 +73,8 @@ class _LoginFormState extends State<LoginForm> {
                     filled: true,
                     fillColor: Colors.white,
                     hintText: "Type your username",
-                    
                     border: OutlineInputBorder(
-                      
                         borderRadius: BorderRadius.all(Radius.circular(25.0)))),
-               
               ),
             ),
             Padding(
@@ -93,20 +90,20 @@ class _LoginFormState extends State<LoginForm> {
                 ],
               ),
             ),
-          SizedBox(
-            height: 65,
+            SizedBox(
+              height: 65,
               child: TextFormField(
                 controller: _pass,
-                 style: const TextStyle(fontSize: 18),
-                decoration:  InputDecoration(
+                style: const TextStyle(fontSize: 18),
+                decoration: InputDecoration(
                     hintText: "Type your password",
                     prefixIcon: const Icon(Icons.key),
                     filled: true,
                     fillColor: Colors.white,
                     disabledBorder: InputBorder.none,
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                       )),
+                      borderRadius: BorderRadius.circular(50.0),
+                    )),
               ),
             ),
             Flex(
@@ -123,7 +120,10 @@ class _LoginFormState extends State<LoginForm> {
                     },
                     child: const Text(
                       "Forgot password?",
-                      style: TextStyle(color: Color(0xFFDC6E46), fontSize: 14, decoration: TextDecoration.underline),
+                      style: TextStyle(
+                          color: Color(0xFFDC6E46),
+                          fontSize: 14,
+                          decoration: TextDecoration.underline),
                     )),
               ],
             ),
@@ -145,11 +145,10 @@ class _LoginFormState extends State<LoginForm> {
                         MaterialPageRoute(
                           builder: ((context) => const PostForm()),
                         ));
-                  }
-                  else{
-                   setState(() {
-                     err = !err;
-                   });
+                  } else {
+                    setState(() {
+                      err = !err;
+                    });
                   }
                 },
                 child: const Text(
@@ -158,17 +157,22 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ),
-               Container(
-                    
-                   margin: err? const EdgeInsets.only(top:30) : const EdgeInsets.only(top:0),
-                         padding: err? const EdgeInsets.symmetric(horizontal: 30, vertical: 12) : const EdgeInsets.all(0),
-                    decoration: const BoxDecoration(
-                       color: Color(0xFFFFCDD2),
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))
-                    ),
-                    child: err? const Text("Enter the correct username and password",style: TextStyle(color: Colors.red,)) : const Text("")
-                   ),
-            
+            Container(
+                margin: err
+                    ? const EdgeInsets.only(top: 30)
+                    : const EdgeInsets.only(top: 0),
+                padding: err
+                    ? const EdgeInsets.symmetric(horizontal: 30, vertical: 12)
+                    : const EdgeInsets.all(0),
+                decoration: const BoxDecoration(
+                    color: Color(0xFFFFCDD2),
+                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                child: err
+                    ? const Text("Enter the correct username and password",
+                        style: TextStyle(
+                          color: Colors.red,
+                        ))
+                    : const Text("")),
             const SizedBox(
               height: 10,
             ),
@@ -190,7 +194,9 @@ class _LoginFormState extends State<LoginForm> {
                     child: const Text(
                       "Create",
                       style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline),
                     )),
               ],
             )

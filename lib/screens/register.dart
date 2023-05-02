@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
-import 'package:moddormy_flutter/screens/post_dorm.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});

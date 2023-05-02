@@ -1,79 +1,19 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-// import 'package:flutter/src/widgets/framework.dart';
-// import 'package:flutter/src/widgets/placeholder.dart';
-// import 'package:flutter/widgets.dart';
-// import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
 
-class Info {
-  final String dormname;
-  final String houseNo;
-  final String soi;
-  final String street;
-  final String subDistrict;
-  final String district;
-  final String city;
-  final String zipcode;
-  final String dormdesc;
-  final String advPayment;
-  final String electric;
-  final String water;
-  final String other;
-  final List<String> dormFeatures;
-  final XFile? coverImage;
-  final List<XFile> _imageList;
-  final List<String> roomNameList;
-  final List<String> priceList;
-  final List<String> roomSizeList;
-  final List<String> roomDescList;
-  final List<List<String>> roomFeatureList;
-
-  const Info(
-    this.dormname,
-    this.houseNo,
-    this.soi,
-    this.street,
-    this.subDistrict,
-    this.district,
-    this.city,
-    this.zipcode,
-    this.dormdesc,
-    this.advPayment,
-    this.electric,
-    this.water,
-    this.other,
-    this.dormFeatures,
-    this.coverImage,
-    this._imageList,
-    this.roomNameList,
-    this.priceList,
-    this.roomSizeList,
-    this.roomDescList,
-    this.roomFeatureList,
-  );
-}
+import '../models/dorm.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({super.key, required this.info});
+  final Dorm dorm;
 
-  final Info info;
+  const DetailScreen({Key? key, required this.dorm}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image.asset(
-              'assets/logo/Logo.png',
-              scale: 10,
-            ),
-          ],
-        ),
-        backgroundColor: const Color(0xFFDC6E46),
+        title: const Text('The Second Screen'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -101,9 +41,9 @@ class DetailScreen extends StatelessWidget {
                 Expanded(
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                    const EdgeInsets.only(left: 8, right: 8, bottom: 8),
                     child: Text(
-                      info.dormname,
+                      dorm.name,
                       style: const TextStyle(color: Colors.grey),
                     ),
                   ),
@@ -124,9 +64,11 @@ class DetailScreen extends StatelessWidget {
                 Expanded(
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                    const EdgeInsets.only(left: 8, right: 8, bottom: 8),
                     child: Text(
-                      '${info.houseNo} ${info.soi}\n${info.street}\n${info.subDistrict}\n${info.district}\n${info.city} ${info.zipcode}',
+                      '${dorm.houseNo} ${dorm.soi}\n${dorm.street}\n${dorm
+                          .subDistrict}\n${dorm.district}\n${dorm.city} ${dorm
+                          .zipCode}',
                       style: const TextStyle(color: Colors.grey),
                       softWrap: true,
                       maxLines: 10,
@@ -151,7 +93,7 @@ class DetailScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 8),
                   child: Text(
-                    info.dormdesc,
+                    dorm.description,
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -160,8 +102,11 @@ class DetailScreen extends StatelessWidget {
                   child: Text('Cover Images :',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
+                dorm.coverImage == null
+                    ? const SizedBox()
+                    :
                 Image.file(
-                  File(info.coverImage!.path),
+                  File(dorm.coverImage!.path),
                   fit: BoxFit.cover,
                   height: 125,
                   width: 125,
@@ -174,14 +119,17 @@ class DetailScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 8),
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.25,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.25,
                     child: GridView.builder(
-                      itemCount: info._imageList.length,
+                      itemCount: dorm.imageList.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Image.file(
-                            File(info._imageList[index].path),
+                            File(dorm.imageList[index].path),
                             fit: BoxFit.cover,
                             width: 200,
                             height: 200,
@@ -189,8 +137,8 @@ class DetailScreen extends StatelessWidget {
                         );
                       },
                       gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3),
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3),
                     ),
                   ),
                 ),
@@ -210,9 +158,11 @@ class DetailScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: info.dormFeatures.length,
+                        itemCount: dorm.feature
+                            .toList()
+                            .length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Text('${info.dormFeatures[index]} ');
+                          return Text('${dorm.feature.toList()[index]} ');
                         },
                       ),
                     ),
@@ -229,7 +179,7 @@ class DetailScreen extends StatelessWidget {
                         children: [
                           const Text('Advance payment : '),
                           Text(
-                            info.advPayment,
+                            dorm.advPayment,
                           ),
                         ],
                       ),
@@ -240,7 +190,7 @@ class DetailScreen extends StatelessWidget {
                         children: [
                           const Text('Electric price : '),
                           Text(
-                            info.electric,
+                            dorm.electric,
                           ),
                         ],
                       ),
@@ -251,7 +201,7 @@ class DetailScreen extends StatelessWidget {
                         children: [
                           const Text('Water price :'),
                           Text(
-                            info.water,
+                            dorm.water,
                           ),
                         ],
                       ),
@@ -262,7 +212,7 @@ class DetailScreen extends StatelessWidget {
                         children: [
                           const Text('Other :'),
                           Text(
-                            info.other,
+                            dorm.other,
                           ),
                         ],
                       ),
@@ -273,7 +223,7 @@ class DetailScreen extends StatelessWidget {
             ),
             ListView.builder(
               shrinkWrap: true,
-              itemCount: info.roomNameList.length,
+              itemCount: dorm.rooms.length,
               itemBuilder: (BuildContext context, int index) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -288,7 +238,7 @@ class DetailScreen extends StatelessWidget {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Text(info.roomNameList[index]),
+                        Text(dorm.rooms[index].name),
                       ],
                     ),
                     Row(
@@ -300,7 +250,7 @@ class DetailScreen extends StatelessWidget {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Text(info.priceList[index]),
+                        Text(dorm.rooms[index].price),
                       ],
                     ),
                     Row(
@@ -312,7 +262,7 @@ class DetailScreen extends StatelessWidget {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Text(info.roomSizeList[index])
+                        Text(dorm.rooms[index].size)
                       ],
                     ),
                     Row(children: [
@@ -327,7 +277,7 @@ class DetailScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 8),
                         child: Text(
-                          info.roomDescList[index],
+                          dorm.rooms[index].description,
                           style: const TextStyle(color: Colors.grey),
                         ),
                       ),
@@ -346,9 +296,9 @@ class DetailScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: info.roomFeatureList[index].length,
+                            itemCount: dorm.rooms.length,
                             itemBuilder: (BuildContext context, int j) {
-                              return Text('${info.roomFeatureList[index][j]} ');
+                              return Text('test 1 ');
                             },
                           ),
                         ),

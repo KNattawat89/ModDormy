@@ -1,20 +1,21 @@
 import 'package:image_picker/image_picker.dart';
 
 class Room {
-  String roomName;
+  String name;
   String price;
-  String roomSize;
-  String roomDesc;
-  XFile coverImage;
-  List<XFile> imageList;
-  List<String> roomFeature;
+  String size;
+  String description;
+  bool fan;
+  bool airConditioner;
+  XFile? coverImage;
+  List<XFile> imageList = [];
 
-  Room(
-      {required this.roomName,
-      required this.price,
-      required this.roomSize,
-      required this.roomDesc,
-      required this.coverImage,
-      required this.imageList,
-      required this.roomFeature});
+  Room({
+    required this.name,
+    required this.price,
+    required this.size,
+    required this.description,
+    required this.fan,
+    required this.airConditioner,
+  });
 }
