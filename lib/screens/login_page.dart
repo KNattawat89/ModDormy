@@ -61,8 +61,8 @@ class _LoginFormState extends State<LoginForm> {
                 ],
               ),
             ),
-           SizedBox(
-            height: 65,
+            SizedBox(
+              height: 65,
               child: TextFormField(
                 controller: _user,
                 style: const TextStyle(fontSize: 18),
@@ -93,20 +93,20 @@ class _LoginFormState extends State<LoginForm> {
                 ],
               ),
             ),
-          SizedBox(
-            height: 65,
+            SizedBox(
+              height: 65,
               child: TextFormField(
                 controller: _pass,
-                 style: const TextStyle(fontSize: 18),
-                decoration:  InputDecoration(
+                style: const TextStyle(fontSize: 18),
+                decoration: InputDecoration(
                     hintText: "Type your password",
                     prefixIcon: const Icon(Icons.key),
                     filled: true,
                     fillColor: Colors.white,
                     disabledBorder: InputBorder.none,
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                       )),
+                      borderRadius: BorderRadius.circular(50.0),
+                    )),
               ),
             ),
             Flex(
@@ -123,7 +123,10 @@ class _LoginFormState extends State<LoginForm> {
                     },
                     child: const Text(
                       "Forgot password?",
-                      style: TextStyle(color: Color(0xFFDC6E46), fontSize: 14, decoration: TextDecoration.underline),
+                      style: TextStyle(
+                          color: Color(0xFFDC6E46),
+                          fontSize: 14,
+                          decoration: TextDecoration.underline),
                     )),
               ],
             ),
@@ -145,11 +148,10 @@ class _LoginFormState extends State<LoginForm> {
                         MaterialPageRoute(
                           builder: ((context) => const PostForm()),
                         ));
-                  }
-                  else{
-                   setState(() {
-                     err = !err;
-                   });
+                  } else {
+                    setState(() {
+                      err = !err;
+                    });
                   }
                 },
                 child: const Text(
@@ -190,7 +192,9 @@ class _LoginFormState extends State<LoginForm> {
                     child: const Text(
                       "Create",
                       style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline),
                     )),
               ],
             )
