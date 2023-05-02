@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -36,6 +38,19 @@ class ForgotForm extends StatefulWidget {
 }
 
 class _ForgotFormState extends State<ForgotForm> {
+   Future verifyEmail() async {
+    try {
+       await FirebaseAuth.instance.sendPasswordResetEmail(email: _email.text.trim());
+         // ignore: use_build_context_synchronously
+         Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: ((context) => const ResetPassPage()),
+                            ));
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.message);
+    }
+    }
   final _formkey = GlobalKey<FormState>();
   final _email = TextEditingController();
   @override
@@ -138,11 +153,8 @@ class _ForgotFormState extends State<ForgotForm> {
                       ),
                       onPressed: () {
                         if (_formkey.currentState!.validate()) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: ((context) => const ResetPassPage()),
-                            ));
+                        verifyEmail();
+                      
                       }
                       },
                       child: const Text(
@@ -157,5 +169,6 @@ class _ForgotFormState extends State<ForgotForm> {
       ),
       ) 
     );
+   
   }
 }

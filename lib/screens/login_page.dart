@@ -55,7 +55,7 @@ class _LoginFormState extends State<LoginForm> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: const [
                   Text(
-                    "Username",
+                    "Email",
                     style: TextStyle(fontSize: 15),
                   )
                 ],
@@ -72,11 +72,11 @@ class _LoginFormState extends State<LoginForm> {
                     // contentPadding: EdgeInsets.zero,
                     filled: true,
                     fillColor: Colors.white,
-                    hintText: "Type your username",
+                    hintText: "Type your email",
                     
                     border: OutlineInputBorder(
                       
-                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+                        borderRadius: BorderRadius.all(Radius.circular(50.0)))),
                
               ),
             ),
@@ -166,7 +166,7 @@ class _LoginFormState extends State<LoginForm> {
                        color: Color(0xFFFFCDD2),
                       borderRadius: BorderRadius.all(Radius.circular(8.0))
                     ),
-                    child: err? const Text("Enter the correct username and password",style: TextStyle(color: Colors.red,)) : const Text("")
+                    child: err? const Text("Enter the correct email and password",style: TextStyle(color: Colors.red,)) : const Text("")
                    ),
             
             const SizedBox(
