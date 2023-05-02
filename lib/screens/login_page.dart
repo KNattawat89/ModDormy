@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 50.0),
+                padding: const EdgeInsets.symmetric(vertical: 30.0),
                 child: Image.asset(
                   'assets/logo/Logo2.png',
                   width: 184,
@@ -41,6 +41,8 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final _user = TextEditingController();
   final _pass = TextEditingController();
+  bool err = false;
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -48,87 +50,64 @@ class _LoginFormState extends State<LoginForm> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Username : ",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  SizedBox(
-                      height: 30,
-                      width: 172,
-                      child: Material(
-                        elevation: 2,
-                        shadowColor: Colors.black,
-                        child: TextFormField(
-                          controller: _user,
-                         style: const TextStyle(overflow: TextOverflow.fade),
-                          scrollPadding: const EdgeInsets.symmetric(horizontal: double.infinity),
-                          decoration: const InputDecoration(
-                            isDense: true,
-                        
-                            // contentPadding: EdgeInsets.zero,
-                              filled: true,
-                              fillColor: Colors.white,
-                              
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8.0)))),
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                                    .hasMatch(value)) {
-                              return 'Enter Correct Email Address';
-                            }
-                            return null;
-                          },
-                        ),
-                      ))
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Text(
+                    "Username",
+                    style: TextStyle(fontSize: 15),
+                  )
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Password : ",
-                  style: TextStyle(fontSize: 18),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                SizedBox(
-                    width: 172,
-                    height: 30,
-                    child: Material(
-                      elevation: 2,
-                      shadowColor: Colors.black,
-                      child: TextFormField(
-                        controller: _pass,
-                        decoration: const InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0)))),
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              !RegExp(r'^[\S]+[\w\s]{0,7}$')
-                                  .hasMatch(value)) {
-                            return 'Enter Correct Email Address';
-                          }
-                          return null;
-                        },
-                      ),
-                    ))
-              ],
+           SizedBox(
+            height: 65,
+              child: TextFormField(
+                controller: _user,
+                style: const TextStyle(fontSize: 18),
+                decoration: const InputDecoration(
+                    // isDense: true,
+                    prefixIcon: Icon(Icons.person),
+                    // contentPadding: EdgeInsets.zero,
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: "Type your username",
+                    
+                    border: OutlineInputBorder(
+                      
+                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+               
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                // mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  Text(
+                    "Password",
+                    style: TextStyle(fontSize: 15),
+                  )
+                ],
+              ),
+            ),
+          SizedBox(
+            height: 65,
+              child: TextFormField(
+                controller: _pass,
+                 style: const TextStyle(fontSize: 18),
+                decoration:  InputDecoration(
+                    hintText: "Type your password",
+                    prefixIcon: const Icon(Icons.key),
+                    filled: true,
+                    fillColor: Colors.white,
+                    disabledBorder: InputBorder.none,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                       )),
+              ),
             ),
             Flex(
               direction: Axis.horizontal,
@@ -144,7 +123,7 @@ class _LoginFormState extends State<LoginForm> {
                     },
                     child: const Text(
                       "Forgot password?",
-                      style: TextStyle(color: Color(0xFFDC6E46), fontSize: 14),
+                      style: TextStyle(color: Color(0xFFDC6E46), fontSize: 14, decoration: TextDecoration.underline),
                     )),
               ],
             ),
@@ -160,12 +139,17 @@ class _LoginFormState extends State<LoginForm> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.5))),
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
+                  if (_formKey.currentState!.validate() & false) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: ((context) => const PostForm()),
                         ));
+                  }
+                  else{
+                   setState(() {
+                     err = !err;
+                   });
                   }
                 },
                 child: const Text(
@@ -174,6 +158,17 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ),
+               Container(
+                    
+                   margin: err? const EdgeInsets.only(top:30) : const EdgeInsets.only(top:0),
+                         padding: err? const EdgeInsets.symmetric(horizontal: 30, vertical: 12) : const EdgeInsets.all(0),
+                    decoration: const BoxDecoration(
+                       color: Color(0xFFFFCDD2),
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))
+                    ),
+                    child: err? const Text("Enter the correct username and password",style: TextStyle(color: Colors.red,)) : const Text("")
+                   ),
+            
             const SizedBox(
               height: 10,
             ),
@@ -195,7 +190,7 @@ class _LoginFormState extends State<LoginForm> {
                     child: const Text(
                       "Create",
                       style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
+                          color: Colors.black, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
                     )),
               ],
             )
