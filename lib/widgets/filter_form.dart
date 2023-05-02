@@ -5,7 +5,6 @@ import 'package:moddormy_flutter/widgets/CustomTextFormField.dart';
 import 'package:moddormy_flutter/widgets/filter_facility.dart';
 import 'package:moddormy_flutter/widgets/rate_in_filter.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
-import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:moddormy_flutter/widgets/review/headline_filter.dart';
 
 class FilterForm extends StatefulWidget {
@@ -19,15 +18,16 @@ class _FilterFormState extends State<FilterForm> {
   final _formKey = GlobalKey<FormState>();
   final FilterTextEditingController controller = FilterTextEditingController();
   List<String> facilities = [];
-  String rating = '';
+  // String rating = '';
   bool rate = false;
   bool isSelect = false;
   FilterItem filterItem = FilterItem(
       minPrice: 0, maxPrice: 0, distant: 0, overallRating: "0", facilities: []);
 
-  void selectRate() {
+  void selectRate(String select) {
     setState(() {
       rate = !rate;
+      filterItem.overallRating = select;
     });
   }
 
@@ -36,6 +36,17 @@ class _FilterFormState extends State<FilterForm> {
       isSelect = !isSelect;
     });
   }
+  bool getRateSelection(int index) {
+    String actualNumber = filterItem.overallRating.replaceAll("≥", "");
+    try {
+      int parsedNumber = int.parse(actualNumber);
+      return parsedNumber == index;
+    } catch (e) {
+      print("Error parsing integer: $e");
+      return false;
+    }
+  }
+
 
   @override
   void dispose() {
@@ -89,9 +100,10 @@ class _FilterFormState extends State<FilterForm> {
                             value.isEmpty ||
                             !RegExp(r'^[0-9]+$').hasMatch(value)) {
                           return 'Enter only number';
-                        } else if (int.parse(value) < int.parse(controller.minPriceController.text)) {
+                        } else if (int.parse(value) <
+                            int.parse(controller.minPriceController.text)) {
                           return 'Max price > min price';
-                        }else {
+                        } else {
                           return null;
                         }
                       },
@@ -167,8 +179,10 @@ class _FilterFormState extends State<FilterForm> {
                   children: List.generate(
                       5,
                       (index) => GestureDetector(
-                            onTap: selectRate,
-                            child: rateFilter(rate, 5 - index),
+                            onTap: () {
+                              selectRate((5-index) == 5 ? "5" : "≥${5 - index}");
+                            },
+                            child: rateFilter(getRateSelection(5-index), 5 - index),
                           )),
                 )
               ],
@@ -252,13 +266,8 @@ class _FilterFormState extends State<FilterForm> {
             GestureDetector(
               onTap: () {
                 if (_formKey.currentState!.validate()) {
-                  print("Hello");
-                // print('min price ${controller.minPriceController.text}');
-                // print('max price ${controller.maxPriceController}');
-                // print('distant ${controller.distantController}');
                   Navigator.pop(context);
                 }
-
               },
               child: Container(
                 padding:
