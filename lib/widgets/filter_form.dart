@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/widgets/CustomTextFormField.dart';
 import 'package:moddormy_flutter/widgets/filter_facility.dart';
 import 'package:moddormy_flutter/widgets/rate_in_filter.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:moddormy_flutter/widgets/review/headline_filter.dart';
 
 class FilterForm extends StatefulWidget {
   const FilterForm({Key? key}) : super(key: key);
@@ -13,7 +15,6 @@ class FilterForm extends StatefulWidget {
 
 class _FilterFormState extends State<FilterForm> {
   final _formKey = GlobalKey<FormState>();
-  bool _isChecked = false;
   bool rate = false;
   bool isSelect = false;
 
@@ -22,7 +23,8 @@ class _FilterFormState extends State<FilterForm> {
       rate = !rate;
     });
   }
-  void selectFaci(){
+
+  void selectFaci() {
     setState(() {
       isSelect = !isSelect;
     });
@@ -34,66 +36,65 @@ class _FilterFormState extends State<FilterForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          CheckboxListTile(
-            activeColor: Color(0xFFDC6E46),
-            contentPadding: EdgeInsets.zero,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
-                Padding(
-                  padding: EdgeInsets.only(right: 15),
-                  child: Icon(
-                    Icons.monetization_on,
-                    color: Colors.black87,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // price
+              headlineFilter("Price"),
+              Row(
+                children: [
+                  Expanded(child: customTextFormFieldMinMaxPrice("Min price")),
+                  const SizedBox(
+                    width: 20,
                   ),
-                ),
-                Text('Price')
-              ],
-            ),
-            value: _isChecked,
-            onChanged: (bool? value) {
-              setState(() {
-                _isChecked = value!;
-              });
-            },
-            controlAffinity: ListTileControlAffinity.leading, // label position
+                  Expanded(child: customTextFormFieldMinMaxPrice("Max price"))
+                ],
+              )
+            ],
           ),
-          CheckboxListTile(
-            activeColor: const Color(0xFFDC6E46),
-            contentPadding: EdgeInsets.zero,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
-                Padding(
-                  padding: EdgeInsets.only(right: 15),
-                  child: Icon(
-                    Icons.monetization_on,
-                    color: Colors.black87,
-                  ),
-                ),
-                Text('Price')
-              ],
-            ),
-            value: _isChecked,
-            onChanged: (bool? value) {
-              setState(() {
-                _isChecked = value!;
-              });
-            },
-            controlAffinity: ListTileControlAffinity.leading, // label position
+          const SizedBox(
+            height: 10,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Rate",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+              headlineFilter("Distant From KMUTT"),
+              Row(
+                children: [
+                  Expanded(child: TextFormField(
+                    validator: (value){
+                      if(value == null || value.isEmpty || !RegExp(r'^[0-9][.]?[0-9]$').hasMatch(value)){
+                        return 'Enter only number';
+                      }else {
+                        return null;
+                      }
+                    },
+                    cursorColor: const Color(0xFFDC6E46),
+                    decoration: const InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFFDC6E46)),
+                      ),
+                      hintText: "Distant away from KMUTT",
+                    ),
+                  ),),
+                  const SizedBox(width: 20,),
+                  const Text("Km.",style: TextStyle(fontSize: 16),),
+                  const SizedBox(width: 30,),
+                ],
+              )
+            ],
+          ),
+          const SizedBox(height: 10,),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // rate
+              headlineFilter("Overall Rate"),
               const SizedBox(
                 height: 10,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(
                     5,
                     (index) => GestureDetector(
@@ -108,14 +109,14 @@ class _FilterFormState extends State<FilterForm> {
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children:  [
-              Text(
-                "Facilities",
-                style: TextStyle(fontWeight: FontWeight.bold),
+            children: [
+              // facilities
+             headlineFilter("Facilities"),
+              const SizedBox(
+                height: 10,
               ),
-              SizedBox(height: 10,),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
                     onTap: selectFaci,
@@ -127,44 +128,51 @@ class _FilterFormState extends State<FilterForm> {
                   ),
                   GestureDetector(
                     onTap: selectFaci,
-                    child: filterFacility(isSelect, "Smoke-free", Icons.smoke_free),
+                    child: filterFacility(
+                        isSelect, "Smoke-free", Icons.smoke_free),
                   ),
-
                 ],
-
               ),
-              SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   GestureDetector(
                     onTap: selectFaci,
-                    child: filterFacility(isSelect, "Security guard", Icons.security),
+                    child: filterFacility(
+                        isSelect, "Security guard", Icons.security),
                   ),
-                  SizedBox(width: 10,),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   GestureDetector(
                     onTap: selectFaci,
                     child: filterFacility(isSelect, "Pet friendly", Icons.pets),
                   ),
-
                 ],
               ),
-              SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   GestureDetector(
                     onTap: selectFaci,
-                    child: filterFacility(isSelect, "Air conditioner", Icons.air_outlined),
+                    child: filterFacility(
+                        isSelect, "Air conditioner", Icons.air_outlined),
                   ),
-                  SizedBox(width: 10,),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   GestureDetector(
                     onTap: selectFaci,
                     child: filterFacility(isSelect, "Fan", FontAwesome5.fan),
                   ),
                 ],
               ),
-
             ],
           )
         ],
