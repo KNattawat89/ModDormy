@@ -50,7 +50,7 @@ class ResetPassPage extends StatelessWidget {
                       },
                       child: const Text(
                         "Back to login",
-                        style: TextStyle(fontSize: 14),
+                        style: TextStyle(fontSize: 14, color: Colors.black),
                       )),
                 ),
               ]),

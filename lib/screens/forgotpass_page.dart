@@ -17,7 +17,7 @@ class ForgotPassPage extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              height: 243,
+              height: 270,
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(20)),
               margin: const EdgeInsets.all(35.0),
@@ -37,11 +37,14 @@ class ForgotForm extends StatefulWidget {
 
 class _ForgotFormState extends State<ForgotForm> {
   final _formkey = GlobalKey<FormState>();
+  final _email = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formkey,
-      child: Column(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Padding(
@@ -51,32 +54,38 @@ class _ForgotFormState extends State<ForgotForm> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(right: 10.0),
-                child: Text(
-                  "Email",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
+          
+        
+              // Flex(
+              //   direction: Axis.horizontal,
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //   Container(
+              //     margin: const EdgeInsets.only(bottom: 10.0),
+              //     child: const Text(
+              //     "Email",
+              //     style: TextStyle(fontSize: 18),
+              //   ),
+              //   )
+                
+              //   ]
+              // ),
               const SizedBox(
                 width: 10,
               ),
               SizedBox(
-                  width: 172,
-                  height: 30,
-                  child: Material(
-                    elevation: 2,
-                    shadowColor: Colors.black,
-                    child: TextFormField(
+                height: 50,
+              child:
+               TextFormField(
+                controller: _email,
                       decoration: const InputDecoration(
+                        hintText: "Enter your email",
+                        prefixIcon: Icon(Icons.email),
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(8.0)))),
+                                  BorderRadius.all(Radius.circular(25.0)))),
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||
@@ -86,15 +95,14 @@ class _ForgotFormState extends State<ForgotForm> {
                         }
                         return null;
                       },
-                    ),
-                  ))
-            ],
-          ),
+                    )),
+               
+           
           const SizedBox(
             height: 40,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -116,7 +124,7 @@ class _ForgotFormState extends State<ForgotForm> {
                       },
                       child: const Text(
                         "Back to login",
-                        style: TextStyle(fontSize: 14),
+                        style: TextStyle(fontSize: 14, color: Colors.black),
                       )),
                 ),
                 SizedBox(
@@ -129,11 +137,13 @@ class _ForgotFormState extends State<ForgotForm> {
                             borderRadius: BorderRadius.circular(12.5)),
                       ),
                       onPressed: () {
+                        if (_formkey.currentState!.validate()) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: ((context) => const ResetPassPage()),
                             ));
+                      }
                       },
                       child: const Text(
                         "Confirm",
@@ -145,6 +155,7 @@ class _ForgotFormState extends State<ForgotForm> {
           )
         ],
       ),
+      ) 
     );
   }
 }
