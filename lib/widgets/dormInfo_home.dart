@@ -25,6 +25,7 @@ Column dormInfoHome(
             right: 10,
             child: CircleAvatar(
               backgroundColor: const Color(0xA9888888),
+              // อย่าลืมปรับตรงนี้
               child: Align(
                 alignment: Alignment.center,
                 child: isFav ?  IconButton(

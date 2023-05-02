@@ -73,6 +73,46 @@ class _HomePageState extends State<HomePage> {
       _isLoading = false;
     });
   }
+  String _selectedOption = 'Option 1';
+  void _showFilterOptions() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text('Select an option'),
+          children: <Widget>[
+            SimpleDialogOption(
+              onPressed: () {
+                setState(() {
+                  _selectedOption = 'Option 1';
+                });
+                Navigator.pop(context);
+              },
+              child: const Text('Option 1'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                setState(() {
+                  _selectedOption = 'Option 2';
+                });
+                Navigator.pop(context);
+              },
+              child: const Text('Option 2'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                setState(() {
+                  _selectedOption = 'Option 3';
+                });
+                Navigator.pop(context);
+              },
+              child: const Text('Option 3'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +123,7 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            searchBar(_searchController),
+            searchBar(_searchController, context),
             const SizedBox(
               height: 20,
             ),

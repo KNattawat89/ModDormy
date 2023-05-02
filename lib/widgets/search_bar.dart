@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/widgets/filter_form.dart';
 
-Row searchBar(TextEditingController searchController) {
+Row searchBar(TextEditingController searchController, BuildContext context) {
   return Row(
     children: [
       // search bar
@@ -46,7 +47,69 @@ Row searchBar(TextEditingController searchController) {
         child: IconButton(
           onPressed: () {
             // does not dev with filter yet
-            print("hi");
+            showModalBottomSheet(
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.circular(20.0),
+              )),
+              context: context,
+              isScrollControlled: true,
+              builder: (BuildContext context) {
+                return FractionallySizedBox(
+                  heightFactor: 0.7,
+                  child: Container(
+                    padding: const EdgeInsets.all(25),
+                    child: Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Filter",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(
+                              Icons.cancel,
+                              color: Colors.black87,
+                              size: 30,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const FilterForm(),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          print("hi");
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 80),
+                          decoration: BoxDecoration(
+                              color: const Color(0xFFDC6E46),
+                              borderRadius: BorderRadius.circular(30)),
+                          child: const Text(
+                            "Apply",
+                            style: TextStyle(
+                              fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      )
+                    ]),
+                  ),
+                );
+              },
+            );
           },
           icon: const Icon(
             Icons.filter_alt_outlined,
