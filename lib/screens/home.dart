@@ -4,6 +4,7 @@ import 'package:moddormy_flutter/models/dorm_item.dart';
 import 'package:moddormy_flutter/models/dorm_list.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/dormInfo_home.dart';
+import 'package:moddormy_flutter/widgets/search_bar.dart';
 import '../widgets/MyAppbar.dart';
 import '../widgets/MyDrawer.dart';
 
@@ -18,10 +19,10 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
   final dio = Dio();
   List<DormItem> _filteredData = [];
-  List<DormItem> _data=[];
+  List<DormItem> _data = [];
   bool isFav = false;
 
-  void updateIsFav(){
+  void updateIsFav() {
     setState(() {
       isFav = !isFav;
     });
@@ -39,7 +40,6 @@ class _HomePageState extends State<HomePage> {
       print(e);
     }
   }
-
 
   bool _isLoading = false;
 
@@ -64,15 +64,15 @@ class _HomePageState extends State<HomePage> {
     //Simulates waiting for an API call
     await Future.delayed(const Duration(milliseconds: 1000));
 
-      setState(() {
-        _filteredData = _data
-            .where((element) => element.dormName
-                .toLowerCase()
-                .contains(_searchController.text.toLowerCase()))
-            .toList();
-        _isLoading = false;
-      });
-    }
+    setState(() {
+      _filteredData = _data
+          .where((element) => element.dormName
+              .toLowerCase()
+              .contains(_searchController.text.toLowerCase()))
+          .toList();
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,61 +83,7 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            Row(
-              children: [
-                // search bar
-                Expanded(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(25)),
-                      color: Color(0xFFE2E2E2),
-                    ),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Icon(
-                          Icons.search,
-                          color: Color(0xFFDC6E46),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: TextField(
-                            controller: _searchController,
-                            style: const TextStyle(fontSize: 14),
-                            cursorColor: Colors.black87,
-                            decoration: const InputDecoration(
-                              hintText: "search dorm",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                // filter icon
-                CircleAvatar(
-                  radius: 25,
-                  backgroundColor: const Color(0xFFE2E2E2),
-                  child: IconButton(
-                    onPressed: () {
-                      // does not dev with filter yet
-                      print("hi");
-                    },
-                    icon: const Icon(
-                      Icons.filter_alt_outlined,
-                      color: Color(0xFFDC6E46),
-                    ),
-                  ),
-                )
-              ],
-            ),
+            searchBar(_searchController),
             const SizedBox(
               height: 20,
             ),
@@ -153,8 +99,14 @@ class _HomePageState extends State<HomePage> {
                       childAspectRatio: (8 / 10),
                       children: List.generate(_filteredData.length, (index) {
                         return Container(
-                          child: dormInfoHome(_filteredData[index].rating, _filteredData[index].dormName, _filteredData[index].minPrice,
-                             _filteredData[index].maxPrice, _filteredData[index].coverImage,isFav,updateIsFav),
+                          child: dormInfoHome(
+                              _filteredData[index].rating,
+                              _filteredData[index].dormName,
+                              _filteredData[index].minPrice,
+                              _filteredData[index].maxPrice,
+                              _filteredData[index].coverImage,
+                              isFav,
+                              updateIsFav),
                         );
                       }),
                     ),
