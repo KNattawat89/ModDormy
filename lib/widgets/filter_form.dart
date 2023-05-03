@@ -27,10 +27,16 @@ class _FilterFormState extends State<FilterForm> {
       minPrice: 0, maxPrice: 0, distant: 0, overallRating: "0", facilities: []);
 
   void selectRate(String select) {
-    setState(() {
-      rate = !rate;
-      filterItem.overallRating = select;
-    });
+    if (filterItem.overallRating == select) {
+      setState(() {
+        filterItem.overallRating = '';
+      });
+    } else {
+      setState(() {
+        rate = !rate;
+        filterItem.overallRating = select;
+      });
+    }
   }
 
   void selectFaci(String selectItem) {
@@ -308,8 +314,10 @@ class _FilterFormState extends State<FilterForm> {
                       overallRating: filterItem.overallRating,
                       facilities: filterItem.facilities);
                   // Navigator.pop(context, filterItem);
-                  print('min-max price: ${controller.minPriceController.text} - ${controller.maxPriceController.text}');
-                  print('distant from KMUTT: ${controller.distantController.text}');
+                  print(
+                      'min-max price: ${controller.minPriceController.text} - ${controller.maxPriceController.text}');
+                  print(
+                      'distant from KMUTT: ${controller.distantController.text}');
                   print('overall rating: ${filterItem.overallRating}');
                   print(filterItem.facilities);
                   // Navigator.push(
