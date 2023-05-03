@@ -298,7 +298,7 @@ class DetailScreen extends StatelessWidget {
                             shrinkWrap: true,
                             itemCount: dorm.rooms.length,
                             itemBuilder: (BuildContext context, int j) {
-                              return Text('test 1 ');
+                              return const Text('test 1 ');
                             },
                           ),
                         ),

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:moddormy_flutter/widgets/review/addReview.dart';
 import 'package:moddormy_flutter/widgets/review/dormRating.dart';
 import 'package:moddormy_flutter/widgets/review/reviewMockup.dart';
@@ -26,9 +24,9 @@ class _DormReviewState extends State<DormReview> {
             Text("Review (" '$reviewCount' ")",
                 style:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            DormRating(),
-            UserReview(),
-            AddReview(),
+            const DormRating(),
+            const UserReview(),
+            const AddReview(),
           ],
         ));
   }

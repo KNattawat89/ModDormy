@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/models/FilterController.dart';
+import 'package:moddormy_flutter/models/filter_controller.dart';
 import 'package:moddormy_flutter/models/filter_item.dart';
-import 'package:moddormy_flutter/screens/home.dart';
-import 'package:moddormy_flutter/widgets/CustomTextFormField.dart';
 import 'package:moddormy_flutter/widgets/filter_facility.dart';
 import 'package:moddormy_flutter/widgets/rate_in_filter.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
@@ -60,7 +58,7 @@ class _FilterFormState extends State<FilterForm> {
       int parsedNumber = int.parse(actualNumber);
       return parsedNumber == index;
     } catch (e) {
-      print("Error parsing integer: $e");
+      // print("Error parsing integer: $e");
       return false;
     }
   }
@@ -92,7 +90,7 @@ class _FilterFormState extends State<FilterForm> {
                         if (value == null || value.isEmpty) {
                           return null;
                         } else {
-                          if (!RegExp(r'^\d+$').hasMatch(value!)) {
+                          if (!RegExp(r'^\d+$').hasMatch(value)) {
                             return "Enter only number";
                           } else {
                             return null;
@@ -134,6 +132,7 @@ class _FilterFormState extends State<FilterForm> {
                             return 'Max price > min price';
                           }
                         }
+                        return null;
                         // if (value == null ||
                         //     !RegExp(r'^\d+$').hasMatch(value)) {
                         //   return 'Enter only number';

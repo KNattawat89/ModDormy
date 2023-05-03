@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class DormDetail extends StatefulWidget {
   const DormDetail({super.key});
@@ -13,7 +11,7 @@ class _DormDetailState extends State<DormDetail> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
       height: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
@@ -30,10 +28,8 @@ class _DormDetailState extends State<DormDetail> {
               borderRadius: BorderRadius.circular(12.0),
             ),
             elevation: 8,
-            child: Container(
-              child: Center(
-                child: Text('1'),
-              ),
+            child: const Center(
+              child: Text('1'),
             ),
           ),
           Positioned.fill(
@@ -50,12 +46,12 @@ class _DormDetailState extends State<DormDetail> {
             right: 20.0,
             child: Container(
               decoration: BoxDecoration(
-                color: Color.fromARGB(122, 150, 150, 150),
+                color:const  Color.fromARGB(122, 150, 150, 150),
                 borderRadius: BorderRadius.circular(21.0),
               ),
               child: IconButton(
                 color: Colors.white,
-                icon: Icon(Icons.favorite_border),
+                icon: const Icon(Icons.favorite_border),
                 onPressed: () {
                   // Add your code here to handle the button press event
                   // For example, you can show a snackbar or navigate to a new screen

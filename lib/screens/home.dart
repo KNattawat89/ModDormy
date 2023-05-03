@@ -5,8 +5,8 @@ import 'package:moddormy_flutter/models/dorm_list.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/dormInfo_home.dart';
 import 'package:moddormy_flutter/widgets/search_bar.dart';
-import '../widgets/MyAppbar.dart';
-import '../widgets/MyDrawer.dart';
+import '../widgets/my_appbar.dart';
+import '../widgets/my_drawer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
         _filteredData = _data;
       });
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 
@@ -72,46 +72,6 @@ class _HomePageState extends State<HomePage> {
           .toList();
       _isLoading = false;
     });
-  }
-  String _selectedOption = 'Option 1';
-  void _showFilterOptions() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: const Text('Select an option'),
-          children: <Widget>[
-            SimpleDialogOption(
-              onPressed: () {
-                setState(() {
-                  _selectedOption = 'Option 1';
-                });
-                Navigator.pop(context);
-              },
-              child: const Text('Option 1'),
-            ),
-            SimpleDialogOption(
-              onPressed: () {
-                setState(() {
-                  _selectedOption = 'Option 2';
-                });
-                Navigator.pop(context);
-              },
-              child: const Text('Option 2'),
-            ),
-            SimpleDialogOption(
-              onPressed: () {
-                setState(() {
-                  _selectedOption = 'Option 3';
-                });
-                Navigator.pop(context);
-              },
-              child: const Text('Option 3'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override

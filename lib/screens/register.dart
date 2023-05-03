@@ -1,8 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/models/register.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 
@@ -58,7 +56,7 @@ class _RegisterFormState extends State<RegisterForm> {
         future: firebase,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Text("${snapshot.error}" + "123123123");
+            return Text("${snapshot.error} 123123123");
           }
 
           return Form(
@@ -95,7 +93,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||
-                            !RegExp(r'^[\S]{8,15}$').hasMatch(value)) {
+                            !RegExp(r'^\S{8,15}$').hasMatch(value)) {
                           return 'Please enter your username';
                         }
                         return null;
@@ -188,7 +186,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||
-                            !RegExp(r'^[\S]{8,15}$').hasMatch(value)) {
+                            !RegExp(r'^\S{8,15}$').hasMatch(value)) {
                           return 'Please enter your password';
                         }
                         return null;

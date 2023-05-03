@@ -17,61 +17,59 @@ class DormRating extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
           height: MediaQuery.of(context).size.height * 0.25,
           child: Card(
-            color: Color.fromARGB(255, 191, 189, 194),
+            color: const Color.fromARGB(255, 191, 189, 194),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
             ),
             elevation: 8,
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  //left side
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Overall Rating'),
-                      Text('${overallRate.toStringAsFixed(1)}',
-                          style: TextStyle(
-                              fontSize: 48, fontWeight: FontWeight.bold)),
-                      RatingBarIndicator(
-                        rating: averageRates['overall']!,
-                        itemBuilder: (context, index) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        itemCount: 5,
-                        itemSize: 20.0,
-                        direction: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                //left side
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Overall Rating'),
+                    Text(overallRate.toStringAsFixed(1),
+                        style: const TextStyle(
+                            fontSize: 48, fontWeight: FontWeight.bold)),
+                    RatingBarIndicator(
+                      rating: averageRates['overall']!,
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
                       ),
-                      Text(
-                        'Based on ' + reviews.length.toString() + ' reviews',
-                        style: TextStyle(fontSize: 12),
-                      )
-                    ],
-                  ),
+                      itemCount: 5,
+                      itemSize: 20.0,
+                      direction: Axis.horizontal,
+                    ),
+                    Text(
+                      'Based on ${reviews.length} reviews',
+                      style:const  TextStyle(fontSize: 12),
+                    )
+                  ],
+                ),
 
-                  //divider
-                  const VerticalDivider(
-                    color: Colors.white,
-                    thickness: 1,
-                    indent: 20,
-                    endIndent: 20,
-                  ),
+                //divider
+                const VerticalDivider(
+                  color: Colors.white,
+                  thickness: 1,
+                  indent: 20,
+                  endIndent: 20,
+                ),
 
-                  //right side
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildRatingRow('Price', averageRates['price']!),
-                      _buildRatingRow('Location', averageRates['location']!),
-                      _buildRatingRow('Facility', averageRates['facility']!),
-                      _buildRatingRow('Sanitary', averageRates['sanitary']!),
-                      _buildRatingRow('Security', averageRates['security']!),
-                    ],
-                  )
-                ],
-              ),
+                //right side
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildRatingRow('Price', averageRates['price']!),
+                    _buildRatingRow('Location', averageRates['location']!),
+                    _buildRatingRow('Facility', averageRates['facility']!),
+                    _buildRatingRow('Sanitary', averageRates['sanitary']!),
+                    _buildRatingRow('Security', averageRates['security']!),
+                  ],
+                )
+              ],
             ),
           )),
     );
@@ -119,14 +117,14 @@ Widget _buildRatingRow(String label, double score) {
     children: [
       Text(
         score.toStringAsFixed(1),
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16.0,
         ),
       ),
       Text(
         label,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16.0,
         ),
