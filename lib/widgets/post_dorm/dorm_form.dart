@@ -27,13 +27,20 @@ class _DormFormState extends State<DormForm> {
     return Form(
       key: formKey,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.all(32),
-            child: Text(
-              'Dorm Information',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          Padding(
+            padding: const EdgeInsets.all(32),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  'Dorm Information',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           ),
           InfoSection(dorm: widget.dorm),
@@ -42,12 +49,6 @@ class _DormFormState extends State<DormForm> {
           PhotosSection(dorm: widget.dorm),
           FeatureSection(dorm: widget.dorm),
           ContractSection(dorm: widget.dorm),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Divider(
-              thickness: 7,
-            ),
-          ),
           RoomsSection(dorm: widget.dorm),
           Center(
             child: Padding(

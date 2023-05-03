@@ -397,9 +397,12 @@ class DetailScreen extends StatelessWidget {
                     width: 170,
                     height: 40,
                     child: FloatingActionButton.extended(
+                        heroTag: "btn1",
                         backgroundColor: Colors.grey,
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pop(
+                            context,
+                          );
                         },
                         label: const Text('Back')),
                   ),
@@ -410,12 +413,13 @@ class DetailScreen extends StatelessWidget {
                     width: 170,
                     height: 40,
                     child: FloatingActionButton.extended(
+                        heroTag: "btn2",
                         backgroundColor: const Color(0xFFDC6E46),
                         onPressed: () {
                           showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
-                              backgroundColor: Color(0xFFD9D9D9),
+                              backgroundColor: const Color(0xFFD9D9D9),
                               title: const Icon(
                                 Icons.verified_rounded,
                                 color: Color(0xff2a8089),
@@ -447,7 +451,7 @@ class DetailScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             )
           ],
