@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import 'package:moddormy_flutter/widgets/review/reviewMockup.dart';
+import 'package:moddormy_flutter/widgets/review/review_mockup.dart';
 
 List<Review> reviews = generateMockReviews();
 

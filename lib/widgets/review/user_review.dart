@@ -20,7 +20,7 @@ class _UserReviewState extends State<UserReview> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               //avatar
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.height * 0.25,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

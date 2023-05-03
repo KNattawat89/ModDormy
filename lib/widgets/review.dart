@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/widgets/review/addReview.dart';
-import 'package:moddormy_flutter/widgets/review/dormRating.dart';
-import 'package:moddormy_flutter/widgets/review/reviewMockup.dart';
-import 'package:moddormy_flutter/widgets/review/userReview.dart';
+import 'package:moddormy_flutter/widgets/review/add_review.dart';
+import 'package:moddormy_flutter/widgets/review/dorm_rating.dart';
+import 'package:moddormy_flutter/widgets/review/review_mockup.dart';
+import 'package:moddormy_flutter/widgets/review/user_review.dart';
 
 List<Review> reviews = generateMockReviews();
 

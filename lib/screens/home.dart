@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/dorm_item.dart';
 import 'package:moddormy_flutter/models/dorm_list.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
-import 'package:moddormy_flutter/widgets/dormInfo_home.dart';
+import 'package:moddormy_flutter/widgets/dorm_info_home.dart';
 import 'package:moddormy_flutter/widgets/search_bar.dart';
 import '../widgets/my_appbar.dart';
 import '../widgets/my_drawer.dart';
