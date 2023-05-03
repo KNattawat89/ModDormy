@@ -45,7 +45,7 @@ class MyDrawer extends StatelessWidget {
                 menuTextIcon(context,Icons.home, "Home",'/'),
                 menuTextIcon(context,Icons.account_circle, "Profile",'/profile'),
                 menuTextIcon(context,Icons.favorite, "Favorite",'/fav'),
-                Divider(),
+                const Divider(),
                 menuTextIcon(context,Icons.logout, "Logout",'/logout')
               ],
             ),
