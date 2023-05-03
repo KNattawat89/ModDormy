@@ -1,12 +1,12 @@
 import 'package:image_picker/image_picker.dart';
+import 'package:moddormy_flutter/models/room_frature.dart';
 
 class Room {
   String name;
   String price;
   String size;
   String description;
-  bool fan;
-  bool airConditioner;
+  RoomFeature feature;
   XFile? coverImage;
   List<XFile> imageList = [];
 
@@ -15,7 +15,6 @@ class Room {
     required this.price,
     required this.size,
     required this.description,
-    required this.fan,
-    required this.airConditioner,
+    required this.feature,
   });
 }

@@ -24,36 +24,39 @@ class _CoverImageSectionState extends State<CoverImageSection> {
       });
     }
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text('Cover Image'),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ElevatedButton(
-                style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.grey[500]),
-                onPressed: getImage,
-                child: const Text('Add Cover Image'),
-              ),
-              widget.dorm.coverImage == null
-                  ? const Text('No image selected.')
-                  : Image.file(
-                      File(widget.dorm.coverImage!.path),
-                      fit: BoxFit.cover,
-                      height: 200,
-                      width: 200,
-                    ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Cover Image',
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[500]),
+                  onPressed: getImage,
+                  child: const Text('Add Cover Image'),
+                ),
+                widget.dorm.coverImage == null
+                    ? const Text('No image selected.')
+                    : Image.file(
+                        File(widget.dorm.coverImage!.path),
+                        fit: BoxFit.cover,
+                        height: 200,
+                        width: 200,
+                      ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

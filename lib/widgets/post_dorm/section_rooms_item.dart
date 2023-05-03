@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/widgets/post_dorm/room_cover_image.dart';
+import 'package:moddormy_flutter/widgets/post_dorm/room_image.dart';
+import 'package:moddormy_flutter/widgets/post_dorm/section_feature_row.dart';
 
 import '../../models/room.dart';
 
@@ -156,60 +159,58 @@ class _RoomItemState extends State<RoomItem> {
             ),
           ],
         ),
-        Row(
-          children: const [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text('Cover Image :'),
-            ),
-            Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text('how?') //CoverImageUploadButton(),
-                ),
-          ],
-        ),
-        Row(
-          children: const [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text('Images :'),
-            ),
-            Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text('how?') //UploadPhotoButton(),
-                ),
-          ],
-        ),
+        RCoverImageSection(room: widget.room),
+        RPhotosSection(room: widget.room),
         Column(
           children: [
             const Text(
               'Features',
               textAlign: TextAlign.start,
             ),
-            Row(
+            Column(
               children: [
-                Checkbox(
-                  value: widget.room.airConditioner,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      widget.room.airConditioner = value!;
-                    });
-                  },
-                ),
-                const Text('Air Conditioner')
-              ],
-            ),
-            Row(
-              children: [
-                Checkbox(
-                  value: widget.room.fan,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      widget.room.fan = value!;
-                    });
-                  },
-                ),
-                const Text('Fan')
+                FeatureRow(
+                    featureName: "Air-conditioner",
+                    value: widget.room.feature.airConditioner,
+                    onChanged: (value) => setState(
+                          () => widget.room.feature.airConditioner = value,
+                        )),
+                FeatureRow(
+                    featureName: "Fan",
+                    value: widget.room.feature.fan,
+                    onChanged: (value) => setState(
+                          () => widget.room.feature.fan = value,
+                        )),
+                FeatureRow(
+                    featureName: "Furnished",
+                    value: widget.room.feature.furnished,
+                    onChanged: (value) => setState(
+                          () => widget.room.feature.furnished = value,
+                        )),
+                FeatureRow(
+                    featureName: "Water Heater",
+                    value: widget.room.feature.waterHeater,
+                    onChanged: (value) => setState(
+                          () => widget.room.feature.waterHeater = value,
+                        )),
+                FeatureRow(
+                    featureName: "TV",
+                    value: widget.room.feature.tv,
+                    onChanged: (value) => setState(
+                          () => widget.room.feature.tv = value,
+                        )),
+                FeatureRow(
+                    featureName: "Refrigerator",
+                    value: widget.room.feature.refrigerator,
+                    onChanged: (value) => setState(
+                          () => widget.room.feature.refrigerator = value,
+                        )),
+                FeatureRow(
+                    featureName: "Bathroom",
+                    value: widget.room.feature.bathroom,
+                    onChanged: (value) => setState(
+                          () => widget.room.feature.bathroom = value,
+                        )),
               ],
             ),
           ],

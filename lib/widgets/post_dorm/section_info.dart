@@ -28,12 +28,16 @@ class _InfoSectionState extends State<InfoSection> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const SizedBox(
-                width: 100,
-                child: Text(
-                  'Dorm name',
-                  textAlign: TextAlign.center,
-                )),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: SizedBox(
+                  width: 110,
+                  child: Text(
+                    'Dorm name',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  )),
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -42,27 +46,33 @@ class _InfoSectionState extends State<InfoSection> {
                   onChanged: (value) {
                     widget.dorm.name = nameController.text;
                   },
-                  decoration:
-                  const InputDecoration(border: OutlineInputBorder()),
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'required';
-                  //   }
-                  //   return null;
-                  // },
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(), hintText: 'Dorm Name'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'required';
+                    }
+                    return null;
+                  },
                 ),
               ),
             ),
           ],
         ),
-        Row(
-          children: [
-            const SizedBox(
+        Row(children: const [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: SizedBox(
                 width: 100,
                 child: Text(
                   'Address',
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                 )),
+          ),
+        ]),
+        Row(
+          children: [
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -73,12 +83,12 @@ class _InfoSectionState extends State<InfoSection> {
                   },
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: 'House No.'),
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'required';
-                  //   }
-                  //   return null;
-                  // },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'required';
+                    }
+                    return null;
+                  },
                 ),
               ),
             ),
@@ -100,9 +110,6 @@ class _InfoSectionState extends State<InfoSection> {
         ),
         Row(
           children: [
-            const SizedBox(
-              width: 100,
-            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -113,12 +120,12 @@ class _InfoSectionState extends State<InfoSection> {
                   },
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Street'),
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'required';
-                  //   }
-                  //   return null;
-                  // },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'required';
+                    }
+                    return null;
+                  },
                 ),
               ),
             ),
@@ -126,9 +133,6 @@ class _InfoSectionState extends State<InfoSection> {
         ),
         Row(
           children: [
-            const SizedBox(
-              width: 100,
-            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -138,14 +142,13 @@ class _InfoSectionState extends State<InfoSection> {
                     widget.dorm.subDistrict = subDistrictController.text;
                   },
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Sub-district'),
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'required';
-                  //   }
-                  //   return null;
-                  // },
+                      border: OutlineInputBorder(), labelText: 'Sub-district'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'required';
+                    }
+                    return null;
+                  },
                 ),
               ),
             ),
@@ -153,9 +156,6 @@ class _InfoSectionState extends State<InfoSection> {
         ),
         Row(
           children: [
-            const SizedBox(
-              width: 100,
-            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -166,12 +166,12 @@ class _InfoSectionState extends State<InfoSection> {
                   },
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: 'District'),
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'required';
-                  //   }
-                  //   return null;
-                  // },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'required';
+                    }
+                    return null;
+                  },
                 ),
               ),
             ),
@@ -179,9 +179,6 @@ class _InfoSectionState extends State<InfoSection> {
         ),
         Row(
           children: [
-            const SizedBox(
-              width: 100,
-            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -192,12 +189,12 @@ class _InfoSectionState extends State<InfoSection> {
                   },
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: 'City'),
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'required';
-                  //   }
-                  //   return null;
-                  // },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'required';
+                    }
+                    return null;
+                  },
                 ),
               ),
             ),
@@ -211,12 +208,12 @@ class _InfoSectionState extends State<InfoSection> {
                   },
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Zipcode'),
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'required';
-                  //   }
-                  //   return null;
-                  // },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'required';
+                    }
+                    return null;
+                  },
                 ),
               ),
             ),
