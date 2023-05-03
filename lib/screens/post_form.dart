@@ -50,8 +50,11 @@ class _PostFormState extends State<PostForm> {
       endDrawer: const MyDrawer(),
       body: Center(
         child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.all(8),
           child: ListView(
+            shrinkWrap: true,
             children: [
               DormForm(dorm: dorm),
             ],

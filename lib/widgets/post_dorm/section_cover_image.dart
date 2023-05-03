@@ -25,38 +25,41 @@ class _CoverImageSectionState extends State<CoverImageSection> {
     }
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Cover Image',
-            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+        padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
               children: [
+                const Text('Cover Image : ',
+                    style:
+                        TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey[500]),
                   onPressed: getImage,
-                  child: const Text('Add Cover Image'),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.add),
+                      Text('Cover Image'),
+                    ],
+                  ),
                 ),
-                widget.dorm.coverImage == null
-                    ? const Text('No image selected.')
-                    : Image.file(
-                        File(widget.dorm.coverImage!.path),
-                        fit: BoxFit.cover,
-                        height: 200,
-                        width: 200,
-                      ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
+            widget.dorm.coverImage == null
+                ? const Text(
+                    'No image selected.',
+                    textAlign: TextAlign.center,
+                  )
+                : Image.file(
+                    File(widget.dorm.coverImage!.path),
+                    fit: BoxFit.cover,
+                    height: 100,
+                    width: 100,
+                  ),
+          ],
+        ));
   }
 }

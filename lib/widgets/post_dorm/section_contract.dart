@@ -34,6 +34,9 @@ class _ContractSectionState extends State<ContractSection> {
             padding: const EdgeInsets.all(8),
             child: TextFormField(
               controller: advPaymentController,
+              onChanged: (value) {
+                widget.dorm.advPayment = advPaymentController.text;
+              },
               decoration: const InputDecoration(
                   border: OutlineInputBorder(), labelText: 'Advance payment'),
               validator: (value) {
@@ -49,6 +52,9 @@ class _ContractSectionState extends State<ContractSection> {
             padding: const EdgeInsets.all(8),
             child: TextFormField(
               controller: electricController,
+              onChanged: (value) {
+                widget.dorm.electric = electricController.text;
+              },
               decoration: const InputDecoration(
                   border: OutlineInputBorder(), labelText: 'Electric price'),
             ),
@@ -58,6 +64,9 @@ class _ContractSectionState extends State<ContractSection> {
             padding: const EdgeInsets.all(8),
             child: TextFormField(
               controller: waterController,
+              onChanged: (value) {
+                widget.dorm.water = waterController.text;
+              },
               decoration: const InputDecoration(
                   border: OutlineInputBorder(), labelText: 'Water price'),
             ),
@@ -67,6 +76,9 @@ class _ContractSectionState extends State<ContractSection> {
             padding: const EdgeInsets.all(8),
             child: TextFormField(
               controller: otherController,
+              onChanged: (value) {
+                widget.dorm.other = otherController.text;
+              },
               decoration: const InputDecoration(
                   border: OutlineInputBorder(), labelText: 'other'),
             ),
