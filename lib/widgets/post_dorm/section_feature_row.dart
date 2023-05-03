@@ -19,6 +19,7 @@ class FeatureRow extends StatelessWidget {
       children: [
         Checkbox(
           value: value,
+          activeColor: const Color(0xffdc6e46),
           onChanged: (bool? value) {
             onChanged(value!);
           },

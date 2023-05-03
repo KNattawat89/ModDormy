@@ -1,18 +1,18 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../models/dorm.dart';
+import 'package:moddormy_flutter/models/room.dart';
 
-class PhotosSection extends StatefulWidget {
-  final Dorm dorm;
+class RPhotosSection extends StatefulWidget {
+  final Room room;
 
-  const PhotosSection({Key? key, required this.dorm}) : super(key: key);
+  const RPhotosSection({Key? key, required this.room}) : super(key: key);
 
   @override
-  State<PhotosSection> createState() => _PhotosSectionState();
+  State<RPhotosSection> createState() => _RPhotosSectionState();
 }
 
-class _PhotosSectionState extends State<PhotosSection> {
+class _RPhotosSectionState extends State<RPhotosSection> {
   final ImagePicker picker = ImagePicker();
 
   void getImageFromGallery() async {
@@ -20,7 +20,7 @@ class _PhotosSectionState extends State<PhotosSection> {
         await picker.pickImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile!.path.isNotEmpty) {
-        widget.dorm.imageList.add(pickedFile);
+        widget.room.imageList.add(pickedFile);
       }
     });
   }
@@ -52,12 +52,12 @@ class _PhotosSectionState extends State<PhotosSection> {
             width: MediaQuery.of(context).size.width * 0.8,
             height: 200,
             child: GridView.builder(
-              itemCount: widget.dorm.imageList.length,
+              itemCount: widget.room.imageList.length,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Image.file(
-                    File(widget.dorm.imageList[index].path),
+                    File(widget.room.imageList[index].path),
                     fit: BoxFit.cover,
                     width: 200,
                     height: 200,

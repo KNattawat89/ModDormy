@@ -2,25 +2,24 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:moddormy_flutter/models/room.dart';
 
-import '../../models/dorm.dart';
+class RCoverImageSection extends StatefulWidget {
+  final Room room;
 
-class CoverImageSection extends StatefulWidget {
-  final Dorm dorm;
-
-  const CoverImageSection({Key? key, required this.dorm}) : super(key: key);
+  const RCoverImageSection({Key? key, required this.room}) : super(key: key);
 
   @override
-  State<CoverImageSection> createState() => _CoverImageSectionState();
+  State<RCoverImageSection> createState() => _RCoverImageSectionState();
 }
 
-class _CoverImageSectionState extends State<CoverImageSection> {
+class _RCoverImageSectionState extends State<RCoverImageSection> {
   @override
   Widget build(BuildContext context) {
     Future getImage() async {
       XFile? file = await ImagePicker().pickImage(source: ImageSource.gallery);
       setState(() {
-        widget.dorm.coverImage = file;
+        widget.room.coverImage = file;
       });
     }
 
@@ -48,13 +47,13 @@ class _CoverImageSectionState extends State<CoverImageSection> {
                 ),
               ],
             ),
-            widget.dorm.coverImage == null
+            widget.room.coverImage == null
                 ? const Text(
                     'No image selected.',
                     textAlign: TextAlign.center,
                   )
                 : Image.file(
-                    File(widget.dorm.coverImage!.path),
+                    File(widget.room.coverImage!.path),
                     fit: BoxFit.cover,
                     height: 100,
                     width: 100,

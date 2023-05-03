@@ -20,15 +20,16 @@ class _DescriptionSectionState extends State<DescriptionSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
-          padding: EdgeInsets.only(top: 8.0, left: 16),
+          padding: EdgeInsets.all(8),
           child: Text(
             'Dorm description',
             textAlign: TextAlign.start,
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
           ),
         ),
         Padding(
           //dorm desc
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8),
           child: TextFormField(
             maxLines: 10,
             minLines: 7,
@@ -36,8 +37,7 @@ class _DescriptionSectionState extends State<DescriptionSection> {
             onChanged: (value) {
               widget.dorm.description = descriptionController.text;
             },
-            decoration:
-            const InputDecoration(border: OutlineInputBorder()),
+            decoration: const InputDecoration(border: OutlineInputBorder()),
             // validator: (value) {
             //   if (value == null || value.isEmpty) {
             //     return 'required';

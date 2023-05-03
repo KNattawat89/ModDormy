@@ -45,13 +45,20 @@ class _PostFormState extends State<PostForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xfffff9f0),
       appBar: const MyAppbar(),
       endDrawer: const MyDrawer(),
       body: Center(
-        child: ListView(
-          children: [
-            DormForm(dorm: dorm),
-          ],
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.all(8),
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              DormForm(dorm: dorm),
+            ],
+          ),
         ),
       ),
     );

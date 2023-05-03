@@ -3,6 +3,7 @@ import 'package:moddormy_flutter/widgets/post_dorm/section_rooms_item.dart';
 
 import '../../models/dorm.dart';
 import '../../models/room.dart';
+import '../../models/room_frature.dart';
 
 class RoomsSection extends StatefulWidget {
   final Dorm dorm;
@@ -29,13 +30,19 @@ class _RoomsSectionState extends State<RoomsSection> {
               onPressed: () {
                 setState(() {
                   widget.dorm.rooms.add(Room(
-                    name: "Room ${widget.dorm.rooms.length + 1}",
-                    price: "",
-                    size: '',
-                    description: "",
-                    airConditioner: false,
-                    fan: false,
-                  ));
+                      name: "",
+                      price: "",
+                      size: '',
+                      description: "",
+                      feature: RoomFeature(
+                        airConditioner: false,
+                        fan: false,
+                        furnished: false,
+                        waterHeater: false,
+                        tv: false,
+                        refrigerator: false,
+                        bathroom: false,
+                      )));
                 });
               },
               child: const Text("Add Room"),

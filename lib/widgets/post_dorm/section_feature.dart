@@ -18,17 +18,16 @@ class _FeatureSectionState extends State<FeatureSection> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Features',
-            textAlign: TextAlign.start,
-          ),
+          const Text('Dorm Features',
+              textAlign: TextAlign.start,
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
           FeatureRow(
               featureName: "Parking",
               value: widget.dorm.feature.parking,
               onChanged: (value) =>
-                  setState(
-                          () => widget.dorm.feature.parking = value)),
+                  setState(() => widget.dorm.feature.parking = value)),
           FeatureRow(
               featureName: "Wi-Fi",
               value: widget.dorm.feature.wifi,
@@ -38,8 +37,7 @@ class _FeatureSectionState extends State<FeatureSection> {
               featureName: "Smoke Free",
               value: widget.dorm.feature.smokeFree,
               onChanged: (value) =>
-                  setState(
-                          () => widget.dorm.feature.smokeFree = value)),
+                  setState(() => widget.dorm.feature.smokeFree = value)),
           FeatureRow(
               featureName: "CCTV",
               value: widget.dorm.feature.cctv,
@@ -56,8 +54,7 @@ class _FeatureSectionState extends State<FeatureSection> {
               featureName: "Lift",
               value: widget.dorm.feature.lift,
               onChanged: (value) =>
-                  setState(
-                          () => widget.dorm.feature.lift = value)),
+                  setState(() => widget.dorm.feature.lift = value)),
           FeatureRow(
               featureName: "Pet Friendly",
               value: widget.dorm.feature.petFriendly,
@@ -67,8 +64,7 @@ class _FeatureSectionState extends State<FeatureSection> {
               featureName: "Pool",
               value: widget.dorm.feature.pool,
               onChanged: (value) =>
-                  setState(
-                          () => widget.dorm.feature.pool = value)),
+                  setState(() => widget.dorm.feature.pool = value)),
           FeatureRow(
               featureName: "Fitness",
               value: widget.dorm.feature.fitness,
