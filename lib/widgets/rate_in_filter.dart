@@ -7,7 +7,7 @@ Container rateFilter(bool rate, int rateNumber) {
       color: rate ? const Color(0xFFDC6E46) : Colors.white,
       border: Border.all(
           width: 2,
-          color: rate ? Color(0xFFDC6E46) : const Color(0xFFDEDEDE)),
+          color: rate ? const Color(0xFFDC6E46) : const Color(0xFFDEDEDE)),
       borderRadius: BorderRadius.circular(30),
     ),
     child: Row(

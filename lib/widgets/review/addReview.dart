@@ -15,7 +15,7 @@ class _AddReviewState extends State<AddReview> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
       height: MediaQuery.of(context).size.height * 0.25,
       child: Card(
-        color: Color.fromARGB(255, 191, 189, 194),
+        color: const Color.fromARGB(255, 191, 189, 194),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
         ),
@@ -28,7 +28,7 @@ class _AddReviewState extends State<AddReview> {
               const RatingForm(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children:const [
                   Text(
                     'rate...',
                     style: TextStyle(fontSize: 15),

@@ -2,14 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/screens/favorite.dart';
-import 'package:moddormy_flutter/screens/forgotpass_page.dart';
-import 'package:moddormy_flutter/screens/home.dart';
-import 'package:moddormy_flutter/screens/login_page.dart';
-import 'package:moddormy_flutter/screens/post_form.dart';
 import 'package:moddormy_flutter/screens/profile.dart';
 import 'package:moddormy_flutter/screens/register.dart';
-import 'package:moddormy_flutter/widgets/MyAppbar.dart';
-import 'package:moddormy_flutter/widgets/MyDrawer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/models/FilterController.dart';
+import 'package:moddormy_flutter/models/filter_controller.dart';
 import 'package:moddormy_flutter/models/filter_item.dart';
-import 'package:moddormy_flutter/screens/home.dart';
-import 'package:moddormy_flutter/widgets/CustomTextFormField.dart';
 import 'package:moddormy_flutter/widgets/filter_facility.dart';
 import 'package:moddormy_flutter/widgets/rate_in_filter.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
@@ -60,7 +58,7 @@ class _FilterFormState extends State<FilterForm> {
       int parsedNumber = int.parse(actualNumber);
       return parsedNumber == index;
     } catch (e) {
-      print("Error parsing integer: $e");
+      // print("Error parsing integer: $e");
       return false;
     }
   }
@@ -89,13 +87,24 @@ class _FilterFormState extends State<FilterForm> {
                         child: TextFormField(
                       controller: controller.minPriceController,
                       validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            !RegExp(r'^[0-9]+$').hasMatch(value)) {
-                          return 'Enter only number';
-                        } else {
+                        if (value == null || value.isEmpty) {
                           return null;
+                        } else {
+                          if (!RegExp(r'^\d+$').hasMatch(value)) {
+                            return "Enter only number";
+                          } else {
+                            return null;
+                          }
                         }
+                        // if (value != null || (value?.isEmpty == false)) {
+                        //   if (!RegExp(r'^\d+$').hasMatch(value!)) {
+                        //     return "Enter only number";
+                        //   } else {
+                        //     return null;
+                        //   }
+                        // } else {
+                        //   return null;
+                        // }
                       },
                       cursorColor: const Color(0xFFDC6E46),
                       decoration: const InputDecoration(
@@ -113,16 +122,26 @@ class _FilterFormState extends State<FilterForm> {
                         child: TextFormField(
                       controller: controller.maxPriceController,
                       validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            !RegExp(r'^[0-9]+$').hasMatch(value)) {
-                          return 'Enter only number';
-                        } else if (int.parse(value) <
-                            int.parse(controller.minPriceController.text)) {
-                          return 'Max price > min price';
-                        } else {
+                        if (value == null || value.isEmpty) {
                           return null;
+                        } else {
+                          if (!RegExp(r'^\d+$').hasMatch(value)) {
+                            return 'Enter only number';
+                          } else if (int.parse(value) <
+                              int.parse(controller.minPriceController.text)) {
+                            return 'Max price > min price';
+                          }
                         }
+                        return null;
+                        // if (value == null ||
+                        //     !RegExp(r'^\d+$').hasMatch(value)) {
+                        //   return 'Enter only number';
+                        // } else if (int.parse(value) <
+                        //     int.parse(controller.minPriceController.text)) {
+                        //   return 'Max price > min price';
+                        // } else {
+                        //   return null;
+                        // }
                       },
                       cursorColor: const Color(0xFFDC6E46),
                       decoration: const InputDecoration(
@@ -150,8 +169,7 @@ class _FilterFormState extends State<FilterForm> {
                         controller: controller.distantController,
                         validator: (value) {
                           if (value == null ||
-                              value.isEmpty ||
-                              !RegExp(r'^\d+(\.\d+)?$').hasMatch(value)) {
+                              !RegExp(r'^(\d+(\.\d+)?)?$').hasMatch(value)) {
                             return 'Enter only number';
                           } else {
                             return null;
@@ -308,18 +326,18 @@ class _FilterFormState extends State<FilterForm> {
               onTap: () {
                 if (_formKey.currentState!.validate()) {
                   filterItem = FilterItem(
-                      minPrice: int.parse(controller.minPriceController.text),
-                      maxPrice: int.parse(controller.maxPriceController.text),
-                      distant: double.parse(controller.maxPriceController.text),
+                      minPrice: controller.minPriceController.text.isNotEmpty? int.parse(controller.minPriceController.text): 0,
+                      maxPrice: controller.maxPriceController.text.isNotEmpty? int.parse(controller.maxPriceController.text):0,
+                      distant: controller.distantController.text.isNotEmpty? double.parse(controller.distantController.text):0,
                       overallRating: filterItem.overallRating,
                       facilities: filterItem.facilities);
-                  // Navigator.pop(context, filterItem);
-                  print(
-                      'min-max price: ${controller.minPriceController.text} - ${controller.maxPriceController.text}');
-                  print(
-                      'distant from KMUTT: ${controller.distantController.text}');
-                  print('overall rating: ${filterItem.overallRating}');
-                  print(filterItem.facilities);
+                  Navigator.pop(context);
+                  // print(
+                  //     'min-max price: ${filterItem.minPrice} - ${filterItem.maxPrice}');
+                  // print(
+                  //     'distant from KMUTT: ${filterItem.distant}');
+                  // print('overall rating: ${filterItem.overallRating}');
+                  // print(filterItem.facilities);
                   // Navigator.push(
                   //   context,
                   //   MaterialPageRoute(builder: (context) => HomePage(dataFilter: filterItem,)),

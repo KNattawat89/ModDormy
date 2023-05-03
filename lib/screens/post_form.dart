@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/dorm_feature.dart';
-import 'package:moddormy_flutter/widgets/MyAppbar.dart';
-import 'package:moddormy_flutter/widgets/MyDrawer.dart';
+import 'package:moddormy_flutter/widgets/my_appbar.dart';
+import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/dorm_form.dart';
 
 class PostForm extends StatefulWidget {

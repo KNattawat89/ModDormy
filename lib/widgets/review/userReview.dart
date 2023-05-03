@@ -11,7 +11,7 @@ class _UserReviewState extends State<UserReview> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
       height: MediaQuery.of(context).size.height * 0.25,
       child: Expanded(
         child: Column(children: [
@@ -33,14 +33,14 @@ class _UserReviewState extends State<UserReview> {
 
                     //username
                     Column(
-                      children: [
+                      children:const  [
                         Text('EveInwza007'),
                         Text('2020-10-10'),
                       ],
                     ),
 
                     //rating
-                    Text('⭐⭐⭐⭐⭐'),
+                    const Text('⭐⭐⭐⭐⭐'),
                   ],
                 ),
               ),
@@ -55,21 +55,19 @@ class _UserReviewState extends State<UserReview> {
 
           //review detail
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
             height: MediaQuery.of(context).size.height * 0.1,
             width: MediaQuery.of(context).size.width,
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text('1'),
-                  VerticalDivider(
-                    color: Colors.black,
-                    thickness: 1,
-                  ),
-                  Text('2')
-                ],
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children:const  [
+                Text('1'),
+                VerticalDivider(
+                  color: Colors.black,
+                  thickness: 1,
+                ),
+                Text('2')
+              ],
             ),
           )
         ]),
