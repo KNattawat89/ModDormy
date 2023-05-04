@@ -38,6 +38,8 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
+  bool _hindOfOpen = true;
+  bool _confirmPass = true;
   final _formkey = GlobalKey<FormState>();
   final _user = TextEditingController();
   final _fname = TextEditingController();
@@ -49,6 +51,17 @@ class _RegisterFormState extends State<RegisterForm> {
   bool isCheckedCus = false;
   bool checkOne = false;
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
+
+  void _togglePass() {
+    setState(() {
+      _hindOfOpen = !_hindOfOpen;
+    });
+  }
+    void _toggleConfirmPass() {
+    setState(() {
+      _confirmPass = !_confirmPass;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +106,8 @@ class _RegisterFormState extends State<RegisterForm> {
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||
-                            !RegExp(r'^\S{8,15}$').hasMatch(value)) {
-                          return 'Please enter your username';
+                            !RegExp(r'^[\S]{6,15}$').hasMatch(value)) {
+                          return 'Please enter 6-15 characters';
                         }
                         return null;
                       },
@@ -175,19 +188,25 @@ class _RegisterFormState extends State<RegisterForm> {
                     height: 50,
                     child: TextFormField(
                       controller: _pass,
-                      decoration: const InputDecoration(
+                      obscureText: _hindOfOpen,
+                      decoration: InputDecoration(
                           hintText: "Password",
-                          contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                           filled: true,
                           fillColor: Colors.white,
-                          border: OutlineInputBorder(
+                          suffixIcon: IconButton(
+                              onPressed: _togglePass,
+                              icon: _hindOfOpen
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off)),
+                          border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12.5)))),
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||
-                            !RegExp(r'^\S{8,15}$').hasMatch(value)) {
-                          return 'Please enter your password';
+                            !RegExp(r'^[\S]{8,15}$').hasMatch(value)) {
+                          return 'Please enter 8-15 characters';
                         }
                         return null;
                       },
@@ -197,12 +216,19 @@ class _RegisterFormState extends State<RegisterForm> {
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
                     height: 50,
                     child: TextFormField(
-                      decoration: const InputDecoration(
+                      obscureText: _confirmPass,
+                      decoration: InputDecoration(
                           hintText: "Confirm password",
-                          contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 12),
                           filled: true,
                           fillColor: Colors.white,
-                          border: OutlineInputBorder(
+                          suffixIcon: IconButton(
+                              onPressed: _toggleConfirmPass,
+                              icon: _confirmPass
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off)),
+                          border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12.5)))),
                       validator: (value) {
@@ -294,23 +320,20 @@ class _RegisterFormState extends State<RegisterForm> {
                                   try {
                                     await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
-                                          
                                             email: _email.text,
                                             password: _pass.text);
-                                    final  registerAcc = await Caller.dio.post(
-                                        "/api/auth/register",
-                                        data: {
-                                            "username": _user.text,
-                                            "password": _pass.text,
-                                            "fname": _fname.text,
-                                            "lname": _lname.text,
-                                            "email": _email.text,
-                                            "account": _account ==
-                                                    UserAccount.dormOwner
-                                                ? "DormOwner"
-                                                : "Customer",
-                                                "tel": "095123123"
-                                                });
+                                    final registerAcc = await Caller.dio
+                                        .post("/api/auth/register", data: {
+                                      "username": _user.text,
+                                      "fname": _fname.text,
+                                      "lname": _lname.text,
+                                      "email": _email.text,
+                                      "account":
+                                          _account == UserAccount.dormOwner
+                                              ? "DormOwner"
+                                              : "Customer",
+                                      "tel": "095123123"
+                                    });
                                     debugPrint(registerAcc.statusMessage);
                                     // ignore: use_build_context_synchronously
                                     showDialog<String>(

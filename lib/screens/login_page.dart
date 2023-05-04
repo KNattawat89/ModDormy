@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/screens/forgotpass_page.dart';
+import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/screens/post_form.dart';
 import 'package:moddormy_flutter/screens/register.dart';
 
@@ -38,10 +40,18 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  bool _hindOfOpen = true;
   final _formKey = GlobalKey<FormState>();
   final _user = TextEditingController();
   final _pass = TextEditingController();
   bool err = false;
+  String message = "";
+
+  void _toggle() {
+    setState(() {
+      _hindOfOpen = !_hindOfOpen;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +83,8 @@ class _LoginFormState extends State<LoginForm> {
                     filled: true,
                     fillColor: Colors.white,
                     hintText: "Type your email",
-                    
                     border: OutlineInputBorder(
-                      
                         borderRadius: BorderRadius.all(Radius.circular(50.0)))),
-               
               ),
             ),
             Padding(
@@ -98,11 +105,17 @@ class _LoginFormState extends State<LoginForm> {
               child: TextFormField(
                 controller: _pass,
                 style: const TextStyle(fontSize: 18),
+                obscureText: _hindOfOpen,
                 decoration: InputDecoration(
                     hintText: "Type your password",
                     prefixIcon: const Icon(Icons.key),
                     filled: true,
                     fillColor: Colors.white,
+                    suffixIcon: IconButton(
+                        onPressed: _toggle,
+                        icon: _hindOfOpen
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off)),
                     disabledBorder: InputBorder.none,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50.0),
@@ -130,9 +143,39 @@ class _LoginFormState extends State<LoginForm> {
                     )),
               ],
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            
+            SizedBox(
+                width: double.infinity,
+                height: err?  70 : 0,
+                child: Container(
+                    margin: err
+                        ? const EdgeInsets.only(bottom: 20)
+                        : const EdgeInsets.only(top: 0),
+                    // padding: err
+                    //     ? const EdgeInsets.symmetric(horizontal: double.infinity, vertical: 12)
+                    //     : const EdgeInsets.all(0),
+                    decoration: const BoxDecoration(
+                        color: Color(0xFFFFCDD2),
+                        borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          err
+                              ? Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 15),
+                                  child: Expanded(
+                                    child: Text(message == "user-not-found" ? "Please check your email" : "Please check your email and password",
+                                        style: const TextStyle(
+                                          color: Colors.red,
+                                        )),
+                                  ))
+                              : const Text("")
+                        ]))),
+
+            // Expanded(child:
+            // Row
+            // )
             SizedBox(
               width: 130,
               height: 39,
@@ -141,17 +184,32 @@ class _LoginFormState extends State<LoginForm> {
                     backgroundColor: const Color(0xFFDC6E46),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.5))),
-                onPressed: () {
-                  if (_formKey.currentState!.validate() & false) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: ((context) => const PostForm()),
-                        ));
-                  } else {
-                    setState(() {
-                      err = !err;
-                    });
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    try {
+                      setState(() {
+                        err = false;
+                      });
+                      await FirebaseAuth.instance.signInWithEmailAndPassword(
+                          email: _user.text, password: _pass.text);
+
+                      // ignore: use_build_context_synchronously
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: ((context) => const HomePage()),
+                          ));
+                    } on FirebaseAuthException catch (e) {
+                      setState(() {
+                        err = true;
+                        message = e.code;
+                      });
+                      if (e.code == 'user-not-found') {
+                        debugPrint('No user found for that email.');
+                      } else if (e.code == 'wrong-password') {
+                        debugPrint('Wrong password provided for that user.');
+                      }
+                    }
                   }
                 },
                 child: const Text(
@@ -160,17 +218,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ),
-               Container(
-                    
-                   margin: err? const EdgeInsets.only(top:30) : const EdgeInsets.only(top:0),
-                         padding: err? const EdgeInsets.symmetric(horizontal: 30, vertical: 12) : const EdgeInsets.all(0),
-                    decoration: const BoxDecoration(
-                       color: Color(0xFFFFCDD2),
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))
-                    ),
-                    child: err? const Text("Enter the correct email and password",style: TextStyle(color: Colors.red,)) : const Text("")
-                   ),
-            
+
             const SizedBox(
               height: 10,
             ),
