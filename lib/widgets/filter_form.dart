@@ -21,7 +21,7 @@ class _FilterFormState extends State<FilterForm> {
   bool _isLoading = false;
   bool isSelect = false;
   FilterItem filterItem = FilterItem(
-      minPrice: 0, maxPrice: 0, distant: 0, overallRating: "0", facilities: []);
+      minPrice: 0, maxPrice: 0, distant: 0, overallRating: '', facilities: []);
 
   void selectRate(String select) {
     if (filterItem.overallRating == select) {
@@ -36,10 +36,10 @@ class _FilterFormState extends State<FilterForm> {
   }
 
   void selectFaci(String selectItem) {
-    if (filterItem.facilities!.contains(selectItem)) {
-      filterItem.facilities!.remove(selectItem);
+    if (filterItem.facilities.contains(selectItem)) {
+      filterItem.facilities.remove(selectItem);
     } else {
-      filterItem.facilities!.add(selectItem);
+      filterItem.facilities.add(selectItem);
     }
     setState(() {
       isSelect = !isSelect;
@@ -47,7 +47,7 @@ class _FilterFormState extends State<FilterForm> {
   }
 
   bool getFacilitySelection(String selectItem) {
-    return filterItem.facilities!.contains(selectItem);
+    return filterItem.facilities.contains(selectItem);
   }
 
   void loadFilterOption() {
@@ -328,14 +328,14 @@ class _FilterFormState extends State<FilterForm> {
                 filterItem = FilterItem(
                     minPrice: controller.minPriceController.text.isNotEmpty
                         ? int.parse(controller.minPriceController.text)
-                        : null,
+                        : 0,
                     maxPrice: controller.maxPriceController.text.isNotEmpty
                         ? int.parse(controller.maxPriceController.text)
-                        : null,
+                        : 0,
                     distant: controller.distantController.text.isNotEmpty
                         ? double.parse(controller.distantController.text)
-                        : null,
-                    overallRating: filterItem.overallRating ?? '',
+                        : 0,
+                    overallRating: filterItem.overallRating,
                     facilities: filterItem.facilities);
                 print('min price ${filterItem.minPrice}');
                 print('max price ${filterItem.maxPrice}');

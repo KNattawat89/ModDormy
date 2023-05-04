@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Container filterOption({required String text, IconData? icon}) {
+Container filterOption({required String text, IconData? icon,required String field, required Function removeFilter}) {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
     decoration: BoxDecoration(
@@ -29,7 +29,15 @@ Container filterOption({required String text, IconData? icon}) {
         ),
         GestureDetector(
           onTap: () {
-            // function
+            if(field == 'minPrice'){
+              removeFilter('minPrice');
+              removeFilter('maxPrice');
+            }else if(field == 'facilities'){
+              removeFilter('facilities', text);
+            }else {
+              removeFilter(field);
+            }
+
           },
           child: const Icon(
             Icons.cancel,

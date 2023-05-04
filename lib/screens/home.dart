@@ -12,6 +12,7 @@ import '../widgets/my_drawer.dart';
 
 class HomePage extends StatefulWidget {
   final FilterItem? argument;
+
   const HomePage({Key? key, this.argument}) : super(key: key);
 
   @override
@@ -21,6 +22,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
   final dio = Dio();
+  late FilterItem newOption = widget.argument ??
+      FilterItem(
+          minPrice: 0,
+          maxPrice: 0,
+          distant: 0,
+          overallRating: '0',
+          facilities: []);
   List<DormItem> _filteredData = [];
   List<DormItem> _data = [];
   bool isFav = false;
@@ -29,6 +37,11 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       isFav = !isFav;
     });
+    // print('min price ${newOption.minPrice}');
+    // print('max price ${newOption.maxPrice}');
+    // print('distant ${newOption.distant}');
+    // print('rate ${newOption.overallRating}');
+    // print('facilities ${newOption.facilities}');
   }
 
   void getAllDorm() async {
@@ -45,23 +58,58 @@ class _HomePageState extends State<HomePage> {
   }
 
   bool _isLoading = false;
-  void getFilterDorm() async{
-    try{
-      final response = await Caller.dio.post('/api/home/getFilter', data: null); // change to post and put data
+
+  void getFilterDorm() async {
+    try {
+      final response = await Caller.dio.post('/api/home/getFilter',
+          data: null); // change to post and put data
       DormList d = DormList.fromJson(response.data);
       _data = d.data;
       setState(() {
         _filteredData = _data;
       });
-    } catch(e){
+    } catch (e) {
       print(e);
     }
   }
 
-  void updateOption(){
+  void removeOption(String propertyName, [String? facilityName]) {
+    switch (propertyName) {
+      case 'minPrice':
+        setState(() {
+          newOption.minPrice = 0;
+        });
 
+        break;
+      case 'maxPrice':
+        setState(() {
+          newOption.maxPrice = 0;
+        });
+
+        break;
+      case 'distant':
+        setState(() {
+          newOption.distant = 0.0;
+        });
+
+        break;
+      case 'overallRating':
+        setState(() {
+          newOption.overallRating = '';
+        });
+
+        break;
+      case 'facilities':
+        if (newOption.facilities.isNotEmpty && facilityName != null) {
+          setState(() {
+            newOption.facilities.remove(facilityName);
+          });
+        }
+        break;
+      default:
+        throw ArgumentError("Invalid property name: $propertyName");
+    }
   }
-
 
   @override
   void initState() {
@@ -112,20 +160,38 @@ class _HomePageState extends State<HomePage> {
               direction: Axis.horizontal,
               runSpacing: 10,
               spacing: 10,
-              children:[
+              children: [
                 if (widget.argument != null) ...[
-                  if (widget.argument?.minPrice != null || widget.argument?.maxPrice != null)
-                    filterOption(text: '${widget.argument?.minPrice} - ${widget.argument?.maxPrice} Baht'),
-                  if (widget.argument?.distant != null)
-                    filterOption(text: '${widget.argument?.distant} from KMUTT', icon: Icons.pin_drop),
-                  if (widget.argument?.overallRating != '0')
-                    filterOption(text: widget.argument?.overallRating ?? '',icon: Icons.star),
-                  ...List.generate(widget.argument?.facilities?.length ?? 0, (index) {
-                    return filterOption(text: widget.argument?.facilities?[index] ?? '');
+                  if (widget.argument?.minPrice != 0 ||
+                      widget.argument?.maxPrice != 0)
+                    filterOption(
+                        text:
+                            '${widget.argument?.minPrice} - ${widget.argument?.maxPrice} Baht',
+                        field: 'price',
+                        removeFilter: removeOption),
+                  if (widget.argument?.distant != 0)
+                    filterOption(
+                        text: '${widget.argument?.distant} from KMUTT',
+                        icon: Icons.pin_drop,
+                        field: 'distant',
+                        removeFilter: removeOption),
+                  if (widget.argument?.overallRating != '')
+                    filterOption(
+                        text: widget.argument?.overallRating ?? '',
+                        icon: Icons.star,
+                        field: 'overallRating',
+                        removeFilter: removeOption),
+                  ...List.generate(widget.argument?.facilities?.length ?? 0,
+                      (index) {
+                    return filterOption(
+                        text: widget.argument?.facilities?[index] ?? '',
+                        field: 'facilities',
+                        removeFilter: removeOption);
                   }),
                 ],
               ],
-            ),const SizedBox(
+            ),
+            const SizedBox(
               height: 20,
             ),
             _isLoading

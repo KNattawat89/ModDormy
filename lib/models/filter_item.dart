@@ -1,15 +1,15 @@
 
 class FilterItem {
-  int? minPrice;
-  int? maxPrice;
-  double? distant;
-  String? overallRating;
-  List<String>? facilities;
+  int minPrice;
+  int maxPrice;
+  double distant;
+  String overallRating;
+  List<String> facilities;
   FilterItem({
-    this.minPrice,
-    this.maxPrice,
-    this.distant,
-    this.overallRating,
-    this.facilities
+    required this.minPrice,
+    required this.maxPrice,
+    required this.distant,
+    required this.overallRating,
+    required this.facilities
 });
 }
