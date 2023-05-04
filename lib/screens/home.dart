@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
 
   void getAllDorm() async {
     try {
-      final response = await Caller.dio.get('/api/home/getAllDorm');
+      final response = await Caller.dio.get('/api/manage-dorm/getAllDorm');
       DormList d = DormList.fromJson(response.data);
       _data = d.data;
       setState(() {
@@ -60,13 +60,27 @@ class _HomePageState extends State<HomePage> {
   bool _isLoading = false;
 
   void getFilterDorm() async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
-      final response = await Caller.dio.post('/api/home/getFilter',
-          data: null); // change to post and put data
+      // อย่าลืมเรื่อง user login or not login
+      final response = await Caller.dio.post('/api/home/getFilter', data: {
+        "min_price": newOption.minPrice,
+        "max_price": newOption.maxPrice,
+        "distant": newOption.distant,
+        "rate": newOption.overallRating,
+        "facilities": newOption.facilities
+      }); // change to post and put data
       DormList d = DormList.fromJson(response.data);
       _data = d.data;
       setState(() {
         _filteredData = _data;
+      });
+      await Future.delayed(const Duration(milliseconds: 1000));
+
+      setState(() {
+        _isLoading = false;
       });
     } catch (e) {
       print(e);
@@ -74,28 +88,33 @@ class _HomePageState extends State<HomePage> {
   }
 
   void removeOption(String propertyName, [String? facilityName]) {
+
     switch (propertyName) {
       case 'minPrice':
         setState(() {
           newOption.minPrice = 0;
+          getFilterDorm();
         });
 
         break;
       case 'maxPrice':
         setState(() {
           newOption.maxPrice = 0;
+          getFilterDorm();
         });
 
         break;
       case 'distant':
         setState(() {
           newOption.distant = 0.0;
+          getFilterDorm();
         });
 
         break;
       case 'overallRating':
         setState(() {
           newOption.overallRating = '';
+          getFilterDorm();
         });
 
         break;
@@ -103,6 +122,7 @@ class _HomePageState extends State<HomePage> {
         if (newOption.facilities.isNotEmpty && facilityName != null) {
           setState(() {
             newOption.facilities.remove(facilityName);
+            getFilterDorm();
           });
         }
         break;
