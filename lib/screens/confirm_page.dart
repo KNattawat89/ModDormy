@@ -146,13 +146,29 @@ class DetailScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.location_pin),
+                            Text(
+                                ' Distance away from KMUTT\n${dorm.distance} KM',
+                                style: const TextStyle(fontSize: 18)),
+                          ],
+                        ),
+                      ),
+                      Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 0, 32),
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: dorm.feature.toList().length,
                           itemBuilder: (BuildContext context, int index) {
-                            return Text('${dorm.feature.toList()[index]} ',
-                                style: const TextStyle(fontSize: 18));
+                            return Row(
+                              children: [
+                                Icon(Icons.check),
+                                Text(' ${dorm.feature.toList()[index]} ',
+                                    style: const TextStyle(fontSize: 18)),
+                              ],
+                            );
                           },
                         ),
                       ),
@@ -172,6 +188,8 @@ class DetailScreen extends StatelessWidget {
                             ),
                             Text(
                               '${dorm.advPayment} months',
+                              style: const TextStyle(
+                                  color: Colors.grey, fontSize: 16),
                             ),
                           ],
                         ),
@@ -186,7 +204,7 @@ class DetailScreen extends StatelessWidget {
                                   fontSize: 18, fontWeight: FontWeight.w500),
                             ),
                             Text(
-                              '${dorm.electric} baht/unit}',
+                              '${dorm.electric} baht/unit',
                               style: const TextStyle(
                                   color: Colors.grey, fontSize: 16),
                             ),
@@ -271,7 +289,7 @@ class DetailScreen extends StatelessWidget {
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              dorm.rooms[index].price,
+                              '${dorm.rooms[index].price}',
                               style: const TextStyle(
                                   color: Colors.grey, fontSize: 20),
                             ),
