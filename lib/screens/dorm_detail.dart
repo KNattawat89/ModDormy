@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/screens/room_detail.dart';
 import 'package:moddormy_flutter/widgets/MyDrawer.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 
@@ -73,7 +74,7 @@ class _DormDetailState extends State<DormDetail> {
                         ),
                         child: IconButton(
                           color: Colors.white,
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: const Icon(Icons.arrow_back),
                           onPressed: () {
                             Navigator.pop(context);
                           },
@@ -114,7 +115,7 @@ class _DormDetailState extends State<DormDetail> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text(
-                          'Dorm Description :',
+                          'Dorm Description',
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w500),
@@ -195,7 +196,12 @@ class _DormDetailState extends State<DormDetail> {
                       padding: const EdgeInsets.all(8),
                       child: OutlinedButton(
                         onPressed: () {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => RoomPage()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RoomDetail(
+                                        roomNo: (index + 1).toString(),
+                                      )));
                         },
                         child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -328,7 +334,7 @@ class _DormDetailState extends State<DormDetail> {
                   ],
                 ),
               ),
-              Divider(
+              const Divider(
                 thickness: 5,
               ),
               // REVIEW HERE
