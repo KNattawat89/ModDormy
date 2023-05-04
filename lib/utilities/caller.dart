@@ -4,6 +4,8 @@ import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 
 class Caller {
   static BaseOptions options = BaseOptions(
+    // 127.0.0.1 -> localhost -> when using IOS emulator
+    // 10.0.2.2 or IP of your network -> when using android emulator
     baseUrl: "http://127.0.0.1:8000",
     connectTimeout: const Duration(seconds: 5),
     receiveTimeout: const Duration(seconds: 3),
