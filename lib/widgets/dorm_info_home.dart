@@ -19,7 +19,7 @@ Column dormInfoHome(int rating, String dormName, int minPrice, int maxPrice,
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: SizedBox.fromSize(
-                size: const Size.fromRadius(80), // Image radius
+                size: const Size.fromRadius(90), // Image radius
                 child: Image.network(
                   pathImage,
                   fit: BoxFit.cover,
@@ -74,7 +74,7 @@ Column dormInfoHome(int rating, String dormName, int minPrice, int maxPrice,
       ),
       Text(
         compareMinMaxPrice(minPrice, maxPrice),
-        style: const TextStyle(color: Color(0xFFDC6E46), fontSize: 12),
+        style: const TextStyle(color: Color(0xFFDC6E46), fontSize: 14),
       ),
     ],
   );
