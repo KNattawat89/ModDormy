@@ -30,7 +30,7 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget  {
       leading: IconButton(
         // App icon
           icon: Image.asset('assets/logo/Logo.png'),
-          onPressed: () => Navigator.popUntil(context,ModalRoute.withName('/'))
+          onPressed: () => Navigator.popUntil(context,ModalRoute.withName('/home'))
       ),
       leadingWidth: 100,
     );
