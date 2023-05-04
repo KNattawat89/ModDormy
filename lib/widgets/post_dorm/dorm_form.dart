@@ -3,6 +3,7 @@ import 'package:moddormy_flutter/screens/confirm_page.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/section_contract.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/section_cover_image.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/section_description.dart';
+import 'package:moddormy_flutter/widgets/post_dorm/section_distance.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/section_feature.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/section_info.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/section_photos.dart';
@@ -48,7 +49,11 @@ class _DormFormState extends State<DormForm> {
           CoverImageSection(dorm: widget.dorm),
           PhotosSection(dorm: widget.dorm),
           FeatureSection(dorm: widget.dorm),
+          DistanceSection(dorm: widget.dorm),
           ContractSection(dorm: widget.dorm),
+          const Divider(
+            thickness: 5,
+          ),
           RoomsSection(dorm: widget.dorm),
           Center(
             child: Padding(

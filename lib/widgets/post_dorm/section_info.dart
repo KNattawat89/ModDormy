@@ -201,15 +201,16 @@ class _InfoSectionState extends State<InfoSection> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  keyboardType: TextInputType.number,
                   controller: zipCodeController,
                   onChanged: (value) {
-                    widget.dorm.zipCode = zipCodeController.text;
+                    widget.dorm.zipCode = int.parse(zipCodeController.text);
                   },
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Zipcode'),
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'required';
+                    if (value == null || value.isEmpty && value.length != 5) {
+                      return 'required 5 digit number';
                     }
                     return null;
                   },

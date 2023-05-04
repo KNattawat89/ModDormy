@@ -79,9 +79,11 @@ class _RoomItemState extends State<RoomItem> {
                   child: Column(
                     children: [
                       TextFormField(
+                        keyboardType: TextInputType.number,
                         controller: priceController,
                         onChanged: (value) {
-                          widget.room.price = priceController.text;
+                          widget.room.price =
+                              double.parse(priceController.text);
                         },
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(), hintText: 'Price'),

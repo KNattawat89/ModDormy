@@ -11,12 +11,13 @@ class Dorm {
   String subDistrict;
   String district;
   String city;
-  String zipCode;
+  int zipCode;
   String description;
-  String advPayment;
-  String electric;
-  String water;
+  int advPayment;
+  double electric;
+  double water;
   String other;
+  double distance;
   DormFeature feature;
   XFile? coverImage;
   List<XFile> imageList = [];
@@ -33,6 +34,7 @@ class Dorm {
     required this.city,
     required this.zipCode,
     required this.description,
+    required this.distance,
     required this.feature,
     required this.advPayment,
     required this.electric,

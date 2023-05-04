@@ -31,7 +31,7 @@ class _RoomsSectionState extends State<RoomsSection> {
                 setState(() {
                   widget.dorm.rooms.add(Room(
                       name: "",
-                      price: "",
+                      price: 0,
                       size: '',
                       description: "",
                       feature: RoomFeature(
