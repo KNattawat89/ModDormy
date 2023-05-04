@@ -45,6 +45,23 @@ class _HomePageState extends State<HomePage> {
   }
 
   bool _isLoading = false;
+  void getFilterDorm() async{
+    try{
+      final response = await Caller.dio.post('/api/home/getFilter', data: null); // change to post and put data
+      DormList d = DormList.fromJson(response.data);
+      _data = d.data;
+      setState(() {
+        _filteredData = _data;
+      });
+    } catch(e){
+      print(e);
+    }
+  }
+
+  void updateOption(){
+
+  }
+
 
   @override
   void initState() {
@@ -97,9 +114,9 @@ class _HomePageState extends State<HomePage> {
               spacing: 10,
               children:[
                 if (widget.argument != null) ...[
-                  if (widget.argument?.minPrice != 0 || widget.argument?.maxPrice != 0)
+                  if (widget.argument?.minPrice != null || widget.argument?.maxPrice != null)
                     filterOption(text: '${widget.argument?.minPrice} - ${widget.argument?.maxPrice} Baht'),
-                  if (widget.argument?.distant != 0.0)
+                  if (widget.argument?.distant != null)
                     filterOption(text: '${widget.argument?.distant} from KMUTT', icon: Icons.pin_drop),
                   if (widget.argument?.overallRating != '0')
                     filterOption(text: widget.argument?.overallRating ?? '',icon: Icons.star),

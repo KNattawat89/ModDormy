@@ -36,10 +36,10 @@ class _FilterFormState extends State<FilterForm> {
   }
 
   void selectFaci(String selectItem) {
-    if (filterItem.facilities.contains(selectItem)) {
-      filterItem.facilities.remove(selectItem);
+    if (filterItem.facilities!.contains(selectItem)) {
+      filterItem.facilities!.remove(selectItem);
     } else {
-      filterItem.facilities.add(selectItem);
+      filterItem.facilities!.add(selectItem);
     }
     setState(() {
       isSelect = !isSelect;
@@ -47,7 +47,7 @@ class _FilterFormState extends State<FilterForm> {
   }
 
   bool getFacilitySelection(String selectItem) {
-    return filterItem.facilities.contains(selectItem);
+    return filterItem.facilities!.contains(selectItem);
   }
 
   void loadFilterOption() {
@@ -63,7 +63,7 @@ class _FilterFormState extends State<FilterForm> {
   }
 
   bool getRateSelection(int index) {
-    String actualNumber = filterItem.overallRating.replaceAll("≥", "");
+    String actualNumber = filterItem.overallRating!.replaceAll("≥", "");
     try {
       int parsedNumber = int.parse(actualNumber);
       return parsedNumber == index;
@@ -328,14 +328,14 @@ class _FilterFormState extends State<FilterForm> {
                 filterItem = FilterItem(
                     minPrice: controller.minPriceController.text.isNotEmpty
                         ? int.parse(controller.minPriceController.text)
-                        : 0,
+                        : null,
                     maxPrice: controller.maxPriceController.text.isNotEmpty
                         ? int.parse(controller.maxPriceController.text)
-                        : 0,
+                        : null,
                     distant: controller.distantController.text.isNotEmpty
                         ? double.parse(controller.distantController.text)
-                        : 0,
-                    overallRating: filterItem.overallRating,
+                        : null,
+                    overallRating: filterItem.overallRating ?? '',
                     facilities: filterItem.facilities);
                 print('min price ${filterItem.minPrice}');
                 print('max price ${filterItem.maxPrice}');
