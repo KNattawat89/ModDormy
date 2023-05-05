@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
 
   void getAllDorm() async {
     try {
-      final response = await Caller.dio.get('/api/manage-dorm/getAllDorm');
+      final response = await Caller.dio.get('/api/home/getAllDorm');
       DormList d = DormList.fromJson(response.data);
       _data = d.data;
       setState(() {

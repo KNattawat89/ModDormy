@@ -43,7 +43,7 @@ class MyDrawer extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                menuTextIcon(context,Icons.home, "Home",'/'),
+                menuTextIcon(context,Icons.home, "Home",'/home'),
                 menuTextIcon(context,Icons.account_circle, "Profile",'/profile'),
                 menuTextIcon(context,Icons.favorite, "Favorite",'/fav'),
                 const Divider(),
