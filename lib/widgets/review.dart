@@ -30,7 +30,7 @@ class _DormReviewState extends State<DormReview> {
                   color: Colors.black),
             ),
             const DormRating(),
-            const UserReview(),
+            //Expanded(child: const UserReview()),
             const AddReview(),
           ],
         ));
