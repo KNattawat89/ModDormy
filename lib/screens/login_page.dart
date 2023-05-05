@@ -208,20 +208,21 @@ class _LoginFormState extends State<LoginForm> {
                             '/api/profile/getProfile?userId=${userCredential.user?.uid}');
                         UserList u = UserList.fromJson(response.data);
                         _data = u.data;
+                        Provider.of<UserProvider>(context, listen: false).setUser(
+                            _data[0].userId,
+                            _data[0].profileImage ?? '',
+                            _data[0].username,
+                            _data[0].firstname,
+                            _data[0].lastname,
+                            _data[0].email,
+                            _data[0].telephone?? '',
+                            _data[0].lineId?? '',
+                            _data[0].userType);
                       } catch (e) {
                         print(e);
                       }
 
-                      Provider.of<UserProvider>(context, listen: false).setUser(
-                          _data[0].userId,
-                          _data[0].profileImage ?? '',
-                          _data[0].username,
-                          _data[0].firstname,
-                          _data[0].lastname,
-                          _data[0].email,
-                          _data[0].telephone?? '',
-                          _data[0].lineId?? '',
-                          _data[0].userType);
+
                       // ignore: use_build_context_synchronously
                       Navigator.push(
                           context,
