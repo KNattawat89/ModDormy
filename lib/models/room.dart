@@ -3,7 +3,7 @@ import 'package:moddormy_flutter/models/room_frature.dart';
 
 class Room {
   String name;
-  double price;
+  int price;
   String size;
   String description;
   RoomFeature feature;

@@ -13,7 +13,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
 // Ideal time to initialize
-//   await FirebaseAuth.instance.useAuthEmulator('localhost', 3000);
+  await FirebaseAuth.instance.useAuthEmulator('localhost', 3000);
   runApp(const MyApp());
 //...
 }
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         // '/profile': (context) => const ProfilePage(),
       },
-      home: const FavoritePage(),
+      home: const PostForm(),
       // home: const Scaffold(
       //   endDrawer: MyDrawer(),
       //   appBar: MyAppbar(),
