@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:moddormy_flutter/widgets/review/review_mockup.dart';
@@ -14,7 +16,14 @@ class UserReview extends StatefulWidget {
 class _UserReviewState extends State<UserReview> {
   @override
   Widget build(BuildContext context) {
-    return Card(
+    var count = 0;
+    if (reviews.length == 0) {
+      count = 1;
+    } else {
+      count = reviews.length;
+    }
+    return Container(
+      height: MediaQuery.of(context).size.height * count * 0.2,
       child: ListView.builder(
         itemCount: reviews.length,
         itemBuilder: (context, index) {
