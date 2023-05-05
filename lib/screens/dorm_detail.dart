@@ -15,6 +15,7 @@ class _DormDetailState extends State<DormDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffFFF8F0),
       appBar: const MyAppbar(),
       drawer: const MyDrawer(),
       body: Center(
@@ -339,7 +340,7 @@ class _DormDetailState extends State<DormDetail> {
                 thickness: 5,
               ),
               // REVIEW HERE
-              DormReview()
+              const DormReview(),
             ],
           ),
         ),

@@ -82,8 +82,7 @@ class _RoomItemState extends State<RoomItem> {
                         keyboardType: TextInputType.number,
                         controller: priceController,
                         onChanged: (value) {
-                          widget.room.price =
-                              double.parse(priceController.text);
+                          widget.room.price = int.parse(priceController.text);
                         },
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(), hintText: 'Price'),

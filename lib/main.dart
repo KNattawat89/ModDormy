@@ -14,7 +14,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
 // Ideal time to initialize
-//   await FirebaseAuth.instance.useAuthEmulator('localhost', 3000);
+  await FirebaseAuth.instance.useAuthEmulator('localhost', 3000);
   runApp(const MyApp());
 //...
 }

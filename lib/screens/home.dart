@@ -88,7 +88,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void removeOption(String propertyName, [String? facilityName]) {
-
     switch (propertyName) {
       case 'minPrice':
         setState(() {
@@ -201,10 +200,10 @@ class _HomePageState extends State<HomePage> {
                         icon: Icons.star,
                         field: 'overallRating',
                         removeFilter: removeOption),
-                  ...List.generate(widget.argument?.facilities?.length ?? 0,
+                  ...List.generate(widget.argument?.facilities.length ?? 0,
                       (index) {
                     return filterOption(
-                        text: widget.argument?.facilities?[index] ?? '',
+                        text: widget.argument?.facilities[index] ?? '',
                         field: 'facilities',
                         removeFilter: removeOption);
                   }),
