@@ -17,7 +17,7 @@ class _DormDetailState extends State<DormDetail> {
     return Scaffold(
       backgroundColor: const Color(0xffFFF8F0),
       appBar: const MyAppbar(),
-      drawer: const MyDrawer(),
+      endDrawer: const MyDrawer(),
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(16),
