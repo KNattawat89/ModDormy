@@ -9,6 +9,7 @@ import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/user_provider.dart';
+import '../utilities/user_api.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -58,9 +59,12 @@ class _LoginFormState extends State<LoginForm> {
       _hindOfOpen = !_hindOfOpen;
     });
   }
+  final userApiService = UserApiService();
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+
     return Form(
         key: _formKey,
         child: Column(
@@ -202,26 +206,8 @@ class _LoginFormState extends State<LoginForm> {
                       final userCredential = await FirebaseAuth.instance
                           .signInWithEmailAndPassword(
                               email: _user.text, password: _pass.text);
-                      print(userCredential.user?.uid);
-                      try {
-                        final response = await Caller.dio.get(
-                            '/api/profile/getProfile?userId=${userCredential.user?.uid}');
-                        UserList u = UserList.fromJson(response.data);
-                        _data = u.data;
-                        Provider.of<UserProvider>(context, listen: false).setUser(
-                            _data[0].userId,
-                            _data[0].profileImage ?? '',
-                            _data[0].username,
-                            _data[0].firstname,
-                            _data[0].lastname,
-                            _data[0].email,
-                            _data[0].telephone?? '',
-                            _data[0].lineId?? '',
-                            _data[0].userType);
-                      } catch (e) {
-                        print(e);
-                      }
-
+                      // print(userCredential.user?.uid);
+                      await UserApiService.getUserProfile(userCredential.user!.uid, userProvider);
 
                       // ignore: use_build_context_synchronously
                       Navigator.push(

@@ -14,6 +14,14 @@ class ProfilePage extends StatelessWidget {
     final user = Provider.of<UserProvider>(context);
     // print(user.userId);
 
+    // when u want to update user profile on db please use this method together
+    // it will update UserProvider as well
+    //-----------------
+    // UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+    // UserItem userProfile = await UserApiService.getUserProfile(uid, userProvider);
+    // noted: in the getUserProfile method, it has async function already don't have to use async func.
+    //-----------------
+
     return Scaffold(
       endDrawer: const MyDrawer(),
       appBar: const MyAppbar(),
@@ -32,17 +40,17 @@ class ProfilePage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Please login'),
+                        const Text('Please login'),
                         ElevatedButton(
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => LoginPage(),
+                                builder: (context) => const LoginPage(),
                               ),
                             );
                           },
-                          child: Text('Login'),
+                          child: const Text('Login'),
                         ),
                       ],
                     ),
