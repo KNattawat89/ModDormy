@@ -116,10 +116,10 @@ class _FilterFormState extends State<FilterForm> {
                         }
                       }
                     },
-                    cursorColor: const Color(0xFFDC6E46),
+                    cursorColor: const Color(0xFF2A8089),
                     decoration: const InputDecoration(
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFFDC6E46)),
+                        borderSide: BorderSide(color: Color(0xFF2A8089)),
                       ),
                       hintText: "Min price",
                     ),
@@ -143,10 +143,10 @@ class _FilterFormState extends State<FilterForm> {
                       }
                       return null;
                     },
-                    cursorColor: const Color(0xFFDC6E46),
+                    cursorColor: const Color(0xFF2A8089),
                     decoration: const InputDecoration(
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFFDC6E46)),
+                        borderSide: BorderSide(color: Color(0xFF2A8089)),
                       ),
                       hintText: "Max price",
                     ),
@@ -175,10 +175,10 @@ class _FilterFormState extends State<FilterForm> {
                           return null;
                         }
                       },
-                      cursorColor: const Color(0xFFDC6E46),
+                      cursorColor: const Color(0xFF2A8089),
                       decoration: const InputDecoration(
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFDC6E46)),
+                          borderSide: BorderSide(color: Color(0xFF2A8089)),
                         ),
                         hintText: "Distant away from KMUTT",
                       ),
