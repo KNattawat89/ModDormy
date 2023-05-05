@@ -38,7 +38,7 @@ class _AddReviewState extends State<AddReview> {
               ),
               elevation: 8,
               child: Container(
-                padding: const EdgeInsets.all(14.0),
+                padding: const EdgeInsets.fromLTRB(14, 14, 14, 0),
                 child: RatingForm(
                   review: review,
                 ),

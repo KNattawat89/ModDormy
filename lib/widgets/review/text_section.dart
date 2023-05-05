@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/review.dart';
 
 class TextSection extends StatefulWidget {
-  const TextSection({super.key, required Review review});
-
-  get review => null;
+  final Review review;
+  const TextSection({super.key, required this.review});
 
   @override
   State<TextSection> createState() => _TextSectionState();

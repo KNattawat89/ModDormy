@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/screens/room_detail.dart';
 import 'package:moddormy_flutter/widgets/MyDrawer.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
+import 'package:moddormy_flutter/widgets/review.dart';
 
 class DormDetail extends StatefulWidget {
   const DormDetail({super.key});
@@ -338,6 +339,7 @@ class _DormDetailState extends State<DormDetail> {
                 thickness: 5,
               ),
               // REVIEW HERE
+              DormReview()
             ],
           ),
         ),

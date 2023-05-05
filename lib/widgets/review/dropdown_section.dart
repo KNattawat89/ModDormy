@@ -59,11 +59,11 @@ class _DropdownSectionState extends State<DropdownSection> {
                           (index) => const Icon(
                                 Icons.star,
                                 color: Color(0xffDC6E46),
-                                size: 18,
+                                size: 14,
                               )),
                     ),
                     Text(
-                      '$value.0',
+                      '$value',
                       style: const TextStyle(
                           fontSize: 14, color: Color(0xffDC6E46)),
                     ),
@@ -119,11 +119,11 @@ class _DropdownSectionState extends State<DropdownSection> {
                           (index) => const Icon(
                                 Icons.star,
                                 color: Color(0xffDC6E46),
-                                size: 18,
+                                size: 14,
                               )),
                     ),
                     Text(
-                      '$value.0',
+                      '$value',
                       style: const TextStyle(
                           fontSize: 14, color: Color(0xffDC6E46)),
                     ),
@@ -179,11 +179,11 @@ class _DropdownSectionState extends State<DropdownSection> {
                           (index) => const Icon(
                                 Icons.star,
                                 color: Color(0xffDC6E46),
-                                size: 18,
+                                size: 14,
                               )),
                     ),
                     Text(
-                      '$value.0',
+                      '$value',
                       style: const TextStyle(
                           fontSize: 14, color: Color(0xffDC6E46)),
                     ),
@@ -238,11 +238,11 @@ class _DropdownSectionState extends State<DropdownSection> {
                           (index) => const Icon(
                                 Icons.star,
                                 color: Color(0xffDC6E46),
-                                size: 18,
+                                size: 14,
                               )),
                     ),
                     Text(
-                      '$value.0',
+                      '$value',
                       style: const TextStyle(
                           fontSize: 14, color: Color(0xffDC6E46)),
                     ),
@@ -298,11 +298,11 @@ class _DropdownSectionState extends State<DropdownSection> {
                           (index) => const Icon(
                                 Icons.star,
                                 color: Color(0xffDC6E46),
-                                size: 18,
+                                size: 14,
                               )),
                     ),
                     Text(
-                      '$value.0',
+                      '$value',
                       style: const TextStyle(
                           fontSize: 14, color: Color(0xffDC6E46)),
                     ),

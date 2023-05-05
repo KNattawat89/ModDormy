@@ -1,5 +1,5 @@
 class Review {
-  final String review;
+  late final String review;
   late final int priceRate;
   late final int locationRate;
   late final int facilityRate;
