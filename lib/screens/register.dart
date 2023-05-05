@@ -318,12 +318,14 @@ class _RegisterFormState extends State<RegisterForm> {
                               onPressed: () async {
                                 if (_formkey.currentState!.validate()) {
                                   try {
-                                    await FirebaseAuth.instance
+                                  final credential =  await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
                                             email: _email.text,
                                             password: _pass.text);
+                                             debugPrint(credential.user?.uid);
                                     final registerAcc = await Caller.dio
                                         .post("/api/auth/register", data: {
+                                          "userid" : credential.user?.uid,
                                       "username": _user.text,
                                       "fname": _fname.text,
                                       "lname": _lname.text,
@@ -334,6 +336,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                               : "Customer",
                                       "tel": "095123123"
                                     });
+                                     
                                     debugPrint(registerAcc.statusMessage);
                                     // ignore: use_build_context_synchronously
                                     showDialog<String>(
