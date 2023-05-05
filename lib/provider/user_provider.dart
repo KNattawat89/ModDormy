@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class UserProvider extends ChangeNotifier {
-  int _userId;
+  String _userId;
   String _profileImage;
   String _username;
   String _firstname;
@@ -12,7 +12,7 @@ class UserProvider extends ChangeNotifier {
   String _userType;
 
   UserProvider({
-    int userId = -1,
+    String userId = '',
     String profileImage = '',
     String username = '',
     String firstName = '',
@@ -31,7 +31,7 @@ class UserProvider extends ChangeNotifier {
         _lineId = lineId,
         _userType = userType;
 
-  int get userId => _userId;
+  String get userId => _userId;
 
   String get profileImage => _profileImage;
 
@@ -50,7 +50,7 @@ class UserProvider extends ChangeNotifier {
   String get userType => _userType;
 
   void setUser(
-      int userId,
+      String userId,
       String profileImage,
       String username,
       String firstname,
@@ -72,7 +72,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   void updatedUser(
-      int userId,
+      String userId,
       String profileImage,
       String username,
       String firstname,
