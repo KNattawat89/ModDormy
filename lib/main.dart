@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/screens/dorm_detail.dart';
 import 'package:moddormy_flutter/screens/favorite.dart';
 import 'package:moddormy_flutter/screens/home.dart';
+import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/screens/post_form.dart';
 import 'package:moddormy_flutter/screens/profile.dart';
 import 'package:moddormy_flutter/screens/register.dart';
@@ -29,9 +30,10 @@ class MyApp extends StatelessWidget {
       routes: {
         '/fav': (context) => const FavoritePage(),
         '/home': (context) => const HomePage(),
+        '/login': (context) => const LoginPage(),
         // '/profile': (context) => const ProfilePage(),
       },
-      home: const FavoritePage(),
+      home: const LoginPage(),
       // home: const Scaffold(
       //   endDrawer: MyDrawer(),
       //   appBar: MyAppbar(),
