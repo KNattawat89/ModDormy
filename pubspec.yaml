@@ -43,6 +43,7 @@ dependencies:
   flutter_platform_alert: ^0.3.0
   fluttericon: ^2.0.0
   dropdown_button2: ^2.1.0
+  intl: ^0.17.0
 
 dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to
