@@ -51,6 +51,7 @@ class _DetailScreenState extends State<DetailScreen> {
       );
       debugPrint(postdorm.data["id"].toString());
 
+      // ignore: prefer_typing_uninitialized_variables
       var postroom;
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
         postroom = await Caller.dio.post("/api/manage-room/postRoom", data: {
@@ -230,7 +231,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return Row(
                               children: [
-                                Icon(Icons.check),
+                                const Icon(Icons.check),
                                 Text(' ${widget.dorm.feature.toList()[index]} ',
                                     style: const TextStyle(fontSize: 18)),
                               ],
