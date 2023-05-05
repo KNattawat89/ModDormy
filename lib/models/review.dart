@@ -1,11 +1,11 @@
 class Review {
-  late final String review;
-  late final int priceRate;
-  late final int locationRate;
-  late final int facilityRate;
-  late final int sanitaryRate;
-  late final int securityRate;
-  late final double overallRate;
+  String review;
+  int priceRate;
+  int locationRate;
+  int facilityRate;
+  int sanitaryRate;
+  int securityRate;
+  double overallRate;
 
   Review({
     required this.review,
@@ -16,4 +16,6 @@ class Review {
     required this.securityRate,
     required this.overallRate,
   });
+
+  static fromJson(json) {}
 }
