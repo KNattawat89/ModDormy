@@ -334,7 +334,6 @@ class _RegisterFormState extends State<RegisterForm> {
                                           _account == UserAccount.dormOwner
                                               ? "DormOwner"
                                               : "Customer",
-                                      "tel": "095123123"
                                     });
                                      
                                     debugPrint(registerAcc.statusMessage);
@@ -370,7 +369,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                                   padding: EdgeInsets.only(
                                                       bottom: 20.0),
                                                   child: Text(
-                                                      "Congraturations, your account has been successful created"),
+                                                      "Congratulations, your account has been successful created"),
                                                 ),
                                                 SizedBox(
                                                   width: 130,
