@@ -35,6 +35,7 @@ class _RoomsSectionState extends State<RoomsSection> {
                       price: 0,
                       size: '',
                       description: "",
+                      coverimageString: "",
                       feature: RoomFeature(
                         airConditioner: false,
                         fan: false,

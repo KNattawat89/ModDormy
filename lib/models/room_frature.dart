@@ -1,13 +1,26 @@
+import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'room_frature.g.dart';
+
+@JsonSerializable()
 class RoomFeature {
+  @JsonKey(name: 'airc')
   bool airConditioner;
+  @JsonKey(name: 'fan')
   bool fan;
+  @JsonKey(name: 'furniture')
   bool furnished;
+  @JsonKey(name: 'waterHeater')
   bool waterHeater;
+  @JsonKey(name: 'tv')
   bool tv;
+  @JsonKey(name: 'fridge')
   bool refrigerator;
+  @JsonKey(name: 'bathroom')
   bool bathroom;
 
-  List<String> roomFeatureToList(){
+  List<String> roomFeatureToList() {
     List<String> list = [];
     if (airConditioner) list.add('Air conditioner');
     if (fan) list.add('Fan');
@@ -27,4 +40,9 @@ class RoomFeature {
       required this.tv,
       required this.refrigerator,
       required this.bathroom});
+
+  factory RoomFeature.fromJson(Map<String, dynamic> json) =>
+      _$RoomFeatureFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RoomFeatureToJson(this);
 }

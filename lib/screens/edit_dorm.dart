@@ -31,6 +31,7 @@ class _EditFormState extends State<EditForm> {
     water: 0,
     other: 'none',
     distance: 0,
+    coverimageString: "",
     feature: DormFeature(
       cctv: false,
       fitness: false,
@@ -54,6 +55,7 @@ class _EditFormState extends State<EditForm> {
           price: 12314,
           size: "size",
           description: "description",
+          coverimageString: "",
           feature: RoomFeature(
             airConditioner: false,
             fan: false,

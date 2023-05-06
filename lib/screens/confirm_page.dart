@@ -38,16 +38,18 @@ class _DetailScreenState extends State<DetailScreen> {
           "WaterPrice": widget.dorm.water,
           "Other": widget.dorm.other,
           "Distant": widget.dorm.distance,
-          "Pet": widget.dorm.feature.petFriendly,
-          "SmokeFree": widget.dorm.feature.smokeFree,
-          "Parking": widget.dorm.feature.parking,
-          "Lift": widget.dorm.feature.lift,
-          "Pool": widget.dorm.feature.pool,
-          "Fitness": widget.dorm.feature.fitness,
-          "Wifi": widget.dorm.feature.wifi,
-          "KeyCard": widget.dorm.feature.keycard,
-          "CCTV": widget.dorm.feature.cctv,
-          "SecurityGuard": widget.dorm.feature.securityGuard,
+          "DormFeatures": {
+            "Pet": widget.dorm.feature.petFriendly,
+            "SmokeFree": widget.dorm.feature.smokeFree,
+            "Parking": widget.dorm.feature.parking,
+            "Lift": widget.dorm.feature.lift,
+            "Pool": widget.dorm.feature.pool,
+            "Fitness": widget.dorm.feature.fitness,
+            "Wifi": widget.dorm.feature.wifi,
+            "KeyCard": widget.dorm.feature.keycard,
+            "CCTV": widget.dorm.feature.cctv,
+            "SecurityGuard": widget.dorm.feature.securityGuard,
+          },
         },
       );
       debugPrint(postdorm.data["id"].toString());
@@ -62,16 +64,17 @@ class _DetailScreenState extends State<DetailScreen> {
           "price": 1223,
           "desc": widget.dorm.rooms[i].description,
           "size": widget.dorm.rooms[i].size,
-          "airc": widget.dorm.rooms[i].feature.airConditioner,
-          "furniture": widget.dorm.rooms[i].feature.furnished,
-          "waterHeater": widget.dorm.rooms[i].feature.waterHeater,
-          "fan": widget.dorm.rooms[i].feature.fan,
-          "fridge": widget.dorm.rooms[i].feature.furnished,
-          "bathroom": widget.dorm.rooms[i].feature.bathroom,
-          "tv": widget.dorm.rooms[i].feature.tv,
+          "roomFeature": {
+            "airc": widget.dorm.rooms[i].feature.airConditioner,
+            "furniture": widget.dorm.rooms[i].feature.furnished,
+            "waterHeater": widget.dorm.rooms[i].feature.waterHeater,
+            "fan": widget.dorm.rooms[i].feature.fan,
+            "fridge": widget.dorm.rooms[i].feature.furnished,
+            "bathroom": widget.dorm.rooms[i].feature.bathroom,
+            "tv": widget.dorm.rooms[i].feature.tv,
+          }
         });
       }
-      debugPrint(postroom.data.toString());
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -98,16 +101,18 @@ class _DetailScreenState extends State<DetailScreen> {
           "water_price": widget.dorm.water,
           "other": widget.dorm.other,
           "distant": widget.dorm.distance,
-          "Pet": widget.dorm.feature.petFriendly,
-          "smoke_free": widget.dorm.feature.smokeFree,
-          "parking": widget.dorm.feature.parking,
-          "Lift": widget.dorm.feature.lift,
-          "pool": widget.dorm.feature.pool,
-          "fitness": widget.dorm.feature.fitness,
-          "wifi": widget.dorm.feature.wifi,
-          "key_card": widget.dorm.feature.keycard,
-          "cctv": widget.dorm.feature.cctv,
-          "security_guard": widget.dorm.feature.securityGuard,
+          "DormFeatures": {
+            "Pet": widget.dorm.feature.petFriendly,
+            "SmokeFree": widget.dorm.feature.smokeFree,
+            "Parking": widget.dorm.feature.parking,
+            "Lift": widget.dorm.feature.lift,
+            "Pool": widget.dorm.feature.pool,
+            "Fitness": widget.dorm.feature.fitness,
+            "Wifi": widget.dorm.feature.wifi,
+            "KeyCard": widget.dorm.feature.keycard,
+            "CCTV": widget.dorm.feature.cctv,
+            "SecurityGuard": widget.dorm.feature.securityGuard,
+          },
         },
       );
       debugPrint(editeddorm.data["id"].toString());
@@ -123,13 +128,15 @@ class _DetailScreenState extends State<DetailScreen> {
           "price": 1223,
           "desc": widget.dorm.rooms[i].description,
           "size": widget.dorm.rooms[i].size,
-          "airc": widget.dorm.rooms[i].feature.airConditioner,
-          "furniture": widget.dorm.rooms[i].feature.furnished,
-          "water_Heater": widget.dorm.rooms[i].feature.waterHeater,
-          "fan": widget.dorm.rooms[i].feature.fan,
-          "fridge": widget.dorm.rooms[i].feature.furnished,
-          "bathroom": widget.dorm.rooms[i].feature.bathroom,
-          "tv": widget.dorm.rooms[i].feature.tv,
+          "roomFeature": {
+            "airc": widget.dorm.rooms[i].feature.airConditioner,
+            "furniture": widget.dorm.rooms[i].feature.furnished,
+            "waterHeater": widget.dorm.rooms[i].feature.waterHeater,
+            "fan": widget.dorm.rooms[i].feature.fan,
+            "fridge": widget.dorm.rooms[i].feature.furnished,
+            "bathroom": widget.dorm.rooms[i].feature.bathroom,
+            "tv": widget.dorm.rooms[i].feature.tv,
+          }
         });
         debugPrint(editedroom.data.toString());
       }

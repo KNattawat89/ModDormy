@@ -12,14 +12,15 @@ class FavoritePage extends StatefulWidget {
 }
 
 class _FavoritePageState extends State<FavoritePage> {
-  void getFavDorm() async{
-    try{
+  void getFavDorm() async {
+    try {
       final response = await Caller.dio.get('/api/fav/getFav?userId=');
       // put type here
-    }catch(e){
+    } catch (e) {
       print(e);
     }
   }
+
   bool isFav = true;
   void updateIsFav() {
     setState(() {
@@ -27,44 +28,47 @@ class _FavoritePageState extends State<FavoritePage> {
     });
   }
 
-    @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-        appBar: const MyAppbar(),
-        endDrawer: const MyDrawer(),
-        body: Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("Favorite Dorms", style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w600
-              ),),
-              const SizedBox(height: 20,),
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 40,
-                  mainAxisSpacing: 20,
-                  childAspectRatio: (8 / 10),
-                  children: List.generate(5, (index) {
-                    return Container(
-                      child: dormInfoHome(
-                          5,
-                          'dorm $index',
-                          2000,
-                          5000,
-                          'http://moddormy.ivelse.com:8000/images/412494.jpeg',
-                          isFav,
-                          updateIsFav),
-                    );
-                  }),
-                ),
-              )
-            ],
-          ),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: const MyAppbar(),
+      endDrawer: const MyDrawer(),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Favorite Dorms",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 40,
+                mainAxisSpacing: 20,
+                childAspectRatio: (8 / 10),
+                children: List.generate(5, (index) {
+                  return Container(
+                    child: Placeholder(),
+                    // dormInfoHome(
+                    //     5,
+                    //     'dorm $index',
+                    //     2000,
+                    //     5000,
+                    //     'http://moddormy.ivelse.com:8000/images/412494.jpeg',
+                    //     isFav,
+                    //     updateIsFav),
+                  );
+                }),
+              ),
+            )
+          ],
         ),
-      );
-    }
+      ),
+    );
+  }
 }

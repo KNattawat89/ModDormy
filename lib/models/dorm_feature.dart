@@ -1,13 +1,28 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'dorm_feature.g.dart';
+
+@JsonSerializable()
 class DormFeature {
+  @JsonKey(name: 'parking')
   bool parking;
+  @JsonKey(name: 'wifi')
   bool wifi;
+  @JsonKey(name: 'smokeFree')
   bool smokeFree;
+  @JsonKey(name: 'securityGuard')
   bool securityGuard;
+  @JsonKey(name: 'cctv')
   bool cctv;
+  @JsonKey(name: 'keyCard')
   bool keycard;
+  @JsonKey(name: 'lift')
   bool lift;
+  @JsonKey(name: 'pet')
   bool petFriendly;
+  @JsonKey(name: 'pool')
   bool pool;
+  @JsonKey(name: 'fitness')
   bool fitness;
 
   List<String> toList() {
@@ -37,4 +52,9 @@ class DormFeature {
     required this.pool,
     required this.fitness,
   });
+
+  factory DormFeature.fromJson(Map<String, dynamic> json) =>
+      _$DormFeatureFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DormFeatureToJson(this);
 }
