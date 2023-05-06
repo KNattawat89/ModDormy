@@ -16,7 +16,7 @@ class EditForm extends StatefulWidget {
 
 class _EditFormState extends State<EditForm> {
   Dorm dorm = Dorm(
-    id: 0,
+    id: 89,
     name: 'Old dorm name',
     houseNo: '123',
     soi: '123/412',
@@ -46,10 +46,11 @@ class _EditFormState extends State<EditForm> {
   );
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     for (var i = 0; i < 2; i++) {
       dorm.rooms.add(Room(
-          name: "name",
+          id: 98,
+          name: "old name$i",
           price: 12314,
           size: "size",
           description: "description",

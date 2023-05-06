@@ -6,7 +6,7 @@ import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import '../models/dorm.dart';
 
 class DetailScreen extends StatefulWidget {
-  final post;
+  final bool post;
   const DetailScreen({super.key, required this.dorm, required this.post});
   final Dorm dorm;
 
@@ -82,47 +82,50 @@ class _DetailScreenState extends State<DetailScreen> {
       final editeddorm = await Caller.dio.put(
         '/api/manage-dorm/editDorm?dormId=${widget.dorm.id}',
         data: {
-          "DormName": widget.dorm.name,
-          "CoverImage":
+          "dorm_name": widget.dorm.name,
+          "cover_Image":
               "xxxxxx", //"${widget.dorm.coverImage!.path}", // Upload รูป how?
-          "HouseNumber": widget.dorm.houseNo,
-          "Street": widget.dorm.street,
-          "Soi": widget.dorm.soi,
-          "SubDistrict": widget.dorm.subDistrict,
-          "District": widget.dorm.district,
-          "City": widget.dorm.city,
-          "Zipcode": widget.dorm.zipCode,
-          "Desc": widget.dorm.description,
-          "AdvancePayment": widget.dorm.advPayment,
-          "ElectricPrice": widget.dorm.electric,
-          "WaterPrice": widget.dorm.water,
-          "Other": widget.dorm.other,
-          "Distant": widget.dorm.distance,
+          "house_number": widget.dorm.houseNo,
+          "street": widget.dorm.street,
+          "soi": widget.dorm.soi,
+          "sub_district": widget.dorm.subDistrict,
+          "district": widget.dorm.district,
+          "city": widget.dorm.city,
+          "zipcode": widget.dorm.zipCode,
+          "desc": widget.dorm.description,
+          "advance_payment": widget.dorm.advPayment,
+          "electric_price": widget.dorm.electric,
+          "water_price": widget.dorm.water,
+          "other": widget.dorm.other,
+          "distant": widget.dorm.distance,
           "Pet": widget.dorm.feature.petFriendly,
-          "SmokeFree": widget.dorm.feature.smokeFree,
-          "Parking": widget.dorm.feature.parking,
+          "smoke_free": widget.dorm.feature.smokeFree,
+          "parking": widget.dorm.feature.parking,
           "Lift": widget.dorm.feature.lift,
-          "Pool": widget.dorm.feature.pool,
-          "Fitness": widget.dorm.feature.fitness,
-          "Wifi": widget.dorm.feature.wifi,
-          "KeyCard": widget.dorm.feature.keycard,
-          "CCTV": widget.dorm.feature.cctv,
-          "SecurityGuard": widget.dorm.feature.securityGuard,
+          "pool": widget.dorm.feature.pool,
+          "fitness": widget.dorm.feature.fitness,
+          "wifi": widget.dorm.feature.wifi,
+          "key_card": widget.dorm.feature.keycard,
+          "cctv": widget.dorm.feature.cctv,
+          "security_guard": widget.dorm.feature.securityGuard,
         },
       );
       debugPrint(editeddorm.data["id"].toString());
+
       var editedroom;
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
-        editedroom = await Caller.dio.post("/api/manage-room/postRoom", data: {
-          "dormId": editeddorm.data["id"],
-          "roomName": widget.dorm.rooms[i].name,
-          "coverImage": "xxxxxx",
+        print(widget.dorm.rooms[i].id);
+        editedroom = await Caller.dio
+            .put("/api/manage-room/editRoom?roomId=${98 + i}", data: {
+          "dorm_id": editeddorm.data["id"],
+          "room_Name": widget.dorm.rooms[i].name,
+          "cover_Image": "xxxxxx",
           "price": 1223,
           "desc": widget.dorm.rooms[i].description,
           "size": widget.dorm.rooms[i].size,
           "airc": widget.dorm.rooms[i].feature.airConditioner,
           "furniture": widget.dorm.rooms[i].feature.furnished,
-          "waterHeater": widget.dorm.rooms[i].feature.waterHeater,
+          "water_Heater": widget.dorm.rooms[i].feature.waterHeater,
           "fan": widget.dorm.rooms[i].feature.fan,
           "fridge": widget.dorm.rooms[i].feature.furnished,
           "bathroom": widget.dorm.rooms[i].feature.bathroom,
@@ -131,6 +134,7 @@ class _DetailScreenState extends State<DetailScreen> {
         debugPrint(editedroom.data.toString());
       }
     } catch (e) {
+      debugPrint('room error');
       debugPrint(e.toString());
     }
   }
@@ -566,36 +570,71 @@ class _DetailScreenState extends State<DetailScreen> {
                           } else {
                             updateDormDetail();
                           }
-                          postDormDetail();
-                          showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              backgroundColor: const Color(0xFFD9D9D9),
-                              title: const Icon(
-                                Icons.verified_rounded,
-                                color: Color(0xff2a8089),
-                                size: 100,
-                              ),
-                              content: const Text(
-                                'Your dorm information has been posted!',
-                                textAlign: TextAlign.center,
-                              ),
-                              actions: <Widget>[
-                                Center(
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFFDC6E46),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                    onPressed: () => Navigator.pop(context),
-                                    child: const Text('Go to post'),
-                                  ),
+                          if (widget.post) {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                backgroundColor: const Color(0xFFD9D9D9),
+                                title: const Icon(
+                                  Icons.verified_rounded,
+                                  color: Color(0xff2a8089),
+                                  size: 100,
                                 ),
-                              ],
-                            ),
-                          );
+                                content: const Text(
+                                  'Your dorm information has been posted!',
+                                  textAlign: TextAlign.center,
+                                ),
+                                actions: <Widget>[
+                                  Center(
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xFFDC6E46),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Go to post'),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                backgroundColor: const Color(0xFFD9D9D9),
+                                title: const Icon(
+                                  Icons.verified_rounded,
+                                  color: Color(0xff2a8089),
+                                  size: 100,
+                                ),
+                                content: const Text(
+                                  'Your dorm information has been updated!',
+                                  textAlign: TextAlign.center,
+                                ),
+                                actions: <Widget>[
+                                  Center(
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xFFDC6E46),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Go to post'),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
                         },
                         label: const Text('Confirm')),
                   ),

@@ -21,6 +21,15 @@ class _RoomItemState extends State<RoomItem> {
   TextEditingController descriptionController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    nameController.text = widget.room.name;
+    priceController.text = widget.room.price.toString();
+    sizeController.text = widget.room.size;
+    descriptionController.text = widget.room.description;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
         child: Padding(

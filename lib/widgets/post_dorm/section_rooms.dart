@@ -30,6 +30,7 @@ class _RoomsSectionState extends State<RoomsSection> {
               onPressed: () {
                 setState(() {
                   widget.dorm.rooms.add(Room(
+                      id: 0,
                       name: "",
                       price: 0,
                       size: '',
