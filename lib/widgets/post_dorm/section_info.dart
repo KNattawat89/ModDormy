@@ -19,6 +19,20 @@ class _InfoSectionState extends State<InfoSection> {
   final districtController = TextEditingController();
   final cityController = TextEditingController();
   final zipCodeController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // Step 2 <- SEE HERE
+    nameController.text = widget.dorm.name;
+    houseNoController.text = widget.dorm.houseNo;
+    streetController.text = widget.dorm.street;
+    soiController.text = widget.dorm.soi;
+    subDistrictController.text = widget.dorm.subDistrict;
+    districtController.text = widget.dorm.district;
+    cityController.text = widget.dorm.city;
+    zipCodeController.text = widget.dorm.zipCode.toString();
+  }
 
   @override
   Widget build(BuildContext context) {

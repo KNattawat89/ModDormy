@@ -6,7 +6,8 @@ import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import '../models/dorm.dart';
 
 class DetailScreen extends StatefulWidget {
-  const DetailScreen({super.key, required this.dorm});
+  final post;
+  const DetailScreen({super.key, required this.dorm, required this.post});
   final Dorm dorm;
 
   @override
@@ -71,6 +72,64 @@ class _DetailScreenState extends State<DetailScreen> {
         });
       }
       debugPrint(postroom.data.toString());
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  void updateDormDetail() async {
+    try {
+      final editeddorm = await Caller.dio.put(
+        '/api/manage-dorm/editDorm?dormId=${widget.dorm.id}',
+        data: {
+          "DormName": widget.dorm.name,
+          "CoverImage":
+              "xxxxxx", //"${widget.dorm.coverImage!.path}", // Upload รูป how?
+          "HouseNumber": widget.dorm.houseNo,
+          "Street": widget.dorm.street,
+          "Soi": widget.dorm.soi,
+          "SubDistrict": widget.dorm.subDistrict,
+          "District": widget.dorm.district,
+          "City": widget.dorm.city,
+          "Zipcode": widget.dorm.zipCode,
+          "Desc": widget.dorm.description,
+          "AdvancePayment": widget.dorm.advPayment,
+          "ElectricPrice": widget.dorm.electric,
+          "WaterPrice": widget.dorm.water,
+          "Other": widget.dorm.other,
+          "Distant": widget.dorm.distance,
+          "Pet": widget.dorm.feature.petFriendly,
+          "SmokeFree": widget.dorm.feature.smokeFree,
+          "Parking": widget.dorm.feature.parking,
+          "Lift": widget.dorm.feature.lift,
+          "Pool": widget.dorm.feature.pool,
+          "Fitness": widget.dorm.feature.fitness,
+          "Wifi": widget.dorm.feature.wifi,
+          "KeyCard": widget.dorm.feature.keycard,
+          "CCTV": widget.dorm.feature.cctv,
+          "SecurityGuard": widget.dorm.feature.securityGuard,
+        },
+      );
+      debugPrint(editeddorm.data["id"].toString());
+      var editedroom;
+      for (var i = 0; i < widget.dorm.rooms.length; i++) {
+        editedroom = await Caller.dio.post("/api/manage-room/postRoom", data: {
+          "dormId": editeddorm.data["id"],
+          "roomName": widget.dorm.rooms[i].name,
+          "coverImage": "xxxxxx",
+          "price": 1223,
+          "desc": widget.dorm.rooms[i].description,
+          "size": widget.dorm.rooms[i].size,
+          "airc": widget.dorm.rooms[i].feature.airConditioner,
+          "furniture": widget.dorm.rooms[i].feature.furnished,
+          "waterHeater": widget.dorm.rooms[i].feature.waterHeater,
+          "fan": widget.dorm.rooms[i].feature.fan,
+          "fridge": widget.dorm.rooms[i].feature.furnished,
+          "bathroom": widget.dorm.rooms[i].feature.bathroom,
+          "tv": widget.dorm.rooms[i].feature.tv,
+        });
+        debugPrint(editedroom.data.toString());
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -502,6 +561,11 @@ class _DetailScreenState extends State<DetailScreen> {
                         heroTag: "btn2",
                         backgroundColor: const Color(0xFFDC6E46),
                         onPressed: () {
+                          if (widget.post) {
+                            postDormDetail();
+                          } else {
+                            updateDormDetail();
+                          }
                           postDormDetail();
                           showDialog<String>(
                             context: context,

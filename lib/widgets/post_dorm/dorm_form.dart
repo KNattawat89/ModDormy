@@ -13,8 +13,10 @@ import '../../models/dorm.dart';
 
 class DormForm extends StatefulWidget {
   final Dorm dorm;
+  final bool post;
 
-  const DormForm({Key? key, required this.dorm}) : super(key: key);
+  const DormForm({Key? key, required this.dorm, required this.post})
+      : super(key: key);
 
   @override
   State<DormForm> createState() => _DormFormState();
@@ -67,6 +69,7 @@ class _DormFormState extends State<DormForm> {
                         MaterialPageRoute(
                             builder: (context) => DetailScreen(
                                   dorm: widget.dorm,
+                                  post: widget.post,
                                 )));
                   }
                 },
