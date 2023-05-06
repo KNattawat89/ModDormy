@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/screens/forgotpass_page.dart';
 import 'package:moddormy_flutter/screens/home.dart';
-import 'package:moddormy_flutter/screens/post_form.dart';
 import 'package:moddormy_flutter/screens/register.dart';
 
 class LoginPage extends StatelessWidget {
@@ -190,9 +189,10 @@ class _LoginFormState extends State<LoginForm> {
                       setState(() {
                         err = false;
                       });
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
+                   await FirebaseAuth.instance.signInWithEmailAndPassword(
                           email: _user.text, password: _pass.text);
-
+                    
+                 
                       // ignore: use_build_context_synchronously
                       Navigator.push(
                           context,

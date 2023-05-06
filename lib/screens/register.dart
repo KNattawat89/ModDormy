@@ -17,7 +17,6 @@ class RegisterPage extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              height: 620,
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(20)),
               margin: const EdgeInsets.all(25.0),
@@ -47,9 +46,8 @@ class _RegisterFormState extends State<RegisterForm> {
   final _email = TextEditingController();
   final _pass = TextEditingController();
   UserAccount? _account = UserAccount.customer;
-  bool isCheckedOwner = false;
-  bool isCheckedCus = false;
-  bool checkOne = false;
+  String? message = "";
+  bool err = false;
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
   void _togglePass() {
@@ -57,7 +55,8 @@ class _RegisterFormState extends State<RegisterForm> {
       _hindOfOpen = !_hindOfOpen;
     });
   }
-    void _toggleConfirmPass() {
+
+  void _toggleConfirmPass() {
     setState(() {
       _confirmPass = !_confirmPass;
     });
@@ -191,7 +190,8 @@ class _RegisterFormState extends State<RegisterForm> {
                       obscureText: _hindOfOpen,
                       decoration: InputDecoration(
                           hintText: "Password",
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 12),
                           filled: true,
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
@@ -241,186 +241,240 @@ class _RegisterFormState extends State<RegisterForm> {
                       },
                     ),
                   ),
+                  SizedBox(
+                      width: double.infinity,
+                      height: err ? 70 : 0,
+                      child: Container(
+                          margin: err
+                              ? const EdgeInsets.only(bottom: 10)
+                              : const EdgeInsets.only(top: 10),
+                          decoration: const BoxDecoration(
+                              color: Color(0xFFFFCDD2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0))),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                err
+                                    ? Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 15),
+                                        child: Expanded(
+                                          child: Text(
+                                              message == ""
+                                                  ? ""
+                                                  : "The email address is already used",
+                                              style: const TextStyle(
+                                                color: Colors.red,
+                                              )),
+                                        ))
+                                    : const Text("")
+                              ]))),
                   Row(
                     children: [
                       Expanded(
-                        child: ListTile(
-                          title: const Text(
-                            'dormOwner',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          leading: Radio<UserAccount>(
-                            value: UserAccount.dormOwner,
-                            groupValue: _account,
-                            onChanged: (UserAccount? value) {
-                              setState(() {
-                                _account = value;
-                              });
-                            },
-                          ),
+                          child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _account = UserAccount.dormOwner;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Radio<UserAccount>(
+                              value: UserAccount.dormOwner,
+                              groupValue: _account,
+                              onChanged: (UserAccount? value) {
+                                setState(() {
+                                  _account = value;
+                                });
+                              },
+                            ),
+                            const Text(
+                              'DormOwner',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
                         ),
-                      ),
+                      )),
                       Expanded(
-                        child: ListTile(
-                          title: const Text('Customer'),
-                          leading: Radio<UserAccount>(
-                            value: UserAccount.customer,
-                            groupValue: _account,
-                            onChanged: (UserAccount? value) {
-                              setState(() {
-                                _account = value;
-                              });
-                            },
-                          ),
+                          child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _account = UserAccount.customer;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Radio<UserAccount>(
+                              value: UserAccount.customer,
+                              groupValue: _account,
+                              onChanged: (UserAccount? value) {
+                                setState(() {
+                                  _account = value;
+                                });
+                              },
+                            ),
+                            const Text(
+                              'Customer',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
                         ),
-                      )
+                      )),
                     ],
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 130,
-                          height: 39,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFD9D9D9),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.5)),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: ((context) => const LoginPage()),
-                                    ));
-                              },
-                              child: const Text(
-                                "Back to login",
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.black),
-                              )),
-                        ),
-                        SizedBox(
-                          width: 130,
-                          height: 39,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFDC6E46),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.5)),
-                              ),
-                              onPressed: () async {
-                                if (_formkey.currentState!.validate()) {
-                                  try {
-                                  final credential =  await FirebaseAuth.instance
-                                        .createUserWithEmailAndPassword(
-                                            email: _email.text,
-                                            password: _pass.text);
-                                             debugPrint(credential.user?.uid);
-                                    final registerAcc = await Caller.dio
-                                        .post("/api/auth/register", data: {
-                                          "userid" : credential.user?.uid,
-                                      "username": _user.text,
-                                      "fname": _fname.text,
-                                      "lname": _lname.text,
-                                      "email": _email.text,
-                                      "account":
-                                          _account == UserAccount.dormOwner
-                                              ? "DormOwner"
-                                              : "Customer",
-                                      "tel": "095123123"
-                                    });
-                                     
-                                    debugPrint(registerAcc.statusMessage);
-                                    // ignore: use_build_context_synchronously
-                                    showDialog<String>(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AlertDialog(
-                                        content: SizedBox(
-                                            height: 250,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(vertical: 20),
-                                                  child: Image.asset(
-                                                      'assets/images/checkedmark.png'),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: SizedBox(
+                        height: 39,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFD9D9D9),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.5)),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: ((context) => const LoginPage()),
+                                  ));
+                            },
+                            child: const Text(
+                              "Back to login",
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.black),
+                            )),
+                      )),
+                      const SizedBox(width: 20),
+                      Expanded(
+                          child: SizedBox(
+                        height: 39,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFDC6E46),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.5)),
+                            ),
+                            onPressed: () async {
+                              if (_formkey.currentState!.validate()) {
+                                try {
+                                  final credential = await FirebaseAuth.instance
+                                      .createUserWithEmailAndPassword(
+                                          email: _email.text,
+                                          password: _pass.text);
+
+                                  setState(() {
+                                    err = false;
+                                  });
+
+                                  final registerAcc = await Caller.dio
+                                      .post("/api/auth/register", data: {
+                                    "userid": credential.user?.uid,
+                                    "username": _user.text,
+                                    "fname": _fname.text,
+                                    "lname": _lname.text,
+                                    "email": _email.text,
+                                    "account": _account == UserAccount.dormOwner
+                                        ? "DormOwner"
+                                        : "Customer",
+                                  });
+
+                                  // debugPrint(registerAcc.statusMessage);
+                                  // ignore: use_build_context_synchronously
+                                  showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                      content: SizedBox(
+                                          height: 250,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 20),
+                                                child: Image.asset(
+                                                    'assets/images/checkedmark.png'),
+                                              ),
+                                              const Padding(
+                                                padding: EdgeInsets.only(
+                                                    bottom: 10.0),
+                                                child: Text(
+                                                  'Successful Registration',
+                                                  style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
-                                                const Padding(
-                                                  padding: EdgeInsets.only(
-                                                      bottom: 10.0),
-                                                  child: Text(
-                                                    'Successful Registration',
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ),
-                                                const Padding(
-                                                  padding: EdgeInsets.only(
-                                                      bottom: 20.0),
-                                                  child: Text(
-                                                      "Congraturations, your account has been successful created"),
-                                                ),
-                                                SizedBox(
-                                                  width: 130,
-                                                  height: 39,
-                                                  child: ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            const Color(
-                                                                0xFFDC6E46),
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        12.5)),
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: ((context) =>
-                                                                  const LoginPage()),
-                                                            ));
-                                                      },
-                                                      child: const Text(
-                                                        "Continue",
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                                Colors.white),
-                                                      )),
-                                                )
-                                              ],
-                                            )),
-                                      ),
-                                    );
-                                  } on FirebaseAuthException catch (e) {
-                                    debugPrint(e.message);
-                                  }
+                                              ),
+                                              const Padding(
+                                                padding: EdgeInsets.only(
+                                                    bottom: 20.0),
+                                                child: Text(
+                                                    "Congraturations, your account has been successful created"),
+                                              ),
+                                              SizedBox(
+                                                height: 39,
+                                                child: ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          const Color(
+                                                              0xFFDC6E46),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12.5)),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: ((context) =>
+                                                                const LoginPage()),
+                                                          ));
+                                                    },
+                                                    child: const Text(
+                                                      "Continue",
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.white),
+                                                    )),
+                                              )
+                                            ],
+                                          )),
+                                    ),
+                                  );
+                                } on FirebaseAuthException catch (e) {
+                                  setState(() {
+                                    err = true;
+                                    message = e.message;
+                                  });
+                                  debugPrint(e.message);
                                 }
-                              },
-                              child: const Text(
-                                "Confirm",
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                              )),
-                        )
-                      ],
-                    ),
-                  )
+                              }
+                            },
+                            child: const Text(
+                              "Confirm",
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.white),
+                            )),
+                      )),
+                    ],
+                  ),
+                    const SizedBox(
+                        height: 20,
+                      )
                 ]),
               ));
         });

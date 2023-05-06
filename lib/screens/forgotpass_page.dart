@@ -67,21 +67,7 @@ class _ForgotFormState extends State<ForgotForm> {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
-
-              // Flex(
-              //   direction: Axis.horizontal,
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: [
-              //   Container(
-              //     margin: const EdgeInsets.only(bottom: 10.0),
-              //     child: const Text(
-              //     "Email",
-              //     style: TextStyle(fontSize: 18),
-              //   ),
-              //   )
-
-              //   ]
-              // ),
+              
               const SizedBox(
                 width: 10,
               ),
@@ -115,13 +101,11 @@ class _ForgotFormState extends State<ForgotForm> {
               const SizedBox(
                 height: 30,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Row(
+                  // mainAxisAlignment: MainAxisAlignment.,
                   children: [
-                    SizedBox(
-                      width: 130,
+                    Expanded(child: 
+                     SizedBox(
                       height: 39,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -141,8 +125,11 @@ class _ForgotFormState extends State<ForgotForm> {
                             style: TextStyle(fontSize: 14, color: Colors.black),
                           )),
                     ),
-                    SizedBox(
-                      width: 130,
+                    ),
+                   const SizedBox(width: 20),
+                   
+                   Expanded(child: 
+                   SizedBox(
                       height: 39,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -160,9 +147,11 @@ class _ForgotFormState extends State<ForgotForm> {
                             style: TextStyle(fontSize: 14, color: Colors.white),
                           )),
                     )
+                   )
+                    
                   ],
                 ),
-              )
+              
             ],
           ),
         ));

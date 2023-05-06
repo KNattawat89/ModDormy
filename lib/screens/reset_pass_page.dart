@@ -14,7 +14,6 @@ class ResetPassPage extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              height: 243,
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(20)),
               margin: const EdgeInsets.all(20.0),
@@ -22,8 +21,8 @@ class ResetPassPage extends StatelessWidget {
                 const Padding(
                     padding: EdgeInsets.only(top: 60, bottom: 10),
                     child: Text(
-                      "Password have been reset.",
-                      style: TextStyle(fontSize: 24),
+                      "Send reset password email already",
+                      style: TextStyle(fontSize: 20),
                     )),
                 const Padding(
                   padding: EdgeInsets.only(bottom: 50.0),
@@ -53,7 +52,11 @@ class ResetPassPage extends StatelessWidget {
                         style: TextStyle(fontSize: 14, color: Colors.black),
                       )),
                 ),
-              ]),
+               const SizedBox(
+                  height: 20,
+                )
+              ]
+              ),
             ),
           ],
         ));

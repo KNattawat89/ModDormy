@@ -1,5 +1,25 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/widgets/build_star_rate.dart';
+
+// class MyWidget extends StatelessWidget {
+//   const MyWidget({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return const SizedBox(
+//       child:  IconButton(
+//         icon: Icons.abc_outlined,
+//       onPressed: 
+//       },
+//       ),
+//     );
+//   }
+// }
+
+final navigatorKey = GlobalKey<NavigatorState>();
+
 
 Column dormInfoHome(int rating, String dormName, int minPrice, int maxPrice,
     String pathImage, bool isFav, Function updateFav) {
@@ -10,7 +30,13 @@ Column dormInfoHome(int rating, String dormName, int minPrice, int maxPrice,
     return '$min - $max';
   }
 
-  return Column(
+MaterialApp(
+   
+    navigatorKey: navigatorKey, // Setting a global key for navigator
+  );
+  BuildContext context;
+  return
+   Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Flexible(
@@ -35,27 +61,40 @@ Column dormInfoHome(int rating, String dormName, int minPrice, int maxPrice,
                     // อย่าลืมปรับตรงนี้
                     child: Align(
                       alignment: Alignment.center,
-                      child: isFav
+                      child:   isFav
                           ? IconButton(
                               onPressed: () {
+                               
                                 updateFav();
                               },
                               icon: const Icon(
                                 Icons.favorite,
                                 color: Colors.white,
                                 // size:30,
-                              ),
-                            )
+                              ))
+            
+                              
                           : IconButton(
                               onPressed: () {
-                                updateFav();
+                                // FirebaseAuth.instance.currentUser == null ? 
+                                // updateFav() : showDialog(context: context, builder: (context) => )
                               },
                               icon: const Icon(
                                 Icons.favorite_outline,
                                 color: Colors.white,
                                 // size:30,
                               ),
-                            ),
+                            )
+                            // : IconButton(
+                            //   onPressed: () {
+                            //     updateFav();
+                            //   },
+                            //   icon: const Icon(
+                            //     Icons.favorite_outline,
+                            //     color: Colors.black,
+                            //     // size:30,
+                            //   ),
+                            // )
                     ))),
           ],
         ),

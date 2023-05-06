@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       title: 'ModDormy app',
       initialRoute: '/',
       routes: {
-        '/fav': (context) => const FavoritePage(),
+        '/fav': (context) => const FavoritePage(), 
         '/home': (context) => const HomePage(),
         '/login': (context) => const LoginPage(),
         // '/profile': (context) => const ProfilePage(),
