@@ -18,7 +18,7 @@ class DormInfoHome extends StatefulWidget {
       required this.maxPrice,
       required this.isFav})
       : super(key: key);
-  final int rating;
+  final double rating;
   final int dormId;
   final String dormName;
   final int minPrice;

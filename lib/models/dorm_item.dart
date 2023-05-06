@@ -14,7 +14,7 @@ class DormItem {
   String coverImage;
 
   @JsonKey(name: 'overall_rate')
-  int overallRate;
+  double overallRate;
 
   @JsonKey(name: 'min_price')
   int minPrice;
