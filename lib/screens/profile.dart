@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
@@ -29,7 +31,7 @@ class ProfilePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            user.userId != ''
+            user.userId != '' && FirebaseAuth.instance.currentUser != null
                 ? Column(
                     children: [
                       Text(user.username),
