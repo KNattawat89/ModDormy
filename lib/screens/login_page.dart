@@ -1,8 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/models/user_item.dart';
+import 'package:moddormy_flutter/models/user_list.dart';
 import 'package:moddormy_flutter/screens/forgotpass_page.dart';
 import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/screens/register.dart';
+import 'package:moddormy_flutter/utilities/caller.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/user_provider.dart';
+import '../utilities/user_api.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -45,15 +52,19 @@ class _LoginFormState extends State<LoginForm> {
   final _pass = TextEditingController();
   bool err = false;
   String message = "";
+  List<UserItem> _data = [];
 
   void _toggle() {
     setState(() {
       _hindOfOpen = !_hindOfOpen;
     });
   }
+  final userApiService = UserApiService();
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+
     return Form(
         key: _formKey,
         child: Column(
@@ -142,10 +153,10 @@ class _LoginFormState extends State<LoginForm> {
                     )),
               ],
             ),
-            
+
             SizedBox(
                 width: double.infinity,
-                height: err?  70 : 0,
+                height: err ? 70 : 0,
                 child: Container(
                     margin: err
                         ? const EdgeInsets.only(bottom: 20)
@@ -164,7 +175,10 @@ class _LoginFormState extends State<LoginForm> {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 15),
                                   child: Expanded(
-                                    child: Text(message == "user-not-found" ? "Please check your email" : "Please check your email and password",
+                                    child: Text(
+                                        message == "user-not-found"
+                                            ? "Please check your email"
+                                            : "Please check your email and password",
                                         style: const TextStyle(
                                           color: Colors.red,
                                         )),
@@ -189,10 +203,12 @@ class _LoginFormState extends State<LoginForm> {
                       setState(() {
                         err = false;
                       });
-                   await FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email: _user.text, password: _pass.text);
-                    
-                 
+                      final userCredential = await FirebaseAuth.instance
+                          .signInWithEmailAndPassword(
+                              email: _user.text, password: _pass.text);
+                      // print(userCredential.user?.uid);
+                      await UserApiService.getUserProfile(userCredential.user!.uid, userProvider);
+
                       // ignore: use_build_context_synchronously
                       Navigator.push(
                           context,

@@ -20,7 +20,7 @@ class _TextSectionState extends State<TextSection> {
         hintStyle: TextStyle(color: Color(0xff858585), fontSize: 14),
         contentPadding: EdgeInsets.all(10),
       ),
-      autofocus: true,
+      // autofocus: true,
       maxLines: 10,
       onChanged: (value) {
         setState(() {

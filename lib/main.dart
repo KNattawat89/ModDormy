@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/provider/user_provider.dart';
 import 'package:moddormy_flutter/screens/dorm_detail.dart';
 import 'package:moddormy_flutter/screens/favorite.dart';
 import 'package:moddormy_flutter/screens/home.dart';
@@ -8,14 +9,22 @@ import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/screens/post_form.dart';
 import 'package:moddormy_flutter/screens/profile.dart';
 import 'package:moddormy_flutter/screens/register.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
 // Ideal time to initialize
-//   await FirebaseAuth.instance.useAuthEmulator('localhost', 3000);
+  await FirebaseAuth.instance.useAuthEmulator('localhost', 3000);
   runApp(const MyApp());
+//   await FirebaseAuth.instance.useAuthEmulator('localhost', 3000);
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => UserProvider(),
+      child: MyApp(),
+    ),
+  );
 //...
 }
 
@@ -31,9 +40,9 @@ class MyApp extends StatelessWidget {
         '/fav': (context) => const FavoritePage(), 
         '/home': (context) => const HomePage(),
         '/login': (context) => const LoginPage(),
-        // '/profile': (context) => const ProfilePage(),
+        '/profile': (context) => const ProfilePage(),
       },
-      home: const LoginPage(),
+      home: const HomePage(),
       // home: const Scaffold(
       //   endDrawer: MyDrawer(),
       //   appBar: MyAppbar(),

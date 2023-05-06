@@ -1,13 +1,80 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import '../models/dorm.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
+  const DetailScreen({super.key, required this.dorm});
   final Dorm dorm;
 
-  const DetailScreen({Key? key, required this.dorm}) : super(key: key);
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  void postDormDetail() async {
+    try {
+      final postdorm = await Caller.dio.post(
+        "/api/manage-dorm/postDorm",
+        data: {
+          "DormName": widget.dorm.name,
+          "UserId":
+              "aH5CdH3VqlS1vVeqJ20WFKvGvmo2", // ใส่ id ของ user ที่ login อยู่
+          "CoverImage":
+              "xxxxxx", //"${widget.dorm.coverImage!.path}", // Upload รูป how?
+          "HouseNumber": widget.dorm.houseNo,
+          "Street": widget.dorm.street,
+          "Soi": widget.dorm.soi,
+          "SubDistrict": widget.dorm.subDistrict,
+          "District": widget.dorm.district,
+          "City": widget.dorm.city,
+          "Zipcode": widget.dorm.zipCode,
+          "Desc": widget.dorm.description,
+          "AdvancePayment": widget.dorm.advPayment,
+          "ElectricPrice": widget.dorm.electric,
+          "WaterPrice": widget.dorm.water,
+          "Other": widget.dorm.other,
+          "Distant": widget.dorm.distance,
+          "Pet": widget.dorm.feature.petFriendly,
+          "SmokeFree": widget.dorm.feature.smokeFree,
+          "Parking": widget.dorm.feature.parking,
+          "Lift": widget.dorm.feature.lift,
+          "Pool": widget.dorm.feature.pool,
+          "Fitness": widget.dorm.feature.fitness,
+          "Wifi": widget.dorm.feature.wifi,
+          "KeyCard": widget.dorm.feature.keycard,
+          "CCTV": widget.dorm.feature.cctv,
+          "SecurityGuard": widget.dorm.feature.securityGuard,
+        },
+      );
+      debugPrint(postdorm.data["id"].toString());
+
+      // ignore: prefer_typing_uninitialized_variables
+      var postroom;
+      for (var i = 0; i < widget.dorm.rooms.length; i++) {
+        postroom = await Caller.dio.post("/api/manage-room/postRoom", data: {
+          "dormId": postdorm.data["id"],
+          "roomName": widget.dorm.rooms[i].name,
+          "coverImage": "xxxxxx",
+          "price": 1223,
+          "desc": widget.dorm.rooms[i].description,
+          "size": widget.dorm.rooms[i].size,
+          "airc": widget.dorm.rooms[i].feature.airConditioner,
+          "furniture": widget.dorm.rooms[i].feature.furnished,
+          "waterHeater": widget.dorm.rooms[i].feature.waterHeater,
+          "fan": widget.dorm.rooms[i].feature.fan,
+          "fridge": widget.dorm.rooms[i].feature.furnished,
+          "bathroom": widget.dorm.rooms[i].feature.bathroom,
+          "tv": widget.dorm.rooms[i].feature.tv,
+        });
+      }
+      debugPrint(postroom.data.toString());
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +110,7 @@ class DetailScreen extends StatelessWidget {
                   ),
                   Text(
                     textAlign: TextAlign.start,
-                    dorm.name,
+                    widget.dorm.name,
                     style: const TextStyle(color: Colors.grey, fontSize: 18),
                   ),
                 ],
@@ -65,7 +132,7 @@ class DetailScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      '${dorm.houseNo} ${dorm.soi} ${dorm.street} ${dorm.subDistrict} ${dorm.district} ${dorm.city} ${dorm.zipCode}',
+                      '${widget.dorm.houseNo} ${widget.dorm.soi} ${widget.dorm.street} ${widget.dorm.subDistrict} ${widget.dorm.district} ${widget.dorm.city} ${widget.dorm.zipCode}',
                       style: const TextStyle(color: Colors.grey, fontSize: 18),
                       softWrap: true,
                       maxLines: 10,
@@ -89,7 +156,7 @@ class DetailScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 16, bottom: 16),
                     child: Text(
-                      dorm.description,
+                      widget.dorm.description,
                       style: const TextStyle(color: Colors.grey, fontSize: 18),
                     ),
                   ),
@@ -99,7 +166,7 @@ class DetailScreen extends StatelessWidget {
                   ),
                   Center(
                     child: Image.file(
-                      File(dorm.coverImage!.path),
+                      File(widget.dorm.coverImage!.path),
                       fit: BoxFit.cover,
                       height: 100,
                       width: 100,
@@ -114,12 +181,12 @@ class DetailScreen extends StatelessWidget {
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.25,
                       child: GridView.builder(
-                        itemCount: dorm.imageList.length,
+                        itemCount: widget.dorm.imageList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Image.file(
-                              File(dorm.imageList[index].path),
+                              File(widget.dorm.imageList[index].path),
                               fit: BoxFit.cover,
                               width: 200,
                               height: 200,
@@ -151,7 +218,7 @@ class DetailScreen extends StatelessWidget {
                           children: [
                             const Icon(Icons.location_pin),
                             Text(
-                                ' Distance away from KMUTT\n${dorm.distance} KM',
+                                ' Distance away from KMUTT\n${widget.dorm.distance} KM',
                                 style: const TextStyle(fontSize: 18)),
                           ],
                         ),
@@ -160,12 +227,12 @@ class DetailScreen extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(16, 0, 0, 32),
                         child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount: dorm.feature.toList().length,
+                          itemCount: widget.dorm.feature.toList().length,
                           itemBuilder: (BuildContext context, int index) {
                             return Row(
                               children: [
-                                Icon(Icons.check),
-                                Text(' ${dorm.feature.toList()[index]} ',
+                                const Icon(Icons.check),
+                                Text(' ${widget.dorm.feature.toList()[index]} ',
                                     style: const TextStyle(fontSize: 18)),
                               ],
                             );
@@ -187,7 +254,7 @@ class DetailScreen extends StatelessWidget {
                                   fontSize: 18, fontWeight: FontWeight.w500),
                             ),
                             Text(
-                              '${dorm.advPayment} months',
+                              '${widget.dorm.advPayment} months',
                               style: const TextStyle(
                                   color: Colors.grey, fontSize: 16),
                             ),
@@ -204,7 +271,7 @@ class DetailScreen extends StatelessWidget {
                                   fontSize: 18, fontWeight: FontWeight.w500),
                             ),
                             Text(
-                              '${dorm.electric} baht/unit',
+                              '${widget.dorm.electric} baht/unit',
                               style: const TextStyle(
                                   color: Colors.grey, fontSize: 16),
                             ),
@@ -221,7 +288,7 @@ class DetailScreen extends StatelessWidget {
                                   fontSize: 18, fontWeight: FontWeight.w500),
                             ),
                             Text(
-                              '${dorm.water} baht/unit',
+                              '${widget.dorm.water} baht/unit',
                               style: const TextStyle(
                                   color: Colors.grey, fontSize: 16),
                             ),
@@ -238,7 +305,7 @@ class DetailScreen extends StatelessWidget {
                                   fontSize: 18, fontWeight: FontWeight.w500),
                             ),
                             Text(
-                              dorm.other,
+                              widget.dorm.other,
                               style: const TextStyle(
                                   color: Colors.grey, fontSize: 16),
                             ),
@@ -255,7 +322,7 @@ class DetailScreen extends StatelessWidget {
             ),
             ListView.builder(
               shrinkWrap: true,
-              itemCount: dorm.rooms.length,
+              itemCount: widget.dorm.rooms.length,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -272,7 +339,7 @@ class DetailScreen extends StatelessWidget {
                           ),
                           Text(
                             textAlign: TextAlign.start,
-                            dorm.rooms[index].name,
+                            widget.dorm.rooms[index].name,
                             style: const TextStyle(
                                 color: Colors.grey, fontSize: 20),
                           ),
@@ -289,7 +356,7 @@ class DetailScreen extends StatelessWidget {
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              '${dorm.rooms[index].price}',
+                              '${widget.dorm.rooms[index].price}',
                               style: const TextStyle(
                                   color: Colors.grey, fontSize: 20),
                             ),
@@ -307,7 +374,7 @@ class DetailScreen extends StatelessWidget {
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              dorm.rooms[index].size,
+                              widget.dorm.rooms[index].size,
                               style: const TextStyle(
                                   color: Colors.grey, fontSize: 20),
                             )
@@ -326,7 +393,7 @@ class DetailScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Text(
-                                dorm.rooms[index].description,
+                                widget.dorm.rooms[index].description,
                                 style: const TextStyle(
                                     color: Colors.grey, fontSize: 20),
                               ),
@@ -339,7 +406,7 @@ class DetailScreen extends StatelessWidget {
                       ),
                       Center(
                         child: Image.file(
-                          File(dorm.rooms[index].coverImage!.path),
+                          File(widget.dorm.rooms[index].coverImage!.path),
                           fit: BoxFit.cover,
                           height: 100,
                           width: 100,
@@ -355,12 +422,13 @@ class DetailScreen extends StatelessWidget {
                         child: SizedBox(
                           height: MediaQuery.of(context).size.height * 0.25,
                           child: GridView.builder(
-                            itemCount: dorm.imageList.length,
+                            itemCount: widget.dorm.imageList.length,
                             itemBuilder: (BuildContext context, int j) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Image.file(
-                                  File(dorm.rooms[index].imageList[j].path),
+                                  File(widget
+                                      .dorm.rooms[index].imageList[j].path),
                                   fit: BoxFit.cover,
                                   width: 200,
                                   height: 200,
@@ -386,12 +454,12 @@ class DetailScreen extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                             child: ListView.builder(
                               shrinkWrap: true,
-                              itemCount: dorm.rooms[index].feature
+                              itemCount: widget.dorm.rooms[index].feature
                                   .roomFeatureToList()
                                   .length,
                               itemBuilder: (BuildContext context, int j) {
                                 return Text(
-                                    '${dorm.rooms[index].feature.roomFeatureToList()[j]} ',
+                                    '${widget.dorm.rooms[index].feature.roomFeatureToList()[j]} ',
                                     style: const TextStyle(fontSize: 18));
                               },
                             ),
@@ -434,6 +502,7 @@ class DetailScreen extends StatelessWidget {
                         heroTag: "btn2",
                         backgroundColor: const Color(0xFFDC6E46),
                         onPressed: () {
+                          postDormDetail();
                           showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(

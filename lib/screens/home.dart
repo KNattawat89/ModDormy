@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/dorm_item.dart';
 import 'package:moddormy_flutter/models/dorm_list.dart';
 import 'package:moddormy_flutter/models/filter_item.dart';
+import 'package:moddormy_flutter/models/user_item.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/dorm_info_home.dart';
 import 'package:moddormy_flutter/widgets/search_bar.dart';
+import 'package:provider/provider.dart';
+import '../models/user_list.dart';
+import '../provider/user_provider.dart';
 import '../widgets/filter_option.dart';
 import '../widgets/my_appbar.dart';
 import '../widgets/my_drawer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   final FilterItem? argument;
@@ -20,6 +25,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
+
   final TextEditingController _searchController = TextEditingController();
   final dio = Dio();
   late FilterItem newOption = widget.argument ??
@@ -31,6 +39,7 @@ class _HomePageState extends State<HomePage> {
           facilities: []);
   List<DormItem> _filteredData = [];
   List<DormItem> _data = [];
+  List<UserItem> _userData= [];
   bool isFav = false;
 
   void updateIsFav() {
@@ -88,7 +97,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void removeOption(String propertyName, [String? facilityName]) {
-
     switch (propertyName) {
       case 'minPrice':
         setState(() {
@@ -131,11 +139,36 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void getUserProfile(String uid) async{
+    try {
+      final response = await Caller.dio.get(
+          '/api/profile/getProfile?userId=$uid');
+      UserList u = UserList.fromJson(response.data);
+      _userData = u.data;
+      Provider.of<UserProvider>(context, listen: false).setUser(
+          _userData[0].userId,
+          _userData[0].profileImage ?? '',
+          _userData[0].username,
+          _userData[0].firstname,
+          _userData[0].lastname,
+          _userData[0].email,
+          _userData[0].telephone?? '',
+          _userData[0].lineId?? '',
+          _userData[0].userType);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_performSearch);
     getAllDorm();
+    if(FirebaseAuth.instance.currentUser != null){
+      User? user = FirebaseAuth.instance.currentUser;
+      getUserProfile(user!.uid);
+    }
   }
 
   @override
@@ -155,8 +188,8 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _filteredData = _data
           .where((element) => element.dormName
-              .toLowerCase()
-              .contains(_searchController.text.toLowerCase()))
+          .toLowerCase()
+          .contains(_searchController.text.toLowerCase()))
           .toList();
       _isLoading = false;
     });
@@ -186,7 +219,7 @@ class _HomePageState extends State<HomePage> {
                       widget.argument?.maxPrice != 0)
                     filterOption(
                         text:
-                            '${widget.argument?.minPrice} - ${widget.argument?.maxPrice} Baht',
+                        '${widget.argument?.minPrice} - ${widget.argument?.maxPrice} Baht',
                         field: 'price',
                         removeFilter: removeOption),
                   if (widget.argument?.distant != 0)
@@ -201,10 +234,10 @@ class _HomePageState extends State<HomePage> {
                         icon: Icons.star,
                         field: 'overallRating',
                         removeFilter: removeOption),
-                  ...List.generate(widget.argument?.facilities?.length ?? 0,
+                  ...List.generate(widget.argument?.facilities.length ?? 0,
                       (index) {
                     return filterOption(
-                        text: widget.argument?.facilities?[index] ?? '',
+                        text: widget.argument?.facilities[index] ?? '',
                         field: 'facilities',
                         removeFilter: removeOption);
                   }),
@@ -216,28 +249,28 @@ class _HomePageState extends State<HomePage> {
             ),
             _isLoading
                 ? const Center(
-                    child: CircularProgressIndicator(color: Color(0xFFDC6E46)),
-                  )
+              child: CircularProgressIndicator(color: Color(0xFFDC6E46)),
+            )
                 : Expanded(
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 40,
-                      mainAxisSpacing: 20,
-                      childAspectRatio: (8 / 10),
-                      children: List.generate(_filteredData.length, (index) {
-                        return Container(
-                          child: dormInfoHome(
-                              _filteredData[index].rating,
-                              _filteredData[index].dormName,
-                              _filteredData[index].minPrice,
-                              _filteredData[index].maxPrice,
-                              _filteredData[index].coverImage,
-                              isFav,
-                              updateIsFav),
-                        );
-                      }),
-                    ),
-                  )
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 40,
+                mainAxisSpacing: 20,
+                childAspectRatio: (8 / 10),
+                children: List.generate(_filteredData.length, (index) {
+                  return Container(
+                    child: dormInfoHome(
+                        _filteredData[index].rating,
+                        _filteredData[index].dormName,
+                        _filteredData[index].minPrice,
+                        _filteredData[index].maxPrice,
+                        _filteredData[index].coverImage,
+                        isFav,
+                        updateIsFav),
+                  );
+                }),
+              ),
+            )
           ],
         ),
       ),

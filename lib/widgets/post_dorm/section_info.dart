@@ -209,7 +209,7 @@ class _InfoSectionState extends State<InfoSection> {
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Zipcode'),
                   validator: (value) {
-                    if (value == null || value.isEmpty && value.length != 5) {
+                    if (value == null || value.isEmpty || value.length != 5) {
                       return 'required 5 digit number';
                     }
                     return null;
