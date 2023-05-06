@@ -25,15 +25,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  User? user = FirebaseAuth.instance.currentUser;
   final TextEditingController _searchController = TextEditingController();
   final dio = Dio();
-  late FilterItem newOption = widget.argument ??
-      FilterItem(
-          minPrice: 0,
-          maxPrice: 0,
-          distant: 0,
-          overallRating: '0',
-          facilities: []);
+  FilterItem newOption = FilterItem(
+      minPrice: 0, maxPrice: 0, distant: 0, overallRating: '0', facilities: []);
   List<DormItem> _filteredData = [];
   List<DormItem> _data = [];
   List<UserItem> _userData = [];
@@ -46,84 +42,12 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _filteredData = _data;
       });
-      print("from all dorm");
     } catch (e) {
       debugPrint(e.toString());
     }
   }
 
   bool _isLoading = false;
-
-  void getFilterDorm() async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      // อย่าลืมเรื่อง user login or not login
-      final response = await Caller.dio.post('/api/home/getFilter', data: {
-        "min_price": newOption.minPrice,
-        "max_price": newOption.maxPrice,
-        "distant": newOption.distant,
-        "rate": newOption.overallRating,
-        "facilities": newOption.facilities
-      }); // change to post and put data
-      DormList d = DormList.fromJson(response.data);
-      _data = d.data;
-      setState(() {
-        _filteredData = _data;
-      });
-      await Future.delayed(const Duration(milliseconds: 1000));
-
-      setState(() {
-        _isLoading = false;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void removeOption(String propertyName, [String? facilityName]) {
-    switch (propertyName) {
-      case 'minPrice':
-        setState(() {
-          newOption.minPrice = 0;
-          getFilterDorm();
-        });
-
-        break;
-      case 'maxPrice':
-        setState(() {
-          newOption.maxPrice = 0;
-          getFilterDorm();
-        });
-
-        break;
-      case 'distant':
-        setState(() {
-          newOption.distant = 0.0;
-          getFilterDorm();
-        });
-
-        break;
-      case 'overallRating':
-        setState(() {
-          newOption.overallRating = '';
-          getFilterDorm();
-        });
-
-        break;
-      case 'facilities':
-        if (newOption.facilities.isNotEmpty && facilityName != null) {
-          setState(() {
-            newOption.facilities.remove(facilityName);
-            getFilterDorm();
-          });
-        }
-        break;
-      default:
-        throw ArgumentError("Invalid property name: $propertyName");
-    }
-  }
 
   void getUserProfile(String uid) async {
     try {
@@ -149,28 +73,135 @@ class _HomePageState extends State<HomePage> {
   void getDormAll(String uid) async {
     try {
       final response = await Caller.dio.get('/api/home/getDormAll?userId=$uid');
+
       DormList d = DormList.fromJson(response.data);
       _data = d.data;
       setState(() {
         _filteredData = _data;
       });
-      print("from dorm all");
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  Future<List<DormItem>> refreshData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    setState(() {
+      _isLoading = true;
+    });
+    if (user!.uid != '') {
+      // debugPrint(user!.uid);
+      try {
+        final response =
+            await Caller.dio.post('/api/home/postFilteredDorm', data: {
+          "userId": user!.uid,
+          "min_price": newOption.minPrice,
+          "max_price": newOption.maxPrice,
+          "distant": newOption.distant,
+          "rate": newOption.overallRating,
+          "facilities": newOption.facilities
+        });
+
+        DormList d = DormList.fromJson(response.data);
+        return d.data;
+      } on DioError catch (e) {
+        debugPrint(e.toString());
+        return [];
+      }
+    } else {
+      try {
+        // อย่าลืมเรื่อง user login or not login
+        debugPrint("FilteredNoFav");
+        final response =
+            await Caller.dio.post('/api/home/postFilteredNoFav', data: {
+          "min_price": newOption.minPrice,
+          "max_price": newOption.maxPrice,
+          "distant": newOption.distant,
+          "rate": newOption.overallRating,
+          "facilities": newOption.facilities
+        }); // change to post and put data
+        DormList d = DormList.fromJson(response.data);
+        return d.data;
+      } catch (e) {
+        debugPrint(e.toString());
+        return [];
+      }
+    }
+  }
+
+  bool isNewOptionDefault() {
+    return newOption.minPrice == 0 &&
+        newOption.maxPrice == 0 &&
+        newOption.distant == 0.0 &&
+        newOption.overallRating == '' &&
+        newOption.facilities.isEmpty;
+  }
+
+  void removeOption(String propertyName, [String? facilityName]) {
+    switch (propertyName) {
+      case 'minPrice':
+        setState(() {
+          newOption.minPrice = 0;
+          refreshData();
+        });
+
+        break;
+      case 'maxPrice':
+        setState(() {
+          newOption.maxPrice = 0;
+          refreshData();
+        });
+
+        break;
+      case 'distant':
+        setState(() {
+          newOption.distant = 0.0;
+          refreshData();
+        });
+
+        break;
+      case 'overallRating':
+        setState(() {
+          newOption.overallRating = '';
+          refreshData();
+        });
+
+        break;
+      case 'facilities':
+        if (newOption.facilities.isNotEmpty && facilityName != null) {
+          setState(() {
+            newOption.facilities.remove(facilityName);
+            refreshData();
+          });
+        }
+        break;
+      default:
+        throw ArgumentError("Invalid property name: $propertyName");
+    }
+    // if (isNewOptionDefault()) {
+    //   if (user != null) {
+    //     getDormAll(user!.uid);
+    //   } else {
+    //     getAllDorm();
+    //   }
+    //   return;
+    // }
   }
 
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_performSearch);
-    User? user = FirebaseAuth.instance.currentUser;
-    if (FirebaseAuth.instance.currentUser != null) {
+    if (user != null) {
       getUserProfile(user!.uid);
       getDormAll(user!.uid);
     } else {
       getAllDorm();
     }
+    if (widget.argument != null) {
+      newOption = widget.argument!;
+    }
+    // refreshData();
   }
 
   @override
@@ -207,7 +238,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            searchBar(_searchController, context),
+            searchBar(_searchController, context, refreshData),
             const SizedBox(
               height: 20,
             ),
@@ -222,7 +253,7 @@ class _HomePageState extends State<HomePage> {
                     filterOption(
                         text:
                             '${widget.argument?.minPrice} - ${widget.argument?.maxPrice} Baht',
-                        field: 'price',
+                        field: 'minPrice',
                         removeFilter: removeOption),
                   if (widget.argument?.distant != 0)
                     filterOption(
@@ -249,12 +280,40 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 20,
             ),
-            _isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(color: Color(0xFFDC6E46)),
-                  )
-                : Expanded(
-                    child: GridView.count(
+            FutureBuilder(
+              future: refreshData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset('assets/images/no-results1.png', scale: 3,),
+                              const Text(
+                                "No Result Found",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Text(
+                                  "We couldn't find what you're looking for."),
+                              const Text("Try searching for something else.")
+                            ],
+                          ),
+                        )
+                      ],
+                    );
+                  } else {
+                    _filteredData = snapshot.data as List<DormItem>;
+                    return Expanded(
+                        child: GridView.count(
                       crossAxisCount: 2,
                       crossAxisSpacing: 40,
                       mainAxisSpacing: 20,
@@ -276,8 +335,15 @@ class _HomePageState extends State<HomePage> {
                           ),
                         );
                       }),
-                    ),
-                  )
+                    ));
+                  }
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(color: Color(0xFFDC6E46)),
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),

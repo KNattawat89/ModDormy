@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/models/room.dart';
@@ -7,6 +8,11 @@ import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/MyDrawer.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/room_feature_mapping.dart';
+=======
+
+import 'package:moddormy_flutter/widgets/my_appbar.dart';
+import 'package:moddormy_flutter/widgets/my_drawer.dart';
+>>>>>>> 10d9f89aca213f9e75a159709ad7de468f5f9425
 
 class RoomDetail extends StatefulWidget {
   final Dorm dorm;

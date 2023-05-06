@@ -17,6 +17,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xFFFFF8F0),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -59,6 +60,7 @@ class _LoginFormState extends State<LoginForm> {
       _hindOfOpen = !_hindOfOpen;
     });
   }
+
   final userApiService = UserApiService();
 
   @override
@@ -85,14 +87,20 @@ class _LoginFormState extends State<LoginForm> {
               height: 65,
               child: TextFormField(
                 controller: _user,
+                autofocus: true,
                 style: const TextStyle(fontSize: 18),
                 decoration: const InputDecoration(
                     // isDense: true,
                     prefixIcon: Icon(Icons.person),
+                    prefixIconColor: Color(0xFF2A8089),
                     // contentPadding: EdgeInsets.zero,
                     filled: true,
                     fillColor: Colors.white,
                     hintText: "Type your email",
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFF2A8089), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(50.0))),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(50.0)))),
               ),
@@ -116,17 +124,27 @@ class _LoginFormState extends State<LoginForm> {
                 controller: _pass,
                 style: const TextStyle(fontSize: 18),
                 obscureText: _hindOfOpen,
+                
                 decoration: InputDecoration(
+                  focusColor: const Color(0xFF2A8089),
+                  // focusColor: const Color(0xFF2A8089),
                     hintText: "Type your password",
                     prefixIcon: const Icon(Icons.key),
+                    prefixIconColor: const Color(0xFF2A8089),
                     filled: true,
                     fillColor: Colors.white,
                     suffixIcon: IconButton(
+                     
                         onPressed: _toggle,
                         icon: _hindOfOpen
-                            ? const Icon(Icons.visibility)
+                            ? const Icon(Icons.visibility) 
                             : const Icon(Icons.visibility_off)),
+                    suffixIconColor: const Color(0xFF2A8089),
                     disabledBorder: InputBorder.none,
+                    focusedBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFF2A8089), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(50.0))),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50.0),
                     )),
@@ -153,7 +171,6 @@ class _LoginFormState extends State<LoginForm> {
                     )),
               ],
             ),
-
             SizedBox(
                 width: double.infinity,
                 height: err ? 70 : 0,
@@ -174,17 +191,16 @@ class _LoginFormState extends State<LoginForm> {
                               ? Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 15),
-                                  child:  Text(
-                                        message == "user-not-found"
-                                            ? "Please check your email"
-                                            : "Please check your email and password",
-                                        style: const TextStyle(
-                                          color: Colors.red,
-                                        )),
-                                  )
+                                  child: Text(
+                                      message == "user-not-found"
+                                          ? "Please check your email"
+                                          : "Please check your email and password",
+                                      style: const TextStyle(
+                                        color: Colors.red,
+                                      )),
+                                )
                               : const Text("")
                         ]))),
-
             SizedBox(
               width: 130,
               height: 39,
@@ -203,7 +219,9 @@ class _LoginFormState extends State<LoginForm> {
                           .signInWithEmailAndPassword(
                               email: _user.text, password: _pass.text);
                       // print(userCredential.user?.uid);
-                      await UserApiService.getUserProfile(userCredential.user!.uid, userProvider);
+                      await UserApiService.getUserProfile(
+                          userCredential.user!.uid, userProvider);
+
 
                       // ignore: use_build_context_synchronously
                       Navigator.push(
@@ -230,7 +248,6 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ),
-
             const SizedBox(
               height: 10,
             ),
@@ -257,7 +274,7 @@ class _LoginFormState extends State<LoginForm> {
                           decoration: TextDecoration.underline),
                     )),
               ],
-            )
+            ),
           ],
         ));
   }
