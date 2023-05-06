@@ -6,6 +6,10 @@ import 'package:moddormy_flutter/widgets/review.dart';
 
 class DormDetail extends StatefulWidget {
   const DormDetail({super.key});
+  // final String id = ModalRoute.of(context).settings.arguments;
+  // In this example, we're passing a dorm id as a dynamic parameter in the route ('/dorms/:id'),
+  // and extracting it in the DormDetailsPage using ModalRoute.of(context).settings.arguments.
+  // You can replace dorm_123 with an actual dorm id variable, or fetch it from an API or database.
 
   @override
   State<DormDetail> createState() => _DormDetailState();
@@ -14,6 +18,7 @@ class DormDetail extends StatefulWidget {
 class _DormDetailState extends State<DormDetail> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: const Color(0xffFFF8F0),
       appBar: const MyAppbar(),
