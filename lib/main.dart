@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         '/login': (context) => const LoginPage(),
         '/profile': (context) => const ProfilePage(),
+        '/dorm/:id': (context) => const DormDetail(),
       },
       home: const HomePage(),
       // home: const Scaffold(
