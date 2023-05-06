@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/screens/home.dart';
 import 'dart:io';
 import 'package:moddormy_flutter/screens/login_page.dart';
 
@@ -19,7 +20,7 @@ class _SplashState extends State<Splash> {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const LoginPage()));
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
     });
   }
 
