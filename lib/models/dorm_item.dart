@@ -13,8 +13,8 @@ class DormItem {
   @JsonKey(name: 'cover_image')
   String coverImage;
 
-  @JsonKey(name: 'rating')
-  int rating;
+  @JsonKey(name: 'overall_rate')
+  int overallRate;
 
   @JsonKey(name: 'min_price')
   int minPrice;
@@ -22,13 +22,17 @@ class DormItem {
   @JsonKey(name: 'max_price')
   int maxPrice;
 
+  @JsonKey(name:'fav_status')
+  bool isFav;
+
   DormItem({
     required this.dormId,
     required this.dormName,
     required this.coverImage,
-    required this.rating,
+    required this.overallRate,
     required this.minPrice,
     required this.maxPrice,
+    required this.isFav
   });
 
   factory DormItem.fromJson(Map<String, dynamic> json) =>
