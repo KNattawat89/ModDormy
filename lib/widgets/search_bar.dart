@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/widgets/filter_form.dart';
 
-Row searchBar(TextEditingController searchController, BuildContext context) {
+Row searchBar(TextEditingController searchController, BuildContext context,void Function() filterData) {
   return Row(
     children: [
       // search bar
@@ -81,7 +81,7 @@ Row searchBar(TextEditingController searchController, BuildContext context) {
                           ),
                         ],
                       ),
-                      const FilterForm(),
+                       FilterForm(refreshData: filterData,),
                     ]),
                   ),
                 );

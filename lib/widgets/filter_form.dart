@@ -8,7 +8,9 @@ import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:moddormy_flutter/widgets/review/headline_filter.dart';
 
 class FilterForm extends StatefulWidget {
-  const FilterForm({Key? key}) : super(key: key);
+  const FilterForm({Key? key, required this.refreshData}) : super(key: key);
+
+  final VoidCallback refreshData;
 
   @override
   State<FilterForm> createState() => _FilterFormState();
@@ -337,14 +339,15 @@ class _FilterFormState extends State<FilterForm> {
                         : 0,
                     overallRating: filterItem.overallRating,
                     facilities: filterItem.facilities);
-                print('min price ${filterItem.minPrice}');
-                print('max price ${filterItem.maxPrice}');
-                print('distant ${filterItem.distant}');
-                print('rate ${filterItem.overallRating}');
-                print('facilities ${filterItem.facilities}');
+                // print('min price ${filterItem.minPrice}');
+                // print('max price ${filterItem.maxPrice}');
+                // print('distant ${filterItem.distant}');
+                // print('rate [${filterItem.overallRating}], []');
+                // print('facilities ${filterItem.facilities}');
                 await Future.delayed(const Duration(milliseconds: 1000));
                 getFilterOption();
                 applyFilters(filterItem);
+                widget.refreshData();
               }
             },
             child: Container(
