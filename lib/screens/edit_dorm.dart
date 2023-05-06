@@ -1,33 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/dorm_feature.dart';
+import 'package:moddormy_flutter/models/room.dart';
+import 'package:moddormy_flutter/models/room_frature.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/dorm_form.dart';
 
-class PostForm extends StatefulWidget {
-  const PostForm({super.key});
+class EditForm extends StatefulWidget {
+  const EditForm({super.key});
 
   @override
-  State<PostForm> createState() => _PostFormState();
+  State<EditForm> createState() => _EditFormState();
 }
 
-class _PostFormState extends State<PostForm> {
+class _EditFormState extends State<EditForm> {
   Dorm dorm = Dorm(
     id: 0,
-    name: '',
-    houseNo: '',
-    soi: '',
-    street: '',
-    subDistrict: '',
-    district: '',
-    city: '',
-    zipCode: 0,
-    description: '',
+    name: 'Old dorm name',
+    houseNo: '123',
+    soi: '123/412',
+    street: 'dsfawdaw',
+    subDistrict: '1123123',
+    district: 'plplasd',
+    city: 'bkk',
+    zipCode: 12345,
+    description: 'sdadasdasdasdasdasdasd',
     advPayment: 0,
     electric: 0,
     water: 0,
-    other: '',
+    other: 'none',
     distance: 0,
     feature: DormFeature(
       cctv: false,
@@ -42,10 +44,30 @@ class _PostFormState extends State<PostForm> {
       wifi: false,
     ),
   );
+  @override
+  void initState() {
+    // TODO: implement initState
+    for (var i = 0; i < 2; i++) {
+      dorm.rooms.add(Room(
+          name: "name",
+          price: 12314,
+          size: "size",
+          description: "description",
+          feature: RoomFeature(
+            airConditioner: false,
+            fan: false,
+            furnished: false,
+            waterHeater: false,
+            tv: false,
+            refrigerator: false,
+            bathroom: false,
+          )));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("post dorm");
+    debugPrint("edit dorm");
     return Scaffold(
       backgroundColor: const Color(0xfffff9f0),
       appBar: const MyAppbar(),
@@ -60,7 +82,7 @@ class _PostFormState extends State<PostForm> {
             children: [
               DormForm(
                 dorm: dorm,
-                post: true,
+                post: false,
               ),
             ],
           ),
