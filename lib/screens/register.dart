@@ -10,6 +10,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xFFDC6E46),
         body: Flex(
           direction: Axis.vertical,
@@ -48,6 +49,7 @@ class _RegisterFormState extends State<RegisterForm> {
   UserAccount? _account = UserAccount.customer;
   String? message = "";
   bool err = false;
+  bool userError = true;
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
   void _togglePass() {
@@ -90,16 +92,23 @@ class _RegisterFormState extends State<RegisterForm> {
                         ],
                       )),
                   Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10.0),
+                    margin: const EdgeInsets.only(top: 10.0, bottom: 5),
                     height: 50,
                     child: TextFormField(
                       controller: _user,
+                      autofocus: true,
                       decoration: const InputDecoration(
+                          labelText: "Username",
                           contentPadding: EdgeInsets.symmetric(horizontal: 12),
-                          hintText: "Username",
+                          hintText: "Please enter 6-15 characters",
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF2A8089), width: 2),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12.5)))),
                       validator: (value) {
@@ -112,6 +121,14 @@ class _RegisterFormState extends State<RegisterForm> {
                       },
                     ),
                   ),
+                  // Padding(
+                  //     padding: const EdgeInsets.only(bottom: 10),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.start,
+                  //       children: const [
+                  //         Text("Please enter 6-15 characters"),
+                  //       ],
+                  //     )),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
                     height: 50,
@@ -123,6 +140,11 @@ class _RegisterFormState extends State<RegisterForm> {
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF2A8089), width: 2),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12.5)))),
                       validator: (value) {
@@ -147,6 +169,11 @@ class _RegisterFormState extends State<RegisterForm> {
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
                               borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF2A8089), width: 2),
+                              borderRadius:
                                   BorderRadius.all(Radius.circular(12.5)))),
                       validator: (value) {
                         if (value == null ||
@@ -170,6 +197,11 @@ class _RegisterFormState extends State<RegisterForm> {
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
                               borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF2A8089), width: 2),
+                              borderRadius:
                                   BorderRadius.all(Radius.circular(12.5)))),
                       validator: (value) {
                         if (value == null ||
@@ -189,7 +221,8 @@ class _RegisterFormState extends State<RegisterForm> {
                       controller: _pass,
                       obscureText: _hindOfOpen,
                       decoration: InputDecoration(
-                          hintText: "Password",
+                          hintText: "Please enter 8-15 characters",
+                          labelText: "Password",
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 12),
                           filled: true,
@@ -200,6 +233,11 @@ class _RegisterFormState extends State<RegisterForm> {
                                   ? const Icon(Icons.visibility)
                                   : const Icon(Icons.visibility_off)),
                           border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))),
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF2A8089), width: 2),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12.5)))),
                       validator: (value) {
@@ -229,6 +267,11 @@ class _RegisterFormState extends State<RegisterForm> {
                                   ? const Icon(Icons.visibility)
                                   : const Icon(Icons.visibility_off)),
                           border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))),
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF2A8089), width: 2),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12.5)))),
                       validator: (value) {
@@ -284,6 +327,7 @@ class _RegisterFormState extends State<RegisterForm> {
                             Radio<UserAccount>(
                               value: UserAccount.dormOwner,
                               groupValue: _account,
+                              activeColor: const Color(0xFF2A8089),
                               onChanged: (UserAccount? value) {
                                 setState(() {
                                   _account = value;
@@ -308,6 +352,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           children: [
                             Radio<UserAccount>(
                               value: UserAccount.customer,
+                              activeColor: const Color(0xFF2A8089),
                               groupValue: _account,
                               onChanged: (UserAccount? value) {
                                 setState(() {
@@ -384,7 +429,6 @@ class _RegisterFormState extends State<RegisterForm> {
                                         ? "DormOwner"
                                         : "Customer",
                                   });
-
                                   // debugPrint(registerAcc.statusMessage);
                                   // ignore: use_build_context_synchronously
                                   showDialog<String>(
@@ -472,9 +516,9 @@ class _RegisterFormState extends State<RegisterForm> {
                       )),
                     ],
                   ),
-                    const SizedBox(
-                        height: 20,
-                      )
+                  const SizedBox(
+                    height: 20,
+                  )
                 ]),
               ));
         });

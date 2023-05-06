@@ -9,6 +9,7 @@ class ForgotPassPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xFFDC6E46),
         body: Flex(
           direction: Axis.vertical,
@@ -73,14 +74,21 @@ class _ForgotFormState extends State<ForgotForm> {
                 height: 65,
                 child: TextFormField(
                   controller: _email,
+                  autofocus: true,
                   style: const TextStyle(fontSize: 18),
                   decoration: const InputDecoration(
                       // isDense: true,
                       prefixIcon: Icon(Icons.person),
+                      prefixIconColor: Color(0xFF2A8089),
                       // contentPadding: EdgeInsets.zero,
                       filled: true,
                       fillColor: Colors.white,
                       hintText: "Type your email",
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF2A8089), width: 2),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(50.0))),
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(50.0)))),
