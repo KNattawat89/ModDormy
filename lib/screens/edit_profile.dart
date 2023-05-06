@@ -3,9 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/provider/user_provider.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
+import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:provider/provider.dart';
-
-import '../widgets/MyDrawer.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
