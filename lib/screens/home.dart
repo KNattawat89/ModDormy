@@ -149,6 +149,7 @@ class _HomePageState extends State<HomePage> {
   void getDormAll(String uid) async {
     try {
       final response = await Caller.dio.get('/api/home/getDormAll?userId=$uid');
+     
       DormList d = DormList.fromJson(response.data);
       _data = d.data;
       setState(() {
@@ -199,6 +200,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+  
     return Scaffold(
       appBar: const MyAppbar(),
       endDrawer: const MyDrawer(),

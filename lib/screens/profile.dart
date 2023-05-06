@@ -1,6 +1,8 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/screens/edit_profile.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
@@ -17,7 +19,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context);
 
-    if (user.userId != '') {
+    if (user.userId != '' && FirebaseAuth.instance.currentUser != null) {
       return Scaffold(
           endDrawer: const MyDrawer(),
           appBar: const MyAppbar(),
@@ -27,6 +29,14 @@ class ProfilePage extends StatelessWidget {
               children: [
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Column(
+                    // when u want to update user profile on db please use this method together
+                    // it will update UserProvider as well
+                    //-----------------
+                    // UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+                    // UserItem userProfile = await UserApiService.getUserProfile(uid, userProvider);
+                    // noted: in the getUserProfile method, it has async function already don't have to use async func.
+                    //-----------------
+
                     children: [
                       Container(
                         width: 150,

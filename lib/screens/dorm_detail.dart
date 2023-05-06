@@ -3,7 +3,6 @@ import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/dorm_feature.dart';
 import 'package:moddormy_flutter/screens/room_detail.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
-import 'package:moddormy_flutter/widgets/MyDrawer.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/review.dart';
 
