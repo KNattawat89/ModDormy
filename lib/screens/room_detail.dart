@@ -393,14 +393,14 @@ class _RoomDetailState extends State<RoomDetail> {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Text(
+                        const Text(
                           'Advance payment : ',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         Text(
                           '${widget.dorm.advPayment} months',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          style: const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -409,14 +409,14 @@ class _RoomDetailState extends State<RoomDetail> {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Text(
+                        const Text(
                           'Electric price : ',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         Text(
                           '${widget.dorm.electric}  baht/unit',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          style: const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -425,14 +425,14 @@ class _RoomDetailState extends State<RoomDetail> {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Text(
+                        const Text(
                           'Water price :',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         Text(
                           '${widget.dorm.water} baht/unit',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          style: const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),

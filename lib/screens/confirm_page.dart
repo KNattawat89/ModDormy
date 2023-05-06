@@ -54,7 +54,7 @@ class _DetailScreenState extends State<DetailScreen> {
       );
       debugPrint(postdorm.data["id"].toString());
 
-      // ignore: prefer_typing_uninitialized_variables
+      // ignore: prefer_typing_uninitialized_variables, unused_local_variable
       var postroom;
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
         postroom = await Caller.dio.post("/api/manage-room/postRoom", data: {
@@ -117,9 +117,10 @@ class _DetailScreenState extends State<DetailScreen> {
       );
       debugPrint(editeddorm.data["id"].toString());
 
+      // ignore: prefer_typing_uninitialized_variables
       var editedroom;
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
-        print(widget.dorm.rooms[i].id);
+        debugPrint(widget.dorm.rooms[i].id.toString());
         editedroom = await Caller.dio
             .put("/api/manage-room/editRoom?roomId=${98 + i}", data: {
           "dorm_id": editeddorm.data["id"],
