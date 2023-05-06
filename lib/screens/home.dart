@@ -25,9 +25,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
-
   final TextEditingController _searchController = TextEditingController();
   final dio = Dio();
   late FilterItem newOption = widget.argument ??
@@ -39,19 +36,7 @@ class _HomePageState extends State<HomePage> {
           facilities: []);
   List<DormItem> _filteredData = [];
   List<DormItem> _data = [];
-  List<UserItem> _userData= [];
-  bool isFav = false;
-
-  void updateIsFav() {
-    setState(() {
-      isFav = !isFav;
-    });
-    // print('min price ${newOption.minPrice}');
-    // print('max price ${newOption.maxPrice}');
-    // print('distant ${newOption.distant}');
-    // print('rate ${newOption.overallRating}');
-    // print('facilities ${newOption.facilities}');
-  }
+  List<UserItem> _userData = [];
 
   void getAllDorm() async {
     try {
@@ -61,8 +46,9 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _filteredData = _data;
       });
+      print("from all dorm");
     } catch (e) {
-      // print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -139,10 +125,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void getUserProfile(String uid) async{
+  void getUserProfile(String uid) async {
     try {
-      final response = await Caller.dio.get(
-          '/api/profile/getProfile?userId=$uid');
+      final response =
+          await Caller.dio.get('/api/profile/getProfile?userId=$uid');
       UserList u = UserList.fromJson(response.data);
       _userData = u.data;
       Provider.of<UserProvider>(context, listen: false).setUser(
@@ -152,11 +138,25 @@ class _HomePageState extends State<HomePage> {
           _userData[0].firstname,
           _userData[0].lastname,
           _userData[0].email,
-          _userData[0].telephone?? '',
-          _userData[0].lineId?? '',
+          _userData[0].telephone ?? '',
+          _userData[0].lineId ?? '',
           _userData[0].userType);
     } catch (e) {
       print(e);
+    }
+  }
+
+  void getDormAll(String uid) async {
+    try {
+      final response = await Caller.dio.get('/api/home/getDormAll?userId=$uid');
+      DormList d = DormList.fromJson(response.data);
+      _data = d.data;
+      setState(() {
+        _filteredData = _data;
+      });
+      print("from dorm all");
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 
@@ -164,10 +164,12 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _searchController.addListener(_performSearch);
-    getAllDorm();
-    if(FirebaseAuth.instance.currentUser != null){
-      User? user = FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
+    if (FirebaseAuth.instance.currentUser != null) {
       getUserProfile(user!.uid);
+      getDormAll(user!.uid);
+    } else {
+      getAllDorm();
     }
   }
 
@@ -188,8 +190,8 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _filteredData = _data
           .where((element) => element.dormName
-          .toLowerCase()
-          .contains(_searchController.text.toLowerCase()))
+              .toLowerCase()
+              .contains(_searchController.text.toLowerCase()))
           .toList();
       _isLoading = false;
     });
@@ -219,7 +221,7 @@ class _HomePageState extends State<HomePage> {
                       widget.argument?.maxPrice != 0)
                     filterOption(
                         text:
-                        '${widget.argument?.minPrice} - ${widget.argument?.maxPrice} Baht',
+                            '${widget.argument?.minPrice} - ${widget.argument?.maxPrice} Baht',
                         field: 'price',
                         removeFilter: removeOption),
                   if (widget.argument?.distant != 0)
@@ -249,28 +251,33 @@ class _HomePageState extends State<HomePage> {
             ),
             _isLoading
                 ? const Center(
-              child: CircularProgressIndicator(color: Color(0xFFDC6E46)),
-            )
+                    child: CircularProgressIndicator(color: Color(0xFFDC6E46)),
+                  )
                 : Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 40,
-                mainAxisSpacing: 20,
-                childAspectRatio: (8 / 10),
-                children: List.generate(_filteredData.length, (index) {
-                  return Container(
-                    child: dormInfoHome(
-                        _filteredData[index].rating,
-                        _filteredData[index].dormName,
-                        _filteredData[index].minPrice,
-                        _filteredData[index].maxPrice,
-                        _filteredData[index].coverImage,
-                        isFav,
-                        updateIsFav),
-                  );
-                }),
-              ),
-            )
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 40,
+                      mainAxisSpacing: 20,
+                      childAspectRatio: (8 / 10),
+                      children: List.generate(_filteredData.length, (index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context,
+                                '/dorms/${_filteredData[index].dormId}');
+                          },
+                          child: DormInfoHome(
+                            dormId: _filteredData[index].dormId,
+                            dormName: _filteredData[index].dormName,
+                            pathImage: _filteredData[index].coverImage,
+                            isFav: _filteredData[index].isFav,
+                            minPrice: _filteredData[index].minPrice,
+                            maxPrice: _filteredData[index].maxPrice,
+                            rating: _filteredData[index].overallRate,
+                          ),
+                        );
+                      }),
+                    ),
+                  )
           ],
         ),
       ),

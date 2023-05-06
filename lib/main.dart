@@ -8,6 +8,7 @@ import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/screens/profile.dart';
 import 'package:moddormy_flutter/screens/register.dart';
+import 'package:moddormy_flutter/screens/splash.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const ProfilePage(),
         '/dorm/:id': (context) => const DormDetail(),
       },
-      home: const HomePage(),
+      home: const Splash()
       // home: const Scaffold(
       //   endDrawer: MyDrawer(),
       //   appBar: MyAppbar(),
