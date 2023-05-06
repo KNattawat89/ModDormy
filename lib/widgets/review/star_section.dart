@@ -20,7 +20,7 @@ class _StarSectionState extends State<StarSection> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         RatingBar.builder(
-          initialRating: widget.review.overallRate,
+          initialRating: widget.review.ratingOverall.toDouble(),
           minRating: 1,
           direction: Axis.horizontal,
           allowHalfRating: false,
@@ -30,7 +30,7 @@ class _StarSectionState extends State<StarSection> {
               const Icon(Icons.star, color: Color(0xffDC6E46)),
           onRatingUpdate: (newRating) {
             setState(() {
-              () => widget.review.overallRate = newRating;
+              () => widget.review.ratingOverall = newRating as int;
             });
           },
           unratedColor: Colors.white,

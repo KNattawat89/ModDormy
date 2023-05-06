@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:moddormy_flutter/models/review.dart';
 
 import 'package:moddormy_flutter/widgets/review/review_mockup.dart';
 
-List<ReviewM> reviews = generateMockReviews();
+//List<ReviewM> reviews = generateMockReviews();
 
 class DormRating extends StatelessWidget {
-  const DormRating({super.key});
+  final List<Review> reviews;
+  const DormRating({super.key, required this.reviews});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +76,7 @@ class DormRating extends StatelessWidget {
   }
 }
 
-Map<String, double> _calculateAverageRates(List<ReviewM> reviews) {
+Map<String, double> _calculateAverageRates(List<Review> reviews) {
   int sumPriceRate = 0;
   int sumLocationRate = 0;
   int sumFacilityRate = 0;
@@ -82,13 +84,13 @@ Map<String, double> _calculateAverageRates(List<ReviewM> reviews) {
   int sumSecurityRate = 0;
   int sumOverallRate = 0;
 
-  for (ReviewM review in reviews) {
-    sumPriceRate += review.priceRate;
-    sumLocationRate += review.locationRate;
-    sumFacilityRate += review.facilityRate;
-    sumSanitaryRate += review.sanitaryRate;
-    sumSecurityRate += review.securityRate;
-    sumOverallRate += review.overallRate;
+  for (Review review in reviews) {
+    sumPriceRate += review.ratingPrice;
+    sumLocationRate += review.ratingLocation;
+    sumFacilityRate += review.ratingFacility;
+    sumSanitaryRate += review.ratingSanitary;
+    sumSecurityRate += review.ratingSanitary;
+    sumOverallRate += review.ratingOverall;
   }
 
   int numberOfReviews = reviews.length;
