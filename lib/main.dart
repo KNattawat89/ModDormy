@@ -6,7 +6,6 @@ import 'package:moddormy_flutter/screens/dorm_detail.dart';
 import 'package:moddormy_flutter/screens/favorite.dart';
 import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
-import 'package:moddormy_flutter/screens/post_form.dart';
 import 'package:moddormy_flutter/screens/profile.dart';
 import 'package:moddormy_flutter/screens/register.dart';
 import 'package:provider/provider.dart';
@@ -16,13 +15,12 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
 // Ideal time to initialize
-  await FirebaseAuth.instance.useAuthEmulator('localhost', 3000);
-  runApp(const MyApp());
+  // await FirebaseAuth.instance.useAuthEmulator('localhost', 3000);
 //   await FirebaseAuth.instance.useAuthEmulator('localhost', 3000);
   runApp(
     ChangeNotifierProvider(
       create: (context) => UserProvider(),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 //...

@@ -174,21 +174,17 @@ class _LoginFormState extends State<LoginForm> {
                               ? Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 15),
-                                  child: Expanded(
-                                    child: Text(
+                                  child:  Text(
                                         message == "user-not-found"
                                             ? "Please check your email"
                                             : "Please check your email and password",
                                         style: const TextStyle(
                                           color: Colors.red,
                                         )),
-                                  ))
+                                  )
                               : const Text("")
                         ]))),
 
-            // Expanded(child:
-            // Row
-            // )
             SizedBox(
               width: 130,
               height: 39,

@@ -16,7 +16,6 @@ class ForgotPassPage extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              height: 270,
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(20)),
               margin: const EdgeInsets.all(35.0),
@@ -67,7 +66,6 @@ class _ForgotFormState extends State<ForgotForm> {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
-              
               const SizedBox(
                 width: 10,
               ),
@@ -97,15 +95,14 @@ class _ForgotFormState extends State<ForgotForm> {
                   },
                 ),
               ),
-
               const SizedBox(
                 height: 30,
               ),
               Row(
-                  // mainAxisAlignment: MainAxisAlignment.,
-                  children: [
-                    Expanded(child: 
-                     SizedBox(
+                // mainAxisAlignment: MainAxisAlignment.,
+                children: [
+                  Expanded(
+                    child: SizedBox(
                       height: 39,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -125,33 +122,32 @@ class _ForgotFormState extends State<ForgotForm> {
                             style: TextStyle(fontSize: 14, color: Colors.black),
                           )),
                     ),
-                    ),
-                   const SizedBox(width: 20),
-                   
-                   Expanded(child: 
-                   SizedBox(
-                      height: 39,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFDC6E46),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.5)),
-                          ),
-                          onPressed: () {
-                            if (_formkey.currentState!.validate()) {
-                              verifyEmail();
-                            }
-                          },
-                          child: const Text(
-                            "Confirm",
-                            style: TextStyle(fontSize: 14, color: Colors.white),
-                          )),
-                    )
-                   )
-                    
-                  ],
-                ),
-              
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                      child: SizedBox(
+                    height: 39,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFDC6E46),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.5)),
+                        ),
+                        onPressed: () {
+                          if (_formkey.currentState!.validate()) {
+                            verifyEmail();
+                          }
+                        },
+                        child: const Text(
+                          "Confirm",
+                          style: TextStyle(fontSize: 14, color: Colors.white),
+                        )),
+                  ))
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              )
             ],
           ),
         ));
