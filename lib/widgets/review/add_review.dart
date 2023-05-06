@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/models/user_item.dart';
 import 'package:moddormy_flutter/widgets/review/dropdown_section.dart';
 import 'package:moddormy_flutter/widgets/review/star_section.dart';
 import 'package:moddormy_flutter/widgets/review/text_section.dart';
 
 import '../../models/review.dart';
+import '../../utilities/caller.dart';
 
 class AddReview extends StatefulWidget {
   const AddReview({super.key});
@@ -13,14 +16,31 @@ class AddReview extends StatefulWidget {
 }
 
 class _AddReviewState extends State<AddReview> {
+  void postReview(Review review) async {
+    try {
+      print(review.toJson().toString());
+      final response = await Caller.dio
+          .post('/api/review/addDormReview', data: review.toJson());
+      print(response.data.toString());
+    } on DioError catch (e) {
+      print(e.toString());
+      print(e.response?.data.toString());
+    }
+  }
+
   Review review = Review(
+      dormId: 20,
       review: "",
-      priceRate: 0,
-      locationRate: 0,
-      facilityRate: 0,
-      sanitaryRate: 0,
-      securityRate: 0,
-      overallRate: 0.0);
+      ratingPrice: 0,
+      ratingLocation: 0,
+      ratingFacility: 0,
+      ratingSanitary: 0,
+      ratingSecurity: 0,
+      ratingOverall: 0,
+      createdAt: null,
+      userId: 'aH5CdH3VqlS1vVeqJ20WFKvGvmo2',
+      user: null);
+
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -54,6 +74,7 @@ class _AddReviewState extends State<AddReview> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   // do something with the form data
+                  postReview(review);
                 }
               },
               style: ElevatedButton.styleFrom(

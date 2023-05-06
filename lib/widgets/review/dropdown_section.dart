@@ -45,7 +45,7 @@ class _DropdownSectionState extends State<DropdownSection> {
               ),
             ),
             onChanged: (int? newValue) {
-              setState(() => widget.review.priceRate = newValue!);
+              setState(() => widget.review.ratingPrice = newValue!);
             },
             items: <int>[1, 2, 3, 4, 5].map((int value) {
               return DropdownMenuItem<int>(
@@ -105,7 +105,7 @@ class _DropdownSectionState extends State<DropdownSection> {
                   borderRadius: BorderRadius.circular(5), color: Colors.white),
             ),
             onChanged: (int? newValue) {
-              setState(() => widget.review.locationRate = newValue!);
+              setState(() => widget.review.ratingLocation = newValue!);
             },
             items: <int>[1, 2, 3, 4, 5].map((int value) {
               return DropdownMenuItem<int>(
@@ -165,7 +165,7 @@ class _DropdownSectionState extends State<DropdownSection> {
                   borderRadius: BorderRadius.circular(5), color: Colors.white),
             ),
             onChanged: (int? newValue) {
-              setState(() => widget.review.facilityRate = newValue!);
+              setState(() => widget.review.ratingFacility = newValue!);
             },
             items: <int>[1, 2, 3, 4, 5].map((int value) {
               return DropdownMenuItem<int>(
@@ -224,7 +224,7 @@ class _DropdownSectionState extends State<DropdownSection> {
                   borderRadius: BorderRadius.circular(5), color: Colors.white),
             ),
             onChanged: (int? newValue) {
-              setState(() => widget.review.sanitaryRate = newValue!);
+              setState(() => widget.review.ratingSanitary = newValue!);
             },
             items: <int>[1, 2, 3, 4, 5].map((int value) {
               return DropdownMenuItem<int>(
@@ -284,7 +284,7 @@ class _DropdownSectionState extends State<DropdownSection> {
                   borderRadius: BorderRadius.circular(5), color: Colors.white),
             ),
             onChanged: (int? newValue) {
-              setState(() => widget.review.securityRate = newValue!);
+              setState(() => widget.review.ratingSecurity = newValue!);
             },
             items: <int>[1, 2, 3, 4, 5].map((int value) {
               return DropdownMenuItem<int>(
