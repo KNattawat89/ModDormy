@@ -27,12 +27,12 @@ class _DormReviewState extends State<DormReview> {
       final response =
           await dio.get('/api/review/getDormReview?dormId=$dormId');
       print(response.data.toString());
-
+      List<Review> r =
+          response.data.map<Review>((json) => Review.fromJson(json)).toList();
+      r.forEach((e) => print(e.toJson().toString()));
       setState(() {
-        this.reviews =
-            response.data.map<Review>((json) => Review.fromJson(json)).toList();
+        reviews = r;
         reviewCount = reviews.length;
-        print(this.reviews);
       });
     } catch (e) {
       print(e.toString());
@@ -64,8 +64,8 @@ class _DormReviewState extends State<DormReview> {
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
             ),
-            const DormRating(),
-            const UserReview(),
+            DormRating(reviews: reviews),
+            UserReview(reviews: reviews),
             const AddReview(),
           ],
         ));
