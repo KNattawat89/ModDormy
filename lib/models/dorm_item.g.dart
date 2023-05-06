@@ -10,7 +10,7 @@ DormItem _$DormItemFromJson(Map<String, dynamic> json) => DormItem(
       dormId: json['dorm_id'] as int,
       dormName: json['dorm_name'] as String,
       coverImage: json['cover_image'] as String,
-      overallRate: json['overall_rate'] as int,
+      overallRate: (json['overall_rate'] as num).toDouble(),
       minPrice: json['min_price'] as int,
       maxPrice: json['max_price'] as int,
       isFav: json['fav_status'] as bool,
