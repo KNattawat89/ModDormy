@@ -445,15 +445,15 @@ class _RoomDetailState extends State<RoomDetail> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      children: const [
-                        Text(
+                      children:  [
+                        const Text(
                           'Other : ',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          '(HERE)',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          widget.dorm.other,
+                          style: const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
