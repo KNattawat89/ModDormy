@@ -9,11 +9,12 @@ import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/screens/profile.dart';
 import 'package:moddormy_flutter/screens/register.dart';
 import 'package:moddormy_flutter/screens/splash.dart';
+import 'package:moddormy_flutter/screens/tempmanagedorm.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
 
 // Ideal time to initialize
   // await FirebaseAuth.instance.useAuthEmulator('localhost', 3000);
@@ -33,21 +34,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ModDormy app',
-      initialRoute: '/',
-      routes: {
-        '/fav': (context) => const FavoritePage(), 
-        '/home': (context) => const HomePage(),
-        '/login': (context) => const LoginPage(),
-        '/profile': (context) => const ProfilePage(),
-        '/dorm/:id': (context) => const DormDetail(),
-      },
-      home: const Splash()
-      // home: const Scaffold(
-      //   endDrawer: MyDrawer(),
-      //   appBar: MyAppbar(),
-      //   body: HomePage(),
-      // ),
-    );
+        title: 'ModDormy app',
+        initialRoute: '/',
+        routes: {
+          '/fav': (context) => const FavoritePage(),
+          '/home': (context) => const HomePage(),
+          '/login': (context) => const LoginPage(),
+          '/profile': (context) => const ProfilePage(),
+          '/dorm/:id': (context) => const DormDetail(
+                dormId: 37,
+              ),
+        },
+        home: const tempMD()
+        // home: const Scaffold(
+        //   endDrawer: MyDrawer(),
+        //   appBar: MyAppbar(),
+        //   body: HomePage(),
+        // ),
+        );
   }
 }

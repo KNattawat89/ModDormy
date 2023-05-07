@@ -81,7 +81,7 @@ class _RoomDetailState extends State<RoomDetail> {
       drawer: const MyDrawer(),
       body: Center(
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(20),
           child: ListView(
             children: [
               SizedBox(
@@ -400,7 +400,8 @@ class _RoomDetailState extends State<RoomDetail> {
                         ),
                         Text(
                           '${widget.dorm.advPayment} months',
-                          style: const TextStyle(color: Colors.grey, fontSize: 16),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -416,7 +417,8 @@ class _RoomDetailState extends State<RoomDetail> {
                         ),
                         Text(
                           '${widget.dorm.electric}  baht/unit',
-                          style: const TextStyle(color: Colors.grey, fontSize: 16),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -432,7 +434,8 @@ class _RoomDetailState extends State<RoomDetail> {
                         ),
                         Text(
                           '${widget.dorm.water} baht/unit',
-                          style: const TextStyle(color: Colors.grey, fontSize: 16),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
