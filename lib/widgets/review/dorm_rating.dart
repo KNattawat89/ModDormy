@@ -38,8 +38,9 @@ class DormRating extends StatelessWidget {
                     rating: averageRates['overall']!,
                     itemBuilder: (context, index) => const Icon(
                       Icons.star,
-                      color: Colors.amber,
+                      color: Color(0xffDC6E46),
                     ),
+                    unratedColor: Colors.white,
                     itemCount: 5,
                     itemSize: 20.0,
                     direction: Axis.horizontal,
@@ -53,23 +54,16 @@ class DormRating extends StatelessWidget {
 
               //divider
               const VerticalDivider(
-                color: Colors.white,
+                color: Color(0xff858585),
                 thickness: 1,
                 indent: 20,
                 endIndent: 20,
               ),
 
               //right side
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildRatingRow('Price', averageRates['price']!),
-                  _buildRatingRow('Location', averageRates['location']!),
-                  _buildRatingRow('Facility', averageRates['facility']!),
-                  _buildRatingRow('Sanitary', averageRates['sanitary']!),
-                  _buildRatingRow('Security', averageRates['security']!),
-                ],
-              )
+              Container(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: fiveRates(averageRates))
             ],
           ),
         ));
@@ -111,23 +105,66 @@ Map<String, double> _calculateAverageRates(List<Review> reviews) {
   };
 }
 
-Widget _buildRatingRow(String label, double score) {
+Widget fiveRates(Map<String, double> averageRates) {
   return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
-      Text(
-        score.toStringAsFixed(1),
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16.0,
-        ),
+      Column(
+        children: [
+          Text(
+            averageRates['price']!.toStringAsFixed(1),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16.0,
+            ),
+          ),
+          Text(averageRates['location']!.toStringAsFixed(1),
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+          Text(averageRates['facility']!.toStringAsFixed(1),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              )),
+          Text(averageRates['sanitary']!.toStringAsFixed(1),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              )),
+          Text(averageRates['security']!.toStringAsFixed(1),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              )),
+        ],
       ),
-      Text(
-        label,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16.0,
-        ),
+      const SizedBox(
+        width: 10,
+      ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Text('Price',
+              style: TextStyle(
+                fontSize: 16.0,
+              )),
+          Text('Location',
+              style: TextStyle(
+                fontSize: 16.0,
+              )),
+          Text('Facility',
+              style: TextStyle(
+                fontSize: 16.0,
+              )),
+          Text('Sanitary',
+              style: TextStyle(
+                fontSize: 16.0,
+              )),
+          Text('Security',
+              style: TextStyle(
+                fontSize: 16.0,
+              )),
+        ],
       ),
     ],
   );

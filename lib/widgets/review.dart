@@ -26,10 +26,10 @@ class _DormReviewState extends State<DormReview> {
     try {
       final response =
           await dio.get('/api/review/getDormReview?dormId=$dormId');
-      print(response.data.toString());
+      //print(response.data.toString());
       List<Review> r =
           response.data.map<Review>((json) => Review.fromJson(json)).toList();
-      r.forEach((e) => print(e.toJson().toString()));
+      //r.forEach((e) => print(e.toJson().toString()));
       setState(() {
         reviews = r;
         reviewCount = reviews.length;

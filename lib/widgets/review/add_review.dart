@@ -18,10 +18,10 @@ class AddReview extends StatefulWidget {
 class _AddReviewState extends State<AddReview> {
   void postReview(Review review) async {
     try {
-      print(review.toJson().toString());
+      //print(review.toJson().toString());
       final response = await Caller.dio
           .post('/api/review/addDormReview', data: review.toJson());
-      print(response.data.toString());
+      //print(response.data.toString());
     } on DioError catch (e) {
       print(e.toString());
       print(e.response?.data.toString());
