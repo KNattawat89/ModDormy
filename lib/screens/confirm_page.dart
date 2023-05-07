@@ -122,8 +122,8 @@ class _DetailScreenState extends State<DetailScreen> {
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
         debugPrint(widget.dorm.rooms[i].id.toString());
         editedroom = await Caller.dio
-            .put("/api/manage-room/editRoom?roomId=${98 + i}", data: {
-          "dorm_id": editeddorm.data["id"],
+            .put("/api/manage-room/editRoom?roomId=${widget.dorm.id}", data: {
+          "dorm_id": widget.dorm.id,
           "room_Name": widget.dorm.rooms[i].name,
           "cover_Image": "xxxxxx",
           "price": 1223,

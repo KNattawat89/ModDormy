@@ -22,6 +22,7 @@ class _EditFormState extends State<EditForm> {
   Dorm? dorm;
   List<Imagestring> myimages = [];
   String? description;
+  int? roomCount;
   Future<void> getDormDetail() async {
     try {
       final response = await Caller.dio
@@ -34,27 +35,11 @@ class _EditFormState extends State<EditForm> {
       // Dorm dorm = Dorm.fromJson(response.data['data']);
       Dorm d = Dorm.fromJson(response.data);
       d.rooms = rooms;
+      roomCount = d.rooms.length;
       setState(() {
         dorm = d;
         description = dorm!.description;
-        for (var i = 0; i < 2; i++) {
-          dorm!.rooms.add(Room(
-              id: dorm!.rooms[i].id,
-              name: dorm!.rooms[i].name,
-              price: dorm!.rooms[i].price,
-              size: dorm!.rooms[i].size,
-              description: dorm!.rooms[i].description,
-              coverimageString: dorm!.rooms[i].coverimageString,
-              feature: RoomFeature(
-                airConditioner: dorm!.rooms[i].feature.airConditioner,
-                fan: dorm!.rooms[i].feature.fan,
-                furnished: dorm!.rooms[i].feature.furnished,
-                waterHeater: dorm!.rooms[i].feature.waterHeater,
-                tv: dorm!.rooms[i].feature.tv,
-                refrigerator: dorm!.rooms[i].feature.refrigerator,
-                bathroom: dorm!.rooms[i].feature.bathroom,
-              )));
-        }
+        debugPrint(dorm!.rooms.toString());
       });
     } catch (e) {
       debugPrint('$e error dormDetail');

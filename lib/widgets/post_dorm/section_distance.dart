@@ -11,15 +11,26 @@ class DistanceSection extends StatefulWidget {
 
 class _DistanceSectionState extends State<DistanceSection> {
   final distanceController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    distanceController.text = widget.dorm.distance.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Distance',
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-          textAlign: TextAlign.start,
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Distance',
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+            textAlign: TextAlign.start,
+          ),
         ),
         Padding(
           //Distance

@@ -352,7 +352,7 @@ class _DormDetailState extends State<DormDetail> {
                 thickness: 5,
               ),
               // REVIEW HERE
-              // const DormReview(),
+              const DormReview(),
             ],
           ),
         ),

@@ -12,6 +12,11 @@ class DescriptionSection extends StatefulWidget {
 
 class _DescriptionSectionState extends State<DescriptionSection> {
   final descriptionController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    descriptionController.text = widget.dorm.description;
+  }
 
   @override
   Widget build(BuildContext context) {
