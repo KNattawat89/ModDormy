@@ -78,6 +78,7 @@ class _AddReviewState extends State<AddReview> {
                 }
               },
               style: ElevatedButton.styleFrom(
+                fixedSize: const Size(90, 30),
                 elevation: 8,
                 backgroundColor: const Color(0xffDC6E46),
                 shape: RoundedRectangleBorder(

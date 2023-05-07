@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:moddormy_flutter/models/review.dart';
 
@@ -53,19 +54,21 @@ class _DropdownSectionState extends State<DropdownSection> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: List.generate(
-                          value,
-                          (index) => const Icon(
-                                Icons.star,
-                                color: Color(0xffDC6E46),
-                                size: 14,
-                              )),
+                    RatingBarIndicator(
+                      rating: value.toDouble(),
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Color(0xffDC6E46),
+                      ),
+                      unratedColor: const Color(0xffD9D9D9),
+                      itemCount: 5,
+                      itemSize: 13.0,
+                      direction: Axis.horizontal,
                     ),
                     Text(
-                      '$value',
+                      '$value.0',
                       style: const TextStyle(
-                          fontSize: 14, color: Color(0xffDC6E46)),
+                          fontSize: 12, color: Color(0xffDC6E46)),
                     ),
                   ],
                 ),
@@ -113,19 +116,21 @@ class _DropdownSectionState extends State<DropdownSection> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: List.generate(
-                          value,
-                          (index) => const Icon(
-                                Icons.star,
-                                color: Color(0xffDC6E46),
-                                size: 14,
-                              )),
+                    RatingBarIndicator(
+                      rating: value.toDouble(),
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Color(0xffDC6E46),
+                      ),
+                      unratedColor: const Color(0xffD9D9D9),
+                      itemCount: 5,
+                      itemSize: 13.0,
+                      direction: Axis.horizontal,
                     ),
                     Text(
-                      '$value',
+                      '$value.0',
                       style: const TextStyle(
-                          fontSize: 14, color: Color(0xffDC6E46)),
+                          fontSize: 12, color: Color(0xffDC6E46)),
                     ),
                   ],
                 ),
@@ -173,19 +178,21 @@ class _DropdownSectionState extends State<DropdownSection> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: List.generate(
-                          value,
-                          (index) => const Icon(
-                                Icons.star,
-                                color: Color(0xffDC6E46),
-                                size: 14,
-                              )),
+                    RatingBarIndicator(
+                      rating: value.toDouble(),
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Color(0xffDC6E46),
+                      ),
+                      unratedColor: const Color(0xffD9D9D9),
+                      itemCount: 5,
+                      itemSize: 13.0,
+                      direction: Axis.horizontal,
                     ),
                     Text(
-                      '$value',
+                      '$value.0',
                       style: const TextStyle(
-                          fontSize: 14, color: Color(0xffDC6E46)),
+                          fontSize: 12, color: Color(0xffDC6E46)),
                     ),
                   ],
                 ),
@@ -232,19 +239,21 @@ class _DropdownSectionState extends State<DropdownSection> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: List.generate(
-                          value,
-                          (index) => const Icon(
-                                Icons.star,
-                                color: Color(0xffDC6E46),
-                                size: 14,
-                              )),
+                    RatingBarIndicator(
+                      rating: value.toDouble(),
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Color(0xffDC6E46),
+                      ),
+                      unratedColor: const Color(0xffD9D9D9),
+                      itemCount: 5,
+                      itemSize: 13.0,
+                      direction: Axis.horizontal,
                     ),
                     Text(
-                      '$value',
+                      '$value.0',
                       style: const TextStyle(
-                          fontSize: 14, color: Color(0xffDC6E46)),
+                          fontSize: 12, color: Color(0xffDC6E46)),
                     ),
                   ],
                 ),
@@ -292,19 +301,21 @@ class _DropdownSectionState extends State<DropdownSection> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: List.generate(
-                          value,
-                          (index) => const Icon(
-                                Icons.star,
-                                color: Color(0xffDC6E46),
-                                size: 14,
-                              )),
+                    RatingBarIndicator(
+                      rating: value.toDouble(),
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Color(0xffDC6E46),
+                      ),
+                      unratedColor: const Color(0xffD9D9D9),
+                      itemCount: 5,
+                      itemSize: 13.0,
+                      direction: Axis.horizontal,
                     ),
                     Text(
-                      '$value',
+                      '$value.0',
                       style: const TextStyle(
-                          fontSize: 14, color: Color(0xffDC6E46)),
+                          fontSize: 12, color: Color(0xffDC6E46)),
                     ),
                   ],
                 ),
