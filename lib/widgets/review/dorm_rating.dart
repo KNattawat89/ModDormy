@@ -83,17 +83,23 @@ Map<String, double> _calculateAverageRates(List<Review> reviews) {
     sumLocationRate += review.ratingLocation;
     sumFacilityRate += review.ratingFacility;
     sumSanitaryRate += review.ratingSanitary;
-    sumSecurityRate += review.ratingSanitary;
+    sumSecurityRate += review.ratingSecurity;
     sumOverallRate += review.ratingOverall;
   }
 
   int numberOfReviews = reviews.length;
-  double averagePriceRate = sumPriceRate / numberOfReviews;
-  double averageLocationRate = sumLocationRate / numberOfReviews;
-  double averageFacilityRate = sumFacilityRate / numberOfReviews;
-  double averageSanitaryRate = sumSanitaryRate / numberOfReviews;
-  double averageSecurityRate = sumSecurityRate / numberOfReviews;
-  double averageOverallRate = sumOverallRate / numberOfReviews;
+  double averagePriceRate =
+      numberOfReviews == 0 ? 0 : sumPriceRate / numberOfReviews;
+  double averageLocationRate =
+      numberOfReviews == 0 ? 0 : sumLocationRate / numberOfReviews;
+  double averageFacilityRate =
+      numberOfReviews == 0 ? 0 : sumFacilityRate / numberOfReviews;
+  double averageSanitaryRate =
+      numberOfReviews == 0 ? 0 : sumSanitaryRate / numberOfReviews;
+  double averageSecurityRate =
+      numberOfReviews == 0 ? 0 : sumSecurityRate / numberOfReviews;
+  double averageOverallRate =
+      numberOfReviews == 0 ? 0 : sumOverallRate / numberOfReviews;
 
   return {
     'price': averagePriceRate,
