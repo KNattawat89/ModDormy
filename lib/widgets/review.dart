@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/widgets/review/add_review.dart';
 import 'package:moddormy_flutter/widgets/review/dorm_rating.dart';
-import 'package:moddormy_flutter/widgets/review/review_mockup.dart';
+// import 'package:moddormy_flutter/widgets/review/review_mockup.dart';
 import 'package:moddormy_flutter/widgets/review/user_review.dart';
 
 import '../models/review.dart';
@@ -35,7 +35,7 @@ class _DormReviewState extends State<DormReview> {
         reviewCount = reviews.length;
       });
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
     }
   }
 
