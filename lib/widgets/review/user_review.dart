@@ -57,9 +57,9 @@ class showReview extends StatelessWidget {
 Widget userHeader(Review reviews) {
   return Row(
     children: [
-      const CircleAvatar(
-        backgroundImage: NetworkImage(
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR00L8GRKSQVHDXAnex599APwTABc7_5WRD_w&usqp=CAU'),
+      CircleAvatar(
+        backgroundImage: AssetImage(
+            reviews.user!.profileImage ?? 'assets/images/profileNull.png'),
       ),
       const SizedBox(width: 10.0),
       Column(

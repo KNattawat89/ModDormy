@@ -42,7 +42,7 @@ class _DormReviewState extends State<DormReview> {
   @override
   void initState() {
     super.initState();
-    getDormReview(20);
+    getDormReview(2);
   }
 
   @override
