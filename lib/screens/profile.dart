@@ -178,11 +178,9 @@ class ProfilePage extends StatelessWidget {
                 'This feature will be available when you are logged in only'),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginPage(),
-                  ),
+                 "/login",
                 );
               },
               child: const Text('Login'),

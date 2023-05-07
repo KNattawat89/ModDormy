@@ -10,7 +10,7 @@ ListTile menuTextIcon(BuildContext context,IconData name,String menuName, String
     title: Text(menuName,style: const TextStyle(fontSize: 20)),
     onTap: () async{
       if (route == '/home'){
-        Navigator.popAndPushNamed(context,route);
+        Navigator.popUntil(context,ModalRoute.withName(route));
       }
          else if (route == '/logout'){
           await FirebaseAuth.instance.signOut();
@@ -18,7 +18,7 @@ ListTile menuTextIcon(BuildContext context,IconData name,String menuName, String
             debugPrint("User sign-out already");
           }
         // ignore: use_build_context_synchronously
-        Navigator.pop(context,ModalRoute.withName(route));
+        Navigator.popUntil(context,ModalRoute.withName('/home'));
       }
       else{
         Navigator.pushNamed(context, route);

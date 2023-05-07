@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/user_item.dart';
-import 'package:moddormy_flutter/models/user_list.dart';
 import 'package:moddormy_flutter/screens/forgotpass_page.dart';
 import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/screens/register.dart';
-import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/user_provider.dart';
@@ -17,7 +15,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xFFFFF8F0),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -52,6 +50,7 @@ class _LoginFormState extends State<LoginForm> {
   final _user = TextEditingController();
   final _pass = TextEditingController();
   bool err = false;
+  bool _isLoading = false;
   String message = "";
   List<UserItem> _data = [];
 
@@ -65,7 +64,8 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
 
     return Form(
         key: _formKey,
@@ -124,20 +124,18 @@ class _LoginFormState extends State<LoginForm> {
                 controller: _pass,
                 style: const TextStyle(fontSize: 18),
                 obscureText: _hindOfOpen,
-                
                 decoration: InputDecoration(
-                  focusColor: const Color(0xFF2A8089),
-                  // focusColor: const Color(0xFF2A8089),
+                    focusColor: const Color(0xFF2A8089),
+                    // focusColor: const Color(0xFF2A8089),
                     hintText: "Type your password",
                     prefixIcon: const Icon(Icons.key),
                     prefixIconColor: const Color(0xFF2A8089),
                     filled: true,
                     fillColor: Colors.white,
                     suffixIcon: IconButton(
-                     
                         onPressed: _toggle,
                         icon: _hindOfOpen
-                            ? const Icon(Icons.visibility) 
+                            ? const Icon(Icons.visibility)
                             : const Icon(Icons.visibility_off)),
                     suffixIconColor: const Color(0xFF2A8089),
                     disabledBorder: InputBorder.none,
@@ -156,11 +154,7 @@ class _LoginFormState extends State<LoginForm> {
               children: [
                 TextButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: ((context) => const ForgotPassPage()),
-                          ));
+                      Navigator.pushNamed(context, "/forgotPass");
                     },
                     child: const Text(
                       "Forgot password?",
@@ -178,9 +172,6 @@ class _LoginFormState extends State<LoginForm> {
                     margin: err
                         ? const EdgeInsets.only(bottom: 20)
                         : const EdgeInsets.only(top: 0),
-                    // padding: err
-                    //     ? const EdgeInsets.symmetric(horizontal: double.infinity, vertical: 12)
-                    //     : const EdgeInsets.all(0),
                     decoration: const BoxDecoration(
                         color: Color(0xFFFFCDD2),
                         borderRadius: BorderRadius.all(Radius.circular(8.0))),
@@ -214,21 +205,50 @@ class _LoginFormState extends State<LoginForm> {
                     try {
                       setState(() {
                         err = false;
+                        _isLoading = true;
                       });
-                      final userCredential = await FirebaseAuth.instance
-                          .signInWithEmailAndPassword(
-                              email: _user.text, password: _pass.text);
-                      // print(userCredential.user?.uid);
-                      await UserApiService.getUserProfile(
-                          userCredential.user!.uid, userProvider);
+                      if (_isLoading) {
+                        showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                                  content: SizedBox(
+                                    height: 100,
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            CircularProgressIndicator(
+                                                color: Color(0xFFDC6E46)),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text("Logging in...")
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ));
 
-
+                        final userCredential = await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                                email: _user.text, password: _pass.text);
+                        // print(userCredential.user?.uid);
+                        await UserApiService.getUserProfile(
+                            userCredential.user!.uid, userProvider);
+                            setState(() {
+                              _isLoading = false;
+                            });
+                      }
+                      if (_isLoading == false) {
+                        // ignore: use_build_context_synchronously
+                        Navigator.popAndPushNamed(context, "/home");
+                      }
                       // ignore: use_build_context_synchronously
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: ((context) => const HomePage()),
-                          ));
                     } on FirebaseAuthException catch (e) {
                       setState(() {
                         err = true;
@@ -260,11 +280,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 TextButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: ((context) => const RegisterPage()),
-                          ));
+                      Navigator.pushNamed(context, "/register");
                     },
                     child: const Text(
                       "Create",

@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/provider/user_provider.dart';
 import 'package:moddormy_flutter/screens/dorm_detail.dart';
 import 'package:moddormy_flutter/screens/favorite.dart';
+import 'package:moddormy_flutter/screens/forgotpass_page.dart';
 import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/screens/profile.dart';
 import 'package:moddormy_flutter/screens/register.dart';
+import 'package:moddormy_flutter/screens/reset_pass_page.dart';
 import 'package:moddormy_flutter/screens/splash.dart';
 import 'package:provider/provider.dart';
 
@@ -39,6 +41,9 @@ class MyApp extends StatelessWidget {
         '/fav': (context) => const FavoritePage(), 
         '/home': (context) => const HomePage(),
         '/login': (context) => const LoginPage(),
+        '/register':(context) => const RegisterPage(),
+        '/forgotPass':(context) => const ForgotPassPage(),
+        '/resetPass':(context) => const ResetPassPage(),
         '/profile': (context) => const ProfilePage(),
         '/dorm/:id': (context) => const DormDetail(),
       },

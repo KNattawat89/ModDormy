@@ -9,7 +9,7 @@ class ForgotPassPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xFFDC6E46),
         body: Flex(
           direction: Axis.vertical,
@@ -38,12 +38,8 @@ class _ForgotFormState extends State<ForgotForm> {
   Future verifyEmail() async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: _email.text);
-      // ignore: use_build_context_synchronously
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: ((context) => const ResetPassPage()),
-          ));
+      //ignore: use_build_context_synchronously
+      Navigator.pushNamed(context, "/resetPass");
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
     }
@@ -119,11 +115,8 @@ class _ForgotFormState extends State<ForgotForm> {
                                 borderRadius: BorderRadius.circular(12.5)),
                           ),
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: ((context) => const LoginPage()),
-                                ));
+                            Navigator.pop(
+                                context, ModalRoute.withName('forgotPass'));
                           },
                           child: const Text(
                             "Back to login",
