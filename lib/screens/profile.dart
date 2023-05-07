@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/screens/edit_profile.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/screens/post_form.dart';
-import 'package:moddormy_flutter/widgets/dorms_each_owner.dart';
+// import 'package:moddormy_flutter/widgets/dorms_each_owner.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:provider/provider.dart';

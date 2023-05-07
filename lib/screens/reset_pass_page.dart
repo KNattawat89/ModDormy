@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/screens/login_page.dart';
-
 class ResetPassPage extends StatelessWidget {
   const ResetPassPage({super.key});
 
@@ -53,11 +51,9 @@ class ResetPassPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12.5)),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: ((context) => const LoginPage()),
-                            ));
+                        Navigator.popUntil(
+                            context, ModalRoute.withName("/login")
+                            );
                       },
                       child: const Text(
                         "Back to login",

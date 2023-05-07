@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/image.dart';
@@ -6,11 +5,13 @@ import 'package:moddormy_flutter/models/room.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
+import 'package:moddormy_flutter/widgets/post_dorm/description.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/show_rooms.dart';
 import 'package:moddormy_flutter/widgets/review.dart';
 
 class DormDetail extends StatefulWidget {
-  const DormDetail({Key? key}) : super(key: key);
+  const DormDetail({Key? key, required this.dormId}) : super(key: key);
+  final int dormId;
   @override
   State<DormDetail> createState() => _DormDetailState();
 }
@@ -18,13 +19,14 @@ class DormDetail extends StatefulWidget {
 class _DormDetailState extends State<DormDetail> {
   Dorm? dorm;
   List<Imagestring> myimages = [];
+  String? description;
   Future<void> getDormDetail() async {
     try {
-      final response =
-          await Caller.dio.get('/api/manage-dorm/getDormDetail?dormId=37');
+      final response = await Caller.dio
+          .get('/api/manage-dorm/getDormDetail?dormId=${widget.dormId}');
       // debugPrint(response.data.toString());
-      final response2 =
-          await Caller.dio.get('/api/manage-room/getDormRoom?dormId=37');
+      final response2 = await Caller.dio
+          .get('/api/manage-room/getDormRoom?dormId=${widget.dormId}');
       List<Room> rooms =
           response2.data.map<Room>((e) => Room.fromJson(e)).toList();
       // Dorm dorm = Dorm.fromJson(response.data['data']);
@@ -32,6 +34,7 @@ class _DormDetailState extends State<DormDetail> {
       d.rooms = rooms;
       setState(() {
         dorm = d;
+        description = dorm!.description;
       });
     } catch (e) {
       debugPrint('$e error dormDetail');
@@ -40,8 +43,8 @@ class _DormDetailState extends State<DormDetail> {
 
   Future<void> getDormImages() async {
     try {
-      final response =
-          await Caller.dio.get('/api/manage-dorm/getDormImage?dormId=37');
+      final response = await Caller.dio
+          .get('/api/manage-dorm/getDormImage?dormId=${widget.dormId}');
       // debugPrint(response.data.toString());
 
       List<Imagestring> r = response.data
@@ -85,7 +88,7 @@ class _DormDetailState extends State<DormDetail> {
       drawer: const MyDrawer(),
       body: Center(
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(20),
           child: ListView(
             children: [
               SizedBox(
@@ -188,13 +191,10 @@ class _DormDetailState extends State<DormDetail> {
                               fontSize: 20, fontWeight: FontWeight.w500),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 16, bottom: 16),
-                          child: Text(
-                            dorm!.description,
-                            style: const TextStyle(
-                                color: Colors.grey, fontSize: 18),
-                          ),
-                        ),
+                            padding: const EdgeInsets.only(top: 16, bottom: 16),
+                            child: DescriptionTextWidget(
+                              text: dorm!.description,
+                            )),
                       ])),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),

@@ -23,7 +23,7 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget  {
                   size: 35, // Changing Drawer Icon Size
                 ),
               );
-            }
+            }       
         ),
         const SizedBox(width: 10,)
       ],

@@ -4,6 +4,7 @@ import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/models/room.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
+import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:moddormy_flutter/widgets/room_feature_mapping.dart';
@@ -81,7 +82,7 @@ class _RoomDetailState extends State<RoomDetail> {
       drawer: const MyDrawer(),
       body: Center(
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(20),
           child: ListView(
             children: [
               SizedBox(
@@ -377,7 +378,8 @@ class _RoomDetailState extends State<RoomDetail> {
                       itemBuilder: (BuildContext context, int index) {
                         return Row(
                           children: [
-                            const Icon(Icons.check),
+                            IconFeatureMapping(
+                                name: widget.dorm.feature.toList()[index]),
                             Text(widget.dorm.feature.toList()[index],
                                 style: const TextStyle(fontSize: 18)),
                           ],
@@ -400,7 +402,8 @@ class _RoomDetailState extends State<RoomDetail> {
                         ),
                         Text(
                           '${widget.dorm.advPayment} months',
-                          style: const TextStyle(color: Colors.grey, fontSize: 16),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -416,7 +419,8 @@ class _RoomDetailState extends State<RoomDetail> {
                         ),
                         Text(
                           '${widget.dorm.electric}  baht/unit',
-                          style: const TextStyle(color: Colors.grey, fontSize: 16),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -432,7 +436,8 @@ class _RoomDetailState extends State<RoomDetail> {
                         ),
                         Text(
                           '${widget.dorm.water} baht/unit',
-                          style: const TextStyle(color: Colors.grey, fontSize: 16),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -440,15 +445,15 @@ class _RoomDetailState extends State<RoomDetail> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      children: const [
-                        Text(
+                      children:  [
+                        const Text(
                           'Other : ',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          '(HERE)',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          widget.dorm.other,
+                          style: const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),

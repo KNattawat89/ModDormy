@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
+import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import '../models/dorm.dart';
@@ -122,8 +123,8 @@ class _DetailScreenState extends State<DetailScreen> {
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
         debugPrint(widget.dorm.rooms[i].id.toString());
         editedroom = await Caller.dio
-            .put("/api/manage-room/editRoom?roomId=${98 + i}", data: {
-          "dorm_id": editeddorm.data["id"],
+            .put("/api/manage-room/editRoom?roomId=${widget.dorm.id}", data: {
+          "dorm_id": widget.dorm.id,
           "room_Name": widget.dorm.rooms[i].name,
           "cover_Image": "xxxxxx",
           "price": 1223,
@@ -302,7 +303,8 @@ class _DetailScreenState extends State<DetailScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return Row(
                               children: [
-                                const Icon(Icons.check),
+                                IconFeatureMapping(
+                                    name: widget.dorm.feature.toList()[index]),
                                 Text(' ${widget.dorm.feature.toList()[index]} ',
                                     style: const TextStyle(fontSize: 18)),
                               ],
@@ -529,9 +531,16 @@ class _DetailScreenState extends State<DetailScreen> {
                                   .roomFeatureToList()
                                   .length,
                               itemBuilder: (BuildContext context, int j) {
-                                return Text(
-                                    '${widget.dorm.rooms[index].feature.roomFeatureToList()[j]} ',
-                                    style: const TextStyle(fontSize: 18));
+                                return Row(
+                                  children: [
+                                    IconFeatureMapping(
+                                        name: widget.dorm.rooms[index].feature
+                                            .roomFeatureToList()[j]),
+                                    Text(
+                                        '${widget.dorm.rooms[index].feature.roomFeatureToList()[j]} ',
+                                        style: const TextStyle(fontSize: 18)),
+                                  ],
+                                );
                               },
                             ),
                           ),

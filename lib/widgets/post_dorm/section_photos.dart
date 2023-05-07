@@ -5,7 +5,6 @@ import '../../models/dorm.dart';
 
 class PhotosSection extends StatefulWidget {
   final Dorm dorm;
-
   const PhotosSection({Key? key, required this.dorm}) : super(key: key);
 
   @override

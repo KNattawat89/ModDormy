@@ -16,18 +16,32 @@ class _ContractSectionState extends State<ContractSection> {
   final electricController = TextEditingController();
   final waterController = TextEditingController();
   final otherController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    advPaymentController.text = widget.dorm.advPayment.toString();
+    electricController.text = widget.dorm.electric.toString();
+    waterController.text = widget.dorm.water.toString();
+    otherController.text = widget.dorm.other.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.only(
+        top: 16,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Contract Detail',
-            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-            textAlign: TextAlign.start,
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              'Contract Detail',
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+              textAlign: TextAlign.start,
+            ),
           ),
           Padding(
             //advance payment

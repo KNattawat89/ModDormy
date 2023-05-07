@@ -10,7 +10,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xFFDC6E46),
         body: Flex(
           direction: Axis.vertical,
@@ -40,6 +40,7 @@ class RegisterForm extends StatefulWidget {
 class _RegisterFormState extends State<RegisterForm> {
   bool _hindOfOpen = true;
   bool _confirmPass = true;
+  bool _isLoading = true;
   final _formkey = GlobalKey<FormState>();
   final _user = TextEditingController();
   final _fname = TextEditingController();
@@ -121,14 +122,6 @@ class _RegisterFormState extends State<RegisterForm> {
                       },
                     ),
                   ),
-                  // Padding(
-                  //     padding: const EdgeInsets.only(bottom: 10),
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.start,
-                  //       children: const [
-                  //         Text("Please enter 6-15 characters"),
-                  //       ],
-                  //     )),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
                     height: 50,
@@ -384,11 +377,8 @@ class _RegisterFormState extends State<RegisterForm> {
                                   borderRadius: BorderRadius.circular(12.5)),
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: ((context) => const LoginPage()),
-                                  ));
+                              Navigator.pop(
+                                  context, ModalRoute.withName('/register'));
                             },
                             child: const Text(
                               "Back to login",
@@ -409,7 +399,39 @@ class _RegisterFormState extends State<RegisterForm> {
                             onPressed: () async {
                               if (_formkey.currentState!.validate()) {
                                 try {
-                                  final credential = await FirebaseAuth.instance
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+
+                                 if (_isLoading) {
+                                   showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                      content:
+                                        SizedBox(
+                                            height: 250,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: const[
+                                                SizedBox(
+                                                  width: 50,
+                                                  height: 50,
+                                                  child:  CircularProgressIndicator(
+                                                            color:
+                                                                Color(0xFFDC6E46)),
+                                                ),
+                                                       
+                                                                SizedBox(
+                                                                  height: 20,
+                                                                ),
+                                                                 Text("Registering...")
+                                                      ],
+                                            ),
+                                          )
+                                        )
+                                   );
+                                    final credential = await FirebaseAuth.instance
                                       .createUserWithEmailAndPassword(
                                           email: _email.text,
                                           password: _pass.text);
@@ -429,76 +451,90 @@ class _RegisterFormState extends State<RegisterForm> {
                                         ? "DormOwner"
                                         : "Customer",
                                   });
-                                  // debugPrint(registerAcc.statusMessage);
-                                  // ignore: use_build_context_synchronously
-                                  showDialog<String>(
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                  debugPrint(registerAcc.statusMessage);
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                 }
+
+                                 if (_isLoading == false) {
+                                     // ignore: use_build_context_synchronously
+                                     showDialog<String>(
                                     context: context,
                                     builder: (BuildContext context) =>
                                         AlertDialog(
-                                      content: SizedBox(
-                                          height: 250,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
+                                      content:
+                                        
+                                          SizedBox(
+                                              height: 250,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
                                                         vertical: 20),
-                                                child: Image.asset(
-                                                    'assets/images/checkedmark.png'),
-                                              ),
-                                              const Padding(
-                                                padding: EdgeInsets.only(
-                                                    bottom: 10.0),
-                                                child: Text(
-                                                  'Successful Registration',
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                              const Padding(
-                                                padding: EdgeInsets.only(
-                                                    bottom: 20.0),
-                                                child: Text(
-                                                    "Congraturations, your account has been successful created"),
-                                              ),
-                                              SizedBox(
-                                                height: 39,
-                                                child: ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor:
-                                                          const Color(
-                                                              0xFFDC6E46),
-                                                      shape:
-                                                          RoundedRectangleBorder(
+                                                    child: Image.asset(
+                                                        'assets/images/checkedmark.png'),
+                                                  ),
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: 10.0),
+                                                    child: Text(
+                                                      'Successful Registration',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: 20.0),
+                                                    child: Text(
+                                                        "Congraturations, your account has been successful created"),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 39,
+                                                    child: ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              const Color(
+                                                                  0xFFDC6E46),
+                                                          shape: RoundedRectangleBorder(
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
                                                                           12.5)),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: ((context) =>
-                                                                const LoginPage()),
-                                                          ));
-                                                    },
-                                                    child: const Text(
-                                                      "Continue",
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.white),
-                                                    )),
-                                              )
-                                            ],
-                                          )),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.popUntil(
+                                                              context,
+                                                              ModalRoute
+                                                                  .withName(
+                                                                      '/login'));
+                                                        },
+                                                        child: const Text(
+                                                          "Continue",
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              color:
+                                                                  Colors.white),
+                                                        )),
+                                                  )
+                                                ],
+                                              )),
                                     ),
                                   );
+                                 }
+                                  // ignore: use_build_context_synchronously
+                                
+                                  
                                 } on FirebaseAuthException catch (e) {
                                   setState(() {
                                     err = true;
