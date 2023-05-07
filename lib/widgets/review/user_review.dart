@@ -1,9 +1,8 @@
-import 'dart:math';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
-import 'package:moddormy_flutter/widgets/review/review_mockup.dart';
+// import 'package:moddormy_flutter/widgets/review/review_mockup.dart';
 
 import '../../models/review.dart';
 
@@ -112,9 +111,24 @@ Widget userHeader(Review reviews) {
 }
 
 Widget showDeleteButton(Review reviews) {
+  final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8000'));
+
+  void deleteDormReview(int reviewId) async {
+    //print(reviewId);
+    try {
+      final response =
+          await dio.delete('/api/review/deleteDormReview?reviewId=$reviewId');
+      //print(response.data.toString());
+    } catch (e) {
+      //print(e.toString());
+    }
+  }
+
   if (reviews.user!.userId == 'aH5CdH3VqlS1vVeqJ20WFKvGvmo2') {
     return IconButton(
-        onPressed: () {},
+        onPressed: () {
+          deleteDormReview(reviews.reviewId);
+        },
         icon: const Icon(Icons.delete_outline),
         color: const Color(0xffDC6E46));
   }

@@ -22,6 +22,7 @@ Review _$ReviewFromJson(Map<String, dynamic> json) => Review(
           ? null
           : DateTime.parse(json['createdAt'] as String),
       dormId: json['dormId'] as int,
+      reviewId: json['id'] as int,
     );
 
 Map<String, dynamic> _$ReviewToJson(Review instance) => <String, dynamic>{
@@ -36,4 +37,5 @@ Map<String, dynamic> _$ReviewToJson(Review instance) => <String, dynamic>{
       'createdAt': instance.createdAt?.toIso8601String(),
       'user': instance.user,
       'dormId': instance.dormId,
+      'id': instance.reviewId,
     };

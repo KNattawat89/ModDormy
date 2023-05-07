@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/models/user_item.dart';
+// import 'package:moddormy_flutter/models/user_item.dart';
 import 'package:moddormy_flutter/widgets/review/dropdown_section.dart';
 import 'package:moddormy_flutter/widgets/review/star_section.dart';
 import 'package:moddormy_flutter/widgets/review/text_section.dart';
@@ -23,8 +23,8 @@ class _AddReviewState extends State<AddReview> {
           .post('/api/review/addDormReview', data: review.toJson());
       //print(response.data.toString());
     } on DioError catch (e) {
-      print(e.toString());
-      print(e.response?.data.toString());
+      //print(e.toString());
+      //print(e.response?.data.toString());
     }
   }
 
@@ -39,7 +39,8 @@ class _AddReviewState extends State<AddReview> {
       ratingOverall: 0,
       createdAt: null,
       userId: 'aH5CdH3VqlS1vVeqJ20WFKvGvmo2',
-      user: null);
+      user: null,
+      reviewId: 0);
 
   final _formKey = GlobalKey<FormState>();
   @override
