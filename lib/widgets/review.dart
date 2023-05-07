@@ -6,6 +6,7 @@ import 'package:moddormy_flutter/widgets/review/dorm_rating.dart';
 import 'package:moddormy_flutter/widgets/review/user_review.dart';
 
 import '../models/review.dart';
+import '../utilities/caller.dart';
 
 //List<ReviewM> reviews = generateMockReviews();
 
@@ -19,13 +20,13 @@ class DormReview extends StatefulWidget {
 class _DormReviewState extends State<DormReview> {
   int reviewCount = 0;
   List<Review> reviews = [];
-  final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8000'));
+  //final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8000'));
 
   void getDormReview(int dormId) async {
     //print('test');
     try {
       final response =
-          await dio.get('/api/review/getDormReview?dormId=$dormId');
+          await Caller.dio.get('/api/review/getDormReview?dormId=$dormId');
       //print(response.data.toString());
       List<Review> r =
           response.data.map<Review>((json) => Review.fromJson(json)).toList();
@@ -42,7 +43,7 @@ class _DormReviewState extends State<DormReview> {
   @override
   void initState() {
     super.initState();
-    getDormReview(2);
+    getDormReview(20);
   }
 
   @override

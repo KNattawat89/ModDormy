@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:moddormy_flutter/models/user_item.dart';
 import 'package:moddormy_flutter/widgets/review/dropdown_section.dart';
 import 'package:moddormy_flutter/widgets/review/star_section.dart';
 import 'package:moddormy_flutter/widgets/review/text_section.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/review.dart';
+import '../../provider/user_provider.dart';
 import '../../utilities/caller.dart';
 
 class AddReview extends StatefulWidget {
@@ -18,33 +21,38 @@ class AddReview extends StatefulWidget {
 class _AddReviewState extends State<AddReview> {
   void postReview(Review review) async {
     try {
-      //print(review.toJson().toString());
+      print(review.toJson().toString() + 'try');
       final response = await Caller.dio
           .post('/api/review/addDormReview', data: review.toJson());
-      //print(response.data.toString());
+      print(response.data.toString() + 'try');
+      //print(FirebaseAuth.instance.currentUser);
     } on DioError catch (e) {
+      print(e.toString());
+      //print(review.toJson().toString() + 'catch');
+      //print(FirebaseAuth.instance.currentUser);
       //print(e.toString());
-      //print(e.response?.data.toString());
+      print(e.response?.data.toString());
     }
   }
-
-  Review review = Review(
-      dormId: 20,
-      review: "",
-      ratingPrice: 0,
-      ratingLocation: 0,
-      ratingFacility: 0,
-      ratingSanitary: 0,
-      ratingSecurity: 0,
-      ratingOverall: 0,
-      createdAt: null,
-      userId: 'aH5CdH3VqlS1vVeqJ20WFKvGvmo2',
-      user: null,
-      reviewId: 0);
 
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context);
+    Review review = Review(
+        dormId: 20,
+        review: "",
+        ratingPrice: 0,
+        ratingLocation: 0,
+        ratingFacility: 0,
+        ratingSanitary: 0,
+        ratingSecurity: 0,
+        ratingOverall: 0,
+        createdAt: null,
+        userId: user.userId,
+        user: null,
+        reviewId: 0);
+
     return Column(
       children: [
         Form(
@@ -73,9 +81,10 @@ class _AddReviewState extends State<AddReview> {
             alignment: Alignment.bottomRight,
             child: ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
+                if (_formKey.currentState!.validate() || true) {
                   // do something with the form data
                   postReview(review);
+                  //print(user.userId);
                 }
               },
               style: ElevatedButton.styleFrom(
