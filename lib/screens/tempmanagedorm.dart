@@ -1,6 +1,7 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:moddormy_flutter/screens/dorm_detail.dart';
 import 'package:moddormy_flutter/screens/edit_dorm.dart';
 import 'package:moddormy_flutter/screens/post_form.dart';
 
@@ -23,7 +24,9 @@ class _tempMDState extends State<tempMD> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => (const EditForm())));
+                          builder: (context) => (const EditForm(
+                                dormId: 93,
+                              ))));
                 },
                 child: const Text('edit')),
             ElevatedButton(
@@ -34,6 +37,15 @@ class _tempMDState extends State<tempMD> {
                           builder: (context) => (const PostForm())));
                 },
                 child: const Text('post')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              (const DormDetail(dormId: 37))));
+                },
+                child: const Text('View dorm detail'))
           ],
         ),
       ),

@@ -29,6 +29,7 @@ class _PostFormState extends State<PostForm> {
     water: 0,
     other: '',
     distance: 0,
+    coverimageString: "",
     feature: DormFeature(
       cctv: false,
       fitness: false,

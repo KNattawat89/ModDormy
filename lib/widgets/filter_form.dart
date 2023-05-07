@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/filter_controller.dart';
 import 'package:moddormy_flutter/models/filter_item.dart';
-import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/widgets/filter_facility.dart';
 import 'package:moddormy_flutter/widgets/rate_in_filter.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:moddormy_flutter/widgets/review/headline_filter.dart';
 
 class FilterForm extends StatefulWidget {
-  const FilterForm({Key? key}) : super(key: key);
+  const FilterForm({Key? key, required this.filterItem, required this.refreshState}) : super(key: key);
+
+  final FilterItem filterItem;
+  final Function refreshState;
 
   @override
   State<FilterForm> createState() => _FilterFormState();
@@ -21,7 +23,7 @@ class _FilterFormState extends State<FilterForm> {
   bool _isLoading = false;
   bool isSelect = false;
   FilterItem filterItem = FilterItem(
-      minPrice: 0, maxPrice: 0, distant: 0, overallRating: '', facilities: []);
+      minPrice: 0, maxPrice: 0, distant: 0, overallRating: '', facilities: [],search: '');
 
   void selectRate(String select) {
     if (filterItem.overallRating == select) {
@@ -63,7 +65,7 @@ class _FilterFormState extends State<FilterForm> {
   }
 
   bool getRateSelection(int index) {
-    String actualNumber = filterItem.overallRating!.replaceAll("≥", "");
+    String actualNumber = filterItem.overallRating.replaceAll("≥", "");
     try {
       int parsedNumber = int.parse(actualNumber);
       return parsedNumber == index;
@@ -74,12 +76,22 @@ class _FilterFormState extends State<FilterForm> {
   }
 
   void applyFilters(FilterItem data) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => HomePage(argument: data),
-      ),
-    );
+    setState(() {
+      widget.filterItem.search = filterItem.search;
+      widget.filterItem.overallRating = filterItem.overallRating;
+      widget.filterItem.facilities = filterItem.facilities;
+      widget.filterItem.distant = filterItem.distant;
+      widget.filterItem.maxPrice = filterItem.maxPrice;
+      widget.filterItem.minPrice = filterItem.minPrice;
+    });
+    widget.refreshState();
+    Navigator.pop(context);
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (BuildContext context) => const HomePage(),
+    //   ),
+    // );
   }
 
   @override
@@ -335,16 +347,18 @@ class _FilterFormState extends State<FilterForm> {
                     distant: controller.distantController.text.isNotEmpty
                         ? double.parse(controller.distantController.text)
                         : 0,
-                    overallRating: filterItem.overallRating,
-                    facilities: filterItem.facilities);
-                print('min price ${filterItem.minPrice}');
-                print('max price ${filterItem.maxPrice}');
-                print('distant ${filterItem.distant}');
-                print('rate ${filterItem.overallRating}');
-                print('facilities ${filterItem.facilities}');
+                    overallRating: filterItem.overallRating=='' ? '0' : filterItem.overallRating,
+                    facilities: filterItem.facilities,
+                search: '');
+                // print('min price ${filterItem.minPrice}');
+                // print('max price ${filterItem.maxPrice}');
+                // print('distant ${filterItem.distant}');
+                // print('rate [${filterItem.overallRating}], []');
+                // print('facilities ${filterItem.facilities}');
                 await Future.delayed(const Duration(milliseconds: 1000));
                 getFilterOption();
                 applyFilters(filterItem);
+                // widget.refreshData();
               }
             },
             child: Container(

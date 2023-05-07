@@ -1,25 +1,88 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
+import 'package:moddormy_flutter/models/dorm.dart';
+import 'package:moddormy_flutter/models/image.dart';
+import 'package:moddormy_flutter/models/room.dart';
+import 'package:moddormy_flutter/utilities/caller.dart';
+import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
+import 'package:moddormy_flutter/widgets/room_feature_mapping.dart';
 
 class RoomDetail extends StatefulWidget {
-  final String roomNo;
-  const RoomDetail({super.key, required this.roomNo});
+  final Dorm dorm;
+  final int roomNo;
+  const RoomDetail({super.key, required this.roomNo, required this.dorm});
 
   @override
   State<RoomDetail> createState() => _RoomDetailState();
 }
 
 class _RoomDetailState extends State<RoomDetail> {
+  Room? room;
+  List<Imagestring> myimages = [];
+
+  Future<void> getRoomDetail() async {
+    debugPrint(widget.roomNo.toString());
+    try {
+      final response = await Caller.dio
+          .get('/api/manage-room/getRoomDetail?roomId=${widget.roomNo}');
+
+      setState(() {
+        room = Room.fromJson(response.data);
+      });
+    } on DioError catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> getRoomImages() async {
+    try {
+      final response = await Caller.dio
+          .get('/api/manage-room/getRoomImage?roomId=${widget.roomNo}');
+      // debugPrint(response.data.toString());
+
+      List<Imagestring> r = response.data
+          .map<Imagestring>((e) => Imagestring.fromJson(e))
+          .toList();
+
+      setState(() {
+        myimages = r;
+      });
+      debugPrint(myimages.toString());
+    } on DioError catch (e) {
+      debugPrint('$e error room image');
+      debugPrint(e.response.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getRoomDetail();
+    getRoomImages();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (room == null) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [CircularProgressIndicator()],
+      );
+    }
     return Scaffold(
       appBar: const MyAppbar(),
       drawer: const MyDrawer(),
       body: Center(
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(20),
           child: ListView(
             children: [
               SizedBox(
@@ -28,13 +91,13 @@ class _RoomDetailState extends State<RoomDetail> {
                 child: Stack(
                   children: [
                     Card(
-                      color: Colors.deepPurpleAccent,
+                      color: Colors.deepPurpleAccent[100],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       elevation: 8,
                       child: const Center(
-                        child: Text('1'),
+                        child: CircularProgressIndicator(),
                       ),
                     ),
                     Positioned.fill(
@@ -42,7 +105,7 @@ class _RoomDetailState extends State<RoomDetail> {
                         borderRadius: BorderRadius.circular(12.0),
                         child: SizedBox(
                           child: Image.network(
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR00L8GRKSQVHDXAnex599APwTABc7_5WRD_w&usqp=CAU',
+                            room!.coverimageString,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -72,17 +135,19 @@ class _RoomDetailState extends State<RoomDetail> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Room name${widget.roomNo}',
+                              // room name
+                              room!.name,
                               textAlign: TextAlign.start,
                               style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
-                            const Text(
-                              'Size here',
+                            Text(
+                              //room size
+                              '${room!.size} sq.m.',
                               textAlign: TextAlign.start,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -93,12 +158,13 @@ class _RoomDetailState extends State<RoomDetail> {
                         bottom: 20,
                         right: 20,
                         child: Row(
-                          children: const [
-                            Icon(Icons.wallet_rounded),
+                          children: [
+                            const Icon(Icons.wallet_rounded),
                             Text(
-                              'Price here',
+                              // room price
+                              '${room!.price} Bath/month',
                               textAlign: TextAlign.start,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -113,18 +179,19 @@ class _RoomDetailState extends State<RoomDetail> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'Room Description',
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w500),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 16, bottom: 16),
+                          padding: const EdgeInsets.only(top: 16, bottom: 16),
                           child: Text(
-                            'room.description here \ndasdddddddddddddddddddiuhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhdaiusdhasdiuhhhhhhhh',
-                            style: TextStyle(color: Colors.grey, fontSize: 18),
+                            room!.description,
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 18),
                           ),
                         ),
                       ])),
@@ -151,14 +218,14 @@ class _RoomDetailState extends State<RoomDetail> {
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.25,
                   child: GridView.builder(
-                    itemCount: 6,
+                    itemCount: myimages.length,
                     itemBuilder: (BuildContext context, int j) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12.0),
                           child: Image.network(
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR00L8GRKSQVHDXAnex599APwTABc7_5WRD_w&usqp=CAU',
+                            myimages[j].image,
                             fit: BoxFit.cover,
                             width: 100,
                             height: 100,
@@ -186,25 +253,16 @@ class _RoomDetailState extends State<RoomDetail> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
-                    child: Row(
-                      children: const [
-                        Icon(Icons.location_pin),
-                        Text(' Distance away from KMUTT (HERE) KM',
-                            style: TextStyle(fontSize: 18)),
-                      ],
-                    ),
-                  ),
-                  Padding(
                     padding: const EdgeInsets.fromLTRB(16, 0, 0, 32),
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: 3,
+                      itemCount: room!.feature.roomFeatureToList().length,
                       itemBuilder: (BuildContext context, int index) {
                         return Row(
                           children: [
-                            const Icon(Icons.check),
-                            Text(' HERE $index ',
+                            RoomFeatureMapping(
+                                name: room!.feature.roomFeatureToList()[index]),
+                            Text(room!.feature.roomFeatureToList()[index],
                                 style: const TextStyle(fontSize: 18)),
                           ],
                         );
@@ -218,15 +276,16 @@ class _RoomDetailState extends State<RoomDetail> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'Advance payment : ',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          '(HERE) months',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          '${widget.dorm.advPayment} months',
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -234,15 +293,16 @@ class _RoomDetailState extends State<RoomDetail> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'Electric price : ',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          '(HERE)  baht/unit',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          '${widget.dorm.electric} baht/unit',
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -250,15 +310,16 @@ class _RoomDetailState extends State<RoomDetail> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'Water price :',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          '(HERE)  baht/unit',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          '${widget.dorm.water}  baht/unit',
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -266,15 +327,16 @@ class _RoomDetailState extends State<RoomDetail> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'Other : ',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          '(HERE)',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          widget.dorm.other,
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -300,10 +362,11 @@ class _RoomDetailState extends State<RoomDetail> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
                     child: Row(
-                      children: const [
-                        Icon(Icons.location_pin),
-                        Text(' Distance away from KMUTT (HERE) KM',
-                            style: TextStyle(fontSize: 18)),
+                      children: [
+                        const Icon(Icons.location_pin),
+                        Text(
+                            ' Distance away from KMUTT ${widget.dorm.distance} KM',
+                            style: const TextStyle(fontSize: 18)),
                       ],
                     ),
                   ),
@@ -311,12 +374,13 @@ class _RoomDetailState extends State<RoomDetail> {
                     padding: const EdgeInsets.fromLTRB(16, 0, 0, 32),
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: 3,
+                      itemCount: widget.dorm.feature.toList().length,
                       itemBuilder: (BuildContext context, int index) {
                         return Row(
                           children: [
-                            const Icon(Icons.check),
-                            Text(' HERE $index ',
+                            IconFeatureMapping(
+                                name: widget.dorm.feature.toList()[index]),
+                            Text(widget.dorm.feature.toList()[index],
                                 style: const TextStyle(fontSize: 18)),
                           ],
                         );
@@ -330,15 +394,16 @@ class _RoomDetailState extends State<RoomDetail> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'Advance payment : ',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          '(HERE) months',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          '${widget.dorm.advPayment} months',
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -346,15 +411,16 @@ class _RoomDetailState extends State<RoomDetail> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'Electric price : ',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          '(HERE)  baht/unit',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          '${widget.dorm.electric}  baht/unit',
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -362,15 +428,16 @@ class _RoomDetailState extends State<RoomDetail> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'Water price :',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          '(HERE)  baht/unit',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          '${widget.dorm.water} baht/unit',
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -378,15 +445,15 @@ class _RoomDetailState extends State<RoomDetail> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      children: const [
-                        Text(
+                      children:  [
+                        const Text(
                           'Other : ',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          '(HERE)',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          widget.dorm.other,
+                          style: const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),

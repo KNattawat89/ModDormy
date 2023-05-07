@@ -9,12 +9,13 @@ Row buildStarRating(double rating) {
   for (int i = 0; i < remaining; i++) {
     stars.add(const Icon(Icons.star, color: Color(0xFFE2E2E2),size: 20));
   }
+  String formatRate = rating.toStringAsFixed(2);
   return Row(
     children: [
       Row(children: stars),
       const SizedBox(width: 5),
       Text(
-        '($rating)',
+        '($formatRate)',
         style: const TextStyle(color: Color(0xFFA9A9A9)),
       ),
     ],

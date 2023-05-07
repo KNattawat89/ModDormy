@@ -37,6 +37,9 @@ class Review {
   @JsonKey(name: 'dormId')
   int dormId;
 
+  @JsonKey(name: 'id')
+  int reviewId;
+
   Review(
       {required this.review,
       required this.ratingPrice,
@@ -48,7 +51,8 @@ class Review {
       required this.userId,
       required this.user,
       required this.createdAt,
-      required this.dormId});
+      required this.dormId,
+      required this.reviewId});
 
   factory Review.fromJson(Map<String, dynamic> json) => _$ReviewFromJson(json);
 
