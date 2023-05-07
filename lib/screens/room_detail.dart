@@ -4,6 +4,7 @@ import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/models/room.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
+import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:moddormy_flutter/widgets/room_feature_mapping.dart';
@@ -377,7 +378,8 @@ class _RoomDetailState extends State<RoomDetail> {
                       itemBuilder: (BuildContext context, int index) {
                         return Row(
                           children: [
-                            const Icon(Icons.check),
+                            IconFeatureMapping(
+                                name: widget.dorm.feature.toList()[index]),
                             Text(widget.dorm.feature.toList()[index],
                                 style: const TextStyle(fontSize: 18)),
                           ],
