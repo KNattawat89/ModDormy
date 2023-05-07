@@ -33,8 +33,15 @@ class _HomePageState extends State<HomePage> {
   List<DormItem> _filteredData = [];
   List<DormItem> _data = [];
   List<UserItem> _userData = [];
+  bool _isLoading = false;
 
   void getAllDorm() async {
+    // print('min: ${newOption.minPrice}');
+    // print('max: ${newOption.maxPrice}');
+    // print("distant: ${newOption.distant}");
+    // print("rate: ${newOption.overallRating}");
+    // print('facilities: ${newOption.facilities}');
+    // print("hello from getAllDorm");
     try {
       final response = await Caller.dio.get('/api/home/getAllDorm');
       DormList d = DormList.fromJson(response.data);
@@ -42,12 +49,13 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _filteredData = _data;
       });
+      // print(_filteredData);
     } catch (e) {
       debugPrint(e.toString());
     }
   }
 
-  bool _isLoading = false;
+
 
   void getUserProfile(String uid) async {
     try {
@@ -66,7 +74,7 @@ class _HomePageState extends State<HomePage> {
           _userData[0].lineId ?? '',
           _userData[0].userType);
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -86,14 +94,13 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<DormItem>> refreshData() async {
     User? user = FirebaseAuth.instance.currentUser;
-    setState(() {
-      _isLoading = true;
-    });
-    if (user!.uid != '') {
-      // debugPrint(user!.uid);
-      try {
+    // setState(() {
+    //   _isLoading = true;
+    // });
+    try{
+      if(user != null && user.uid.isNotEmpty){
         final response =
-            await Caller.dio.post('/api/home/postFilteredDorm', data: {
+        await Caller.dio.post('/api/home/postFilteredDorm', data: {
           "userId": user!.uid,
           "min_price": newOption.minPrice,
           "max_price": newOption.maxPrice,
@@ -104,16 +111,9 @@ class _HomePageState extends State<HomePage> {
 
         DormList d = DormList.fromJson(response.data);
         return d.data;
-      } on DioError catch (e) {
-        debugPrint(e.toString());
-        return [];
-      }
-    } else {
-      try {
-        // อย่าลืมเรื่อง user login or not login
-        debugPrint("FilteredNoFav");
+      }else {
         final response =
-            await Caller.dio.post('/api/home/postFilteredNoFav', data: {
+        await Caller.dio.post('/api/home/postFilteredNoFav', data: {
           "min_price": newOption.minPrice,
           "max_price": newOption.maxPrice,
           "distant": newOption.distant,
@@ -122,10 +122,10 @@ class _HomePageState extends State<HomePage> {
         }); // change to post and put data
         DormList d = DormList.fromJson(response.data);
         return d.data;
-      } catch (e) {
-        debugPrint(e.toString());
-        return [];
       }
+    }catch (e){
+      debugPrint(e.toString());
+      return [];
     }
   }
 
@@ -285,6 +285,7 @@ class _HomePageState extends State<HomePage> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasError) {
+                    // print(snapshot.data);
                     return Row(
                       children: [
                         Expanded(
