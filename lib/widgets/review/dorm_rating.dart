@@ -40,6 +40,7 @@ class DormRating extends StatelessWidget {
                       Icons.star,
                       color: Color(0xffDC6E46),
                     ),
+                    unratedColor: Colors.white,
                     itemCount: 5,
                     itemSize: 20.0,
                     direction: Axis.horizontal,
@@ -53,7 +54,7 @@ class DormRating extends StatelessWidget {
 
               //divider
               const VerticalDivider(
-                color: Colors.white,
+                color: Color(0xff858585),
                 thickness: 1,
                 indent: 20,
                 endIndent: 20,
@@ -145,27 +146,22 @@ Widget fiveRates(Map<String, double> averageRates) {
         children: const [
           Text('Price',
               style: TextStyle(
-                fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               )),
           Text('Location',
               style: TextStyle(
-                fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               )),
           Text('Facility',
               style: TextStyle(
-                fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               )),
           Text('Sanitary',
               style: TextStyle(
-                fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               )),
           Text('Security',
               style: TextStyle(
-                fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               )),
         ],
