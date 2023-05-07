@@ -228,9 +228,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider user = Provider.of<UserProvider>(context);
+    print('userId: ${user.userId}');
     return Scaffold(
       appBar: const MyAppbar(),
-      endDrawer: const MyDrawer(),
+      endDrawer: MyDrawer(refreshState: refreshState,),
       body: Container(
         padding: const EdgeInsets.all(20),
         child: Column(
