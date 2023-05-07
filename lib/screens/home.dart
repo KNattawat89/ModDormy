@@ -162,7 +162,7 @@ class _HomePageState extends State<HomePage> {
         break;
       case 'overallRating':
         setState(() {
-          newOption.overallRating = '';
+          newOption.overallRating = '0';
           refreshData();
         });
 
@@ -261,7 +261,7 @@ class _HomePageState extends State<HomePage> {
                         icon: Icons.pin_drop,
                         field: 'distant',
                         removeFilter: removeOption),
-                  if (widget.argument?.overallRating != '')
+                  if (widget.argument?.overallRating != '' && widget.argument?.overallRating != '0')
                     filterOption(
                         text: widget.argument?.overallRating ?? '',
                         icon: Icons.star,
