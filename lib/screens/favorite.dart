@@ -10,7 +10,8 @@ import '../widgets/dorm_info_home.dart';
 import '../widgets/my_appbar.dart';
 
 class FavoritePage extends StatefulWidget {
-  const FavoritePage({Key? key, this.favDormArgu, this.refreshState}) : super(key: key);
+  const FavoritePage({Key? key, this.favDormArgu, this.refreshState})
+      : super(key: key);
   final List<DormItem>? favDormArgu;
   final Function? refreshState;
 
@@ -20,23 +21,19 @@ class FavoritePage extends StatefulWidget {
 
 class _FavoritePageState extends State<FavoritePage> {
   List<DormItem> defaultFavDorm = [];
+  bool _isLoading = false;
 
   void removeFav(int dormId) {
     defaultFavDorm.removeWhere((dorm) => dorm.dormId == dormId);
     setState(() {});
-    defaultFavDorm.forEach((dorm) {
-      print('Dorm ${dorm.dormId}: ${dorm.isFav}');
-    });
   }
-  @override
-  void initState(){
-    super.initState();
-    if(defaultFavDorm != null){
-      setState(() {
-        defaultFavDorm = widget.favDormArgu!;
-      });
 
-    }
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      defaultFavDorm = widget.favDormArgu!;
+    });
   }
 
   @override
@@ -49,38 +46,72 @@ class _FavoritePageState extends State<FavoritePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Favorite Dorms",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Expanded(
-                child: GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 40,
-              mainAxisSpacing: 20,
-              childAspectRatio: (8 / 10),
-              children: List.generate(defaultFavDorm.length, (index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(
-                        context, '/dorms/${defaultFavDorm[index].dormId}');
-                  },
-                  child: DormInfoHome(
-                    dormId: defaultFavDorm[index].dormId,
-                    dormName: defaultFavDorm[index].dormName,
-                    pathImage: defaultFavDorm[index].coverImage,
-                    isFav: defaultFavDorm[index].isFav,
-                    minPrice: defaultFavDorm[index].minPrice,
-                    maxPrice: defaultFavDorm[index].maxPrice,
-                    rating: defaultFavDorm[index].overallRate,
-                    removeFav: removeFav,
+            defaultFavDorm.isEmpty
+                ? const Text('')
+                : const Text(
+                    "Favorite Dorms",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                   ),
-                );
-              }),
-            )),
+            defaultFavDorm.isEmpty
+                ? const SizedBox(
+                    height: 0,
+                  )
+                : const SizedBox(
+                    height: 20,
+                  ),
+            defaultFavDorm.isEmpty
+                ? Expanded(
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/favorite-4.png',
+                            scale: 3,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            "No Favorite yet",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black54),
+                            textAlign: TextAlign.center,
+                          ),
+                          const Text(
+                              'Save your favorite dorms and find them here later')
+                        ],
+                      ),
+                    ),
+                  )
+                : Expanded(
+                    child: GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 40,
+                    mainAxisSpacing: 20,
+                    childAspectRatio: (8 / 10),
+                    children: List.generate(defaultFavDorm.length, (index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context,
+                              '/dorms/${defaultFavDorm[index].dormId}');
+                        },
+                        child: DormInfoHome(
+                          dormId: defaultFavDorm[index].dormId,
+                          dormName: defaultFavDorm[index].dormName,
+                          pathImage: defaultFavDorm[index].coverImage,
+                          isFav: defaultFavDorm[index].isFav,
+                          minPrice: defaultFavDorm[index].minPrice,
+                          maxPrice: defaultFavDorm[index].maxPrice,
+                          rating: defaultFavDorm[index].overallRate,
+                          removeFav: removeFav,
+                        ),
+                      );
+                    }),
+                  )),
           ],
         ),
       ),

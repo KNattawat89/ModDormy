@@ -77,7 +77,7 @@ class _ModDormyState extends State<ModDormy> {
     super.initState();
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      getFavDorm(user!.uid);
+      getFavDorm(user.uid);
     }
   }
 
@@ -101,7 +101,7 @@ class _ModDormyState extends State<ModDormy> {
         title: 'ModDormy app',
         initialRoute: '/',
         routes: {
-          '/fav': (context) => const FavoritePage(),
+          '/fav': (context) =>  FavoritePage(favDormArgu: favDorm,),
           '/home': (context) => const HomePage(),
           '/login': (context) => const LoginPage(),
           '/register': (context) => const RegisterPage(),

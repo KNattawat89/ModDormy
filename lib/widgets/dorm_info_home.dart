@@ -36,6 +36,7 @@ class DormInfoHome extends StatefulWidget {
 
 class _DormInfoHomeState extends State<DormInfoHome> {
   bool _isFav = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -50,18 +51,49 @@ class _DormInfoHomeState extends State<DormInfoHome> {
       if (user.userId != '') {
         if (_isFav) {
           setState(() {
-            _isFav = !_isFav;
+            _isLoading = true;
           });
-          // if(widget.removeFav != null){
-
-          // }
           try {
-            await Caller.dio.delete(
-                '/api/fav/deleteFav?userId=${user.userId}&dormId=${widget.dormId}');
-            widget.removeFav!(widget.dormId);
-            widget.refreshState!();
+            if (_isLoading) {
+              showDialog<String>(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) => AlertDialog(
+                    content: SizedBox(
+                      height: 100,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              CircularProgressIndicator(
+                                  color: Color(0xFFDC6E46)),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text("Loading..")
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ));
+
+              await Caller.dio.delete(
+                  '/api/fav/deleteFav?userId=${user.userId}&dormId=${widget.dormId}');
+              Navigator.pop(context);
+              widget.removeFav!(widget.dormId);
+              widget.refreshState!();
+              setState(() {
+                _isFav = !_isFav;
+                _isLoading = false;
+              });
+
+            }
+
           } catch (e) {
-            debugPrint(e.toString());
+            debugPrint("hi ${e.toString()}");
           }
         } else {
           setState(() {
@@ -134,7 +166,6 @@ class _DormInfoHomeState extends State<DormInfoHome> {
                   right: 10,
                   child: CircleAvatar(
                       backgroundColor: const Color(0xA9888888),
-                      // อย่าลืมปรับตรงนี้
                       child: Align(
                         alignment: Alignment.center,
                         child: GestureDetector(
@@ -150,16 +181,6 @@ class _DormInfoHomeState extends State<DormInfoHome> {
                                     Icons.favorite_outline,
                                     color: Colors.white,
                                   )),
-                        // : IconButton(
-                        //   onPressed: () {
-                        //     updateFav();
-                        //   },
-                        //   icon: const Icon(
-                        //     Icons.favorite_outline,
-                        //     color: Colors.black,
-                        //     // size:30,
-                        //   ),
-                        // )
                       ))),
             ],
           ),
