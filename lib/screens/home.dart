@@ -242,11 +242,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void refreshState() {
-    setState(() {});
+    // setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    final String currentRouteName = ModalRoute.of(context)?.settings.name ?? "";
+    print(currentRouteName);
     return Scaffold(
       appBar: const MyAppbar(),
       endDrawer: const MyDrawer(),

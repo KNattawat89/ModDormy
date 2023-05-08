@@ -59,9 +59,6 @@ class _FavoritePageState extends State<FavoritePage> {
 
   @override
   Widget build(BuildContext context) {
-    // if (widget.refreshState != null) {
-    //   print(widget.refreshState);
-    // }
     return Scaffold(
       appBar: const MyAppbar(),
       endDrawer: const MyDrawer(),

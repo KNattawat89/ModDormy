@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/models/post_fav.dart';
 import 'package:moddormy_flutter/widgets/build_star_rate.dart';
 import 'package:provider/provider.dart';
 
@@ -31,51 +30,59 @@ class _DormInfoHomeState extends State<DormInfoHome> {
 
   @override
   Widget build(BuildContext context) {
+    final String currentRouteName = ModalRoute.of(context)?.settings.name ?? "";
     final user = Provider.of<UserProvider>(context);
     void updateIsFav() async {
       if (user.userId != '') {
         if (widget.dormItem.isFav) {
           setState(() {
             _isLoading = true;
-            widget.dormItem.isFav = false;
+            widget.dormItem.isFav = !widget.dormItem.isFav;
           });
           try {
-            if (_isLoading) {
-              showDialog<String>(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) => AlertDialog(
-                        content: SizedBox(
-                          height: 100,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 10),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  CircularProgressIndicator(
-                                      color: Color(0xFFDC6E46)),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text("Loading..")
-                                ],
+            if (currentRouteName == '/home') {
+              await Caller.dio.delete(
+                  '/api/fav/deleteFav?userId=${user.userId}&dormId=${widget.dormItem.dormId}');
+              debugPrint('remove fav from home');
+            } else if (currentRouteName == '/fav') {
+              if (_isLoading) {
+                showDialog<String>(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) => AlertDialog(
+                          content: SizedBox(
+                            height: 100,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    CircularProgressIndicator(
+                                        color: Color(0xFFDC6E46)),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("Loading..")
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ));
+                        ));
 
-              await Caller.dio.delete(
-                  '/api/fav/deleteFav?userId=${user.userId}&dormId=${widget.dormItem.dormId}');
-              Navigator.pop(context);
-              if (FavPreload.homeReload != null) {
-                FavPreload.homeReload!();
+                await Caller.dio.delete(
+                    '/api/fav/deleteFav?userId=${user.userId}&dormId=${widget.dormItem.dormId}');
+                Navigator.pop(context);
+                debugPrint('remove fav from fav');
+                if (FavPreload.homeReload != null) {
+                  FavPreload.homeReload!();
+                }
+                widget.removeFav!(widget.dormItem.dormId);
+                setState(() {
+                  _isLoading = false;
+                });
               }
-              widget.removeFav!(widget.dormItem.dormId);
-              setState(() {
-                _isLoading = false;
-              });
             }
           } catch (e) {
             debugPrint("hi ${e.toString()}");
@@ -90,7 +97,7 @@ class _DormInfoHomeState extends State<DormInfoHome> {
               "user_id": user.userId
             });
             // FavPreload.refreshFav();
-            print("called");
+            debugPrint("called post fav");
           } on DioError catch (e) {
             debugPrint(e.response.toString());
             Caller.handle(context, e);

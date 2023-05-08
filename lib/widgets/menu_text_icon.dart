@@ -28,21 +28,22 @@ class MenuTextIcon extends StatelessWidget {
       onTap: () async {
         if (route == '/home') {
           Navigator.popUntil(context, ModalRoute.withName(route));
-          if (FavPreload.homeReload != null) {
-            FavPreload.homeReload!();
-          }
+          // if (FavPreload.homeReload != null) {
+          //   FavPreload.homeReload!();
+          // }
           // refreshState!();
         } else if (route == '/logout') {
           await FirebaseAuth.instance.signOut();
-          if (FavPreload.homeReload != null) {
-            FavPreload.homeReload!();
-          }
+
           Provider.of<UserProvider>(context, listen: false).clearUser();
           if (FirebaseAuth.instance.currentUser == null) {
             debugPrint("User sign-out already");
           }
           // ignore: use_build_context_synchronously
           Navigator.popUntil(context, ModalRoute.withName('/home'));
+          // if (FavPreload.homeReload != null) {
+          //   FavPreload.homeReload!();
+          // }
         } else {
           Navigator.pushNamed(context, route);
         }
