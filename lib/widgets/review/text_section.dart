@@ -34,7 +34,6 @@ class _TextSectionState extends State<TextSection> {
         }
         return null;
       },
-      autovalidateMode: AutovalidateMode.onUserInteraction,
     );
   }
 }

@@ -12,8 +12,8 @@ import '../../provider/user_provider.dart';
 import '../../utilities/caller.dart';
 
 class AddReview extends StatefulWidget {
-  const AddReview({super.key});
-
+  final int dormId;
+  const AddReview(this.dormId, {super.key});
   @override
   State<AddReview> createState() => _AddReviewState();
 }
@@ -21,7 +21,7 @@ class AddReview extends StatefulWidget {
 class _AddReviewState extends State<AddReview> {
   void postReview(Review review) async {
     try {
-      //print(review.toJson().toString() + 'try');
+      print(review.toJson().toString() + 'try');
       final response = await Caller.dio
           .post('/api/review/addDormReview', data: review.toJson());
       //print(response.data.toString() + 'try');
@@ -36,23 +36,42 @@ class _AddReviewState extends State<AddReview> {
   }
 
   final _formKey = GlobalKey<FormState>();
+  Review review = Review(
+      dormId: 0,
+      review: "",
+      ratingPrice: 0,
+      ratingLocation: 0,
+      ratingFacility: 0,
+      ratingSanitary: 0,
+      ratingSecurity: 0,
+      ratingOverall: 0,
+      createdAt: null,
+      userId: "",
+      user: null,
+      reviewId: 0);
+
+  void initState() {
+    super.initState();
+    review = Review(
+      dormId: widget.dormId,
+      review: "",
+      ratingPrice: 0,
+      ratingLocation: 0,
+      ratingFacility: 0,
+      ratingSanitary: 0,
+      ratingSecurity: 0,
+      ratingOverall: 0,
+      createdAt: null,
+      userId: "",
+      user: null,
+      reviewId: 0,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context);
-    Review review = Review(
-        dormId: 20,
-        review: "",
-        ratingPrice: 0,
-        ratingLocation: 0,
-        ratingFacility: 0,
-        ratingSanitary: 0,
-        ratingSecurity: 0,
-        ratingOverall: 0,
-        createdAt: null,
-        userId: user.userId,
-        user: null,
-        reviewId: 0);
-
+    review.userId = user.userId;
     return Column(
       children: [
         Form(
@@ -83,6 +102,7 @@ class _AddReviewState extends State<AddReview> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   // do something with the form data
+                  _formKey.currentState!.save();
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -120,6 +140,21 @@ class _AddReviewState extends State<AddReview> {
                                     // Perform the form submission here
                                     Navigator.pop(context);
                                     postReview(review);
+                                    review = Review(
+                                      dormId: widget.dormId,
+                                      review: "",
+                                      ratingPrice: 0,
+                                      ratingLocation: 0,
+                                      ratingFacility: 0,
+                                      ratingSanitary: 0,
+                                      ratingSecurity: 0,
+                                      ratingOverall: 0,
+                                      createdAt: null,
+                                      userId: "",
+                                      user: null,
+                                      reviewId: 0,
+                                    );
+                                    _formKey.currentState!.reset();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 8,

@@ -11,7 +11,8 @@ import '../utilities/caller.dart';
 //List<ReviewM> reviews = generateMockReviews();
 
 class DormReview extends StatefulWidget {
-  const DormReview({Key? key}) : super(key: key);
+  final int dormId;
+  const DormReview({Key? key, required this.dormId}) : super(key: key);
 
   @override
   State<DormReview> createState() => _DormReviewState();
@@ -43,7 +44,7 @@ class _DormReviewState extends State<DormReview> {
   @override
   void initState() {
     super.initState();
-    getDormReview(20);
+    getDormReview(widget.dormId);
   }
 
   @override
@@ -67,7 +68,7 @@ class _DormReviewState extends State<DormReview> {
             ),
             DormRating(reviews: reviews),
             UserReview(reviews: reviews),
-            const AddReview(),
+            AddReview(widget.dormId),
           ],
         ));
   }
