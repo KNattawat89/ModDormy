@@ -15,6 +15,8 @@ import '../widgets/my_appbar.dart';
 import '../widgets/my_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'dorm_detail.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -232,7 +234,9 @@ class _HomePageState extends State<HomePage> {
     print('userId: ${user.userId}');
     return Scaffold(
       appBar: const MyAppbar(),
-      endDrawer: MyDrawer(refreshState: refreshState,),
+      endDrawer: MyDrawer(
+        refreshState: refreshState,
+      ),
       body: Container(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -327,8 +331,11 @@ class _HomePageState extends State<HomePage> {
                       children: List.generate(filteredData.length, (index) {
                         return GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context,
-                                '/dorms/${filteredData[index].dormId}');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => (DormDetail(
+                                        dormId: filteredData[index].dormId))));
                           },
                           child: DormInfoHome(
                             dormId: filteredData[index].dormId,
