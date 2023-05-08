@@ -53,12 +53,13 @@ class _DormInfoHomeState extends State<DormInfoHome> {
             _isFav = !_isFav;
           });
           // if(widget.removeFav != null){
-          widget.removeFav!(widget.dormId);
-          widget.refreshState!();
+
           // }
           try {
             await Caller.dio.delete(
                 '/api/fav/deleteFav?userId=${user.userId}&dormId=${widget.dormId}');
+            widget.removeFav!(widget.dormId);
+            widget.refreshState!();
           } catch (e) {
             debugPrint(e.toString());
           }
