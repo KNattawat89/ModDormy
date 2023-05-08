@@ -16,7 +16,6 @@ class DormDetail extends StatefulWidget {
   State<DormDetail> createState() => _DormDetailState();
 }
 
-
 class _DormDetailState extends State<DormDetail> {
   Dorm? dorm;
   List<Imagestring> myimages = [];

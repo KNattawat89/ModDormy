@@ -37,24 +37,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ModDormy app',
-      initialRoute: '/',
-      routes: {
-        '/fav': (context) => const FavoritePage(), 
-        '/home': (context) => const HomePage(),
-        '/login': (context) => const LoginPage(),
-        '/register':(context) => const RegisterPage(),
-        '/forgotPass':(context) => const ForgotPassPage(),
-        '/resetPass':(context) => const ResetPassPage(),
-        '/profile': (context) => const ProfilePage(),
-        // '/dorm/:id': (context) => const DormDetail(),
-      },
-      home: const Splash()
-      // home: const Scaffold(
-      //   endDrawer: MyDrawer(),
-      //   appBar: MyAppbar(),
-      //   body: HomePage(),
-      // ),
-    );
+        title: 'ModDormy app',
+        initialRoute: '/',
+        routes: {
+          '/fav': (context) => const FavoritePage(),
+          '/home': (context) => const HomePage(),
+          '/login': (context) => const LoginPage(),
+          '/register': (context) => const RegisterPage(),
+          '/forgotPass': (context) => const ForgotPassPage(),
+          '/resetPass': (context) => const ResetPassPage(),
+          '/profile': (context) => const ProfilePage(),
+          // '/dorm/:id': (context) => const DormDetail(),
+        },
+        home: const Splash()
+        // home: const Scaffold(
+        //   endDrawer: MyDrawer(),
+        //   appBar: MyAppbar(),
+        //   body: HomePage(),
+        // ),
+        );
   }
 }
