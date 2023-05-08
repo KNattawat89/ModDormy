@@ -16,7 +16,9 @@ class DormInfoHome extends StatefulWidget {
       required this.pathImage,
       required this.minPrice,
       required this.maxPrice,
-      required this.isFav})
+      required this.isFav,
+      this.removeFav,
+      this.refreshState})
       : super(key: key);
   final double rating;
   final int dormId;
@@ -25,6 +27,8 @@ class DormInfoHome extends StatefulWidget {
   final int maxPrice;
   final String pathImage;
   final bool isFav;
+  final Function? removeFav;
+  final Function? refreshState;
 
   @override
   State<DormInfoHome> createState() => _DormInfoHomeState();
@@ -34,68 +38,70 @@ class _DormInfoHomeState extends State<DormInfoHome> {
   bool _isFav = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _isFav = widget.isFav;
   }
 
   @override
   Widget build(BuildContext context) {
-
     final user = Provider.of<UserProvider>(context);
     void updateIsFav() async {
       if (user.userId != '') {
-        if(_isFav){
+        if (_isFav) {
           setState(() {
             _isFav = !_isFav;
           });
+          // if(widget.removeFav != null){
+
+          // }
           try {
-            await Caller.dio.delete('/api/fav/deleteFav?userId=${user.userId}&dormId=${widget.dormId}');
+            await Caller.dio.delete(
+                '/api/fav/deleteFav?userId=${user.userId}&dormId=${widget.dormId}');
+            widget.removeFav!(widget.dormId);
+            widget.refreshState!();
           } catch (e) {
             debugPrint(e.toString());
           }
-        }else {
+        } else {
           setState(() {
             _isFav = !_isFav;
           });
           try {
             await Caller.dio.post('/api/fav/postFav',
                 data: {"dorm_id": widget.dormId, "user_id": user.userId});
-          } on DioError catch(e) {
+          } on DioError catch (e) {
             debugPrint(e.response.toString());
             Caller.handle(context, e);
           }
-
         }
-
       } else {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: const Text("Login required"),
-              content: const Text("Please log in to favorite this dorm."),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor:  const Color(0xFFDC6E46),
-                  ),
-                  child: const Text("Cancel"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/login');
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor:  Colors.white,
-                    backgroundColor: const Color(0xFFDC6E46)
-                  ),
-                  child: const Text("Login"),
-                )
-              ],
-            ));
+                  title: const Text("Login required"),
+                  content: const Text("Please log in to favorite this dorm."),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: const Color(0xFFDC6E46),
+                      ),
+                      child: const Text("Cancel"),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                      style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: const Color(0xFFDC6E46)),
+                      child: const Text("Login"),
+                    )
+                  ],
+                ));
       }
     }
 
