@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/provider/user_provider.dart';
 import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
+import 'package:provider/provider.dart';
 import 'menu_text_icon.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -9,6 +11,7 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider user = Provider.of<UserProvider>(context);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -21,25 +24,30 @@ class MyDrawer extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const CircleAvatar(
-                        radius: 40,
-                        backgroundImage:
-                            AssetImage("assets/images/profile.jpg"),
-                      ),
+                      user.profileImage == ''
+                          ? const CircleAvatar(
+                              radius: 40,
+                              backgroundImage:
+                                  AssetImage("assets/images/profileNull.png"),
+                            )
+                          : CircleAvatar(
+                              radius: 40,
+                              backgroundImage: NetworkImage(
+                                  'http://moddormy.ivelse.com:8000${user.profileImage}')),
                       const SizedBox(width: 15),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
-                            "Kenglnwza007",
-                            style: TextStyle(
+                            user.username,
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            "kengza007@gmail.com",
-                            style: TextStyle(color: Colors.white, fontSize: 14),
+                            user.email,
+                            style:const TextStyle(color: Colors.white, fontSize: 14),
                           )
                         ],
                       )
@@ -55,7 +63,7 @@ class MyDrawer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
-                    children:const  [
+                    children: const [
                       MenuTextIcon(
                           iconName: Icons.home,
                           menuName: 'Home',
