@@ -4,44 +4,29 @@ import 'package:moddormy_flutter/models/post_fav.dart';
 import 'package:moddormy_flutter/widgets/build_star_rate.dart';
 import 'package:provider/provider.dart';
 
+import '../models/dorm_item.dart';
+import '../models/fav_preload.dart';
 import '../provider/user_provider.dart';
 import '../utilities/caller.dart';
 
 class DormInfoHome extends StatefulWidget {
-  const DormInfoHome(
-      {Key? key,
-      required this.dormId,
-      required this.dormName,
-      required this.rating,
-      required this.pathImage,
-      required this.minPrice,
-      required this.maxPrice,
-      required this.isFav,
-      this.removeFav,
-      this.refreshState})
+  const DormInfoHome({Key? key, required this.dormItem, this.removeFav})
       : super(key: key);
-  final double rating;
-  final int dormId;
-  final String dormName;
-  final int minPrice;
-  final int maxPrice;
-  final String pathImage;
-  final bool isFav;
   final Function? removeFav;
-  final Function? refreshState;
+  final DormItem dormItem;
 
   @override
   State<DormInfoHome> createState() => _DormInfoHomeState();
 }
 
 class _DormInfoHomeState extends State<DormInfoHome> {
-  bool _isFav = false;
+  // bool widget.dormItem.isFav = false;
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _isFav = widget.isFav;
+    // widget.dormItem.isFav = widget.isFav;
   }
 
   @override
@@ -49,9 +34,10 @@ class _DormInfoHomeState extends State<DormInfoHome> {
     final user = Provider.of<UserProvider>(context);
     void updateIsFav() async {
       if (user.userId != '') {
-        if (_isFav) {
+        if (widget.dormItem.isFav) {
           setState(() {
             _isLoading = true;
+            widget.dormItem.isFav = false;
           });
           try {
             if (_isLoading) {
@@ -59,49 +45,52 @@ class _DormInfoHomeState extends State<DormInfoHome> {
                   context: context,
                   barrierDismissible: false,
                   builder: (BuildContext context) => AlertDialog(
-                    content: SizedBox(
-                      height: 100,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              CircularProgressIndicator(
-                                  color: Color(0xFFDC6E46)),
-                              SizedBox(
-                                height: 10,
+                        content: SizedBox(
+                          height: 100,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  CircularProgressIndicator(
+                                      color: Color(0xFFDC6E46)),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text("Loading..")
+                                ],
                               ),
-                              Text("Loading..")
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ));
+                      ));
 
               await Caller.dio.delete(
-                  '/api/fav/deleteFav?userId=${user.userId}&dormId=${widget.dormId}');
+                  '/api/fav/deleteFav?userId=${user.userId}&dormId=${widget.dormItem.dormId}');
               Navigator.pop(context);
-              widget.removeFav!(widget.dormId);
-              widget.refreshState!();
+              if (FavPreload.homeReload != null) {
+                FavPreload.homeReload!();
+              }
+              widget.removeFav!(widget.dormItem.dormId);
               setState(() {
-                _isFav = !_isFav;
                 _isLoading = false;
               });
-
             }
-
           } catch (e) {
             debugPrint("hi ${e.toString()}");
           }
         } else {
           setState(() {
-            _isFav = !_isFav;
+            widget.dormItem.isFav = !widget.dormItem.isFav;
           });
           try {
-            await Caller.dio.post('/api/fav/postFav',
-                data: {"dorm_id": widget.dormId, "user_id": user.userId});
+            await Caller.dio.post('/api/fav/postFav', data: {
+              "dorm_id": widget.dormItem.dormId,
+              "user_id": user.userId
+            });
+            // FavPreload.refreshFav();
+            print("called");
           } on DioError catch (e) {
             debugPrint(e.response.toString());
             Caller.handle(context, e);
@@ -155,7 +144,7 @@ class _DormInfoHomeState extends State<DormInfoHome> {
                 child: SizedBox.fromSize(
                   size: const Size.fromRadius(90), // Image radius
                   child: Image.network(
-                    widget.pathImage,
+                    widget.dormItem.coverImage,
                     fit: BoxFit.cover,
                     height: 80,
                   ),
@@ -172,7 +161,7 @@ class _DormInfoHomeState extends State<DormInfoHome> {
                             onTap: () {
                               updateIsFav();
                             },
-                            child: _isFav
+                            child: widget.dormItem.isFav
                                 ? const Icon(
                                     Icons.favorite,
                                     color: Colors.white,
@@ -188,17 +177,18 @@ class _DormInfoHomeState extends State<DormInfoHome> {
         const SizedBox(
           height: 10,
         ),
-        buildStarRating(widget.rating),
+        buildStarRating(widget.dormItem.overallRate),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Text(
-            widget.dormName,
+            widget.dormItem.dormName,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 18),
           ),
         ),
         Text(
-          compareMinMaxPrice(widget.minPrice, widget.maxPrice),
+          compareMinMaxPrice(
+              widget.dormItem.minPrice, widget.dormItem.maxPrice),
           style: const TextStyle(color: Color(0xFFDC6E46), fontSize: 14),
         ),
       ],
