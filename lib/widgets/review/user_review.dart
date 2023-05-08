@@ -22,18 +22,19 @@ class UserReview extends StatefulWidget {
 class _UserReviewState extends State<UserReview> {
   @override
   Widget build(BuildContext context) {
-    var count = 0;
     if (widget.reviews.isEmpty) {
-      count = 1;
+      return const Center(
+        child: Text('No review yet.'),
+      );
     } else {
-      count = widget.reviews.length;
+      return SizedBox(
+          height: MediaQuery.of(context).size.height *
+              widget.reviews.length *
+              0.226,
+          child: Column(children: [
+            for (var review in widget.reviews) showReview(reviews: review),
+          ]));
     }
-    //for (var room in widget.dorm.rooms) RoomItem(room: room),
-    return SizedBox(
-        height: MediaQuery.of(context).size.height * count * 0.226,
-        child: Column(children: [
-          for (var review in widget.reviews) showReview(reviews: review),
-        ]));
   }
 }
 
