@@ -2,9 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 // import 'package:moddormy_flutter/widgets/review/review_mockup.dart';
 
 import '../../models/review.dart';
+import '../../provider/user_provider.dart';
+import '../../utilities/caller.dart';
 
 //List<ReviewM> reviews = generateMockReviews();
 
@@ -41,8 +44,9 @@ class showReview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context);
     return ListTile(
-      title: userHeader(reviews),
+      title: userHeader(reviews, user.userId),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
       subtitle: Column(
         children: [
@@ -54,12 +58,12 @@ class showReview extends StatelessWidget {
   }
 }
 
-Widget userHeader(Review reviews) {
+Widget userHeader(Review reviews, String userId) {
   return Row(
     children: [
-      const CircleAvatar(
-        backgroundImage: NetworkImage(
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR00L8GRKSQVHDXAnex599APwTABc7_5WRD_w&usqp=CAU'),
+      CircleAvatar(
+        backgroundImage: AssetImage(
+            reviews.user!.profileImage ?? 'assets/images/profileNull.png'),
       ),
       const SizedBox(width: 10.0),
       Column(
@@ -105,26 +109,27 @@ Widget userHeader(Review reviews) {
 
       //delete button
       const Spacer(),
-      showDeleteButton(reviews),
+      showDeleteButton(reviews, userId),
     ],
   );
 }
 
-Widget showDeleteButton(Review reviews) {
-  final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8000'));
+Widget showDeleteButton(Review reviews, String userId) {
+  // final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8000'));
 
   void deleteDormReview(int reviewId) async {
     //print(reviewId);
     try {
-      final response =
-          await dio.delete('/api/review/deleteDormReview?reviewId=$reviewId');
+      final response = await Caller.dio
+          .delete('/api/review/deleteDormReview?reviewId=$reviewId');
       //print(response.data.toString());
     } catch (e) {
       //print(e.toString());
     }
   }
 
-  if (reviews.user!.userId == 'aH5CdH3VqlS1vVeqJ20WFKvGvmo2') {
+  // ignore: unrelated_type_equality_checks
+  if (reviews.user!.userId == userId) {
     return IconButton(
         onPressed: () {
           deleteDormReview(reviews.reviewId);

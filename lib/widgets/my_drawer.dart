@@ -5,7 +5,8 @@ import 'package:moddormy_flutter/screens/login_page.dart';
 import 'menu_text_icon.dart';
 
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({Key? key}) : super(key: key);
+  const MyDrawer({Key? key, this.refreshState}) : super(key: key);
+  final Function? refreshState;
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +57,25 @@ class MyDrawer extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      menuTextIcon(context, Icons.home, "Home", '/home'),
-                      menuTextIcon(
-                          context, Icons.account_circle, "Profile", '/profile'),
-                      menuTextIcon(context, Icons.favorite, "Favorite", '/fav'),
+                      const MenuTextIcon(
+                          iconName: Icons.home,
+                          menuName: 'Home',
+                          route: '/home'),
+                      const MenuTextIcon(
+                          iconName: Icons.account_circle,
+                          menuName: 'Profile',
+                          route: '/profile'),
+                      const MenuTextIcon(
+                          iconName: Icons.favorite,
+                          menuName: 'Favorite',
+                          route: '/fav'),
                       const Divider(),
-                      menuTextIcon(context, Icons.logout, "Logout", '/logout'),
+                      MenuTextIcon(
+                        iconName: Icons.logout,
+                        menuName: 'Logout',
+                        route: '/logout',
+                        refreshState: refreshState,
+                      )
                     ],
                   ),
                 ],

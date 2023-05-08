@@ -4,6 +4,7 @@ import 'package:moddormy_flutter/models/dorm_item.dart';
 import 'package:moddormy_flutter/models/dorm_list.dart';
 import 'package:moddormy_flutter/models/filter_item.dart';
 import 'package:moddormy_flutter/models/user_item.dart';
+import 'package:moddormy_flutter/screens/favorite.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/dorm_info_home.dart';
 import 'package:moddormy_flutter/widgets/search_bar.dart';
@@ -14,6 +15,8 @@ import '../widgets/filter_option.dart';
 import '../widgets/my_appbar.dart';
 import '../widgets/my_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'dorm_detail.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -34,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   User? user = FirebaseAuth.instance.currentUser;
   final dio = Dio();
   List<UserItem> _userData = [];
+  List<DormItem> favDorm = [];
 
   // final TextEditingController _searchController = TextEditingController();
   // FilterItem argument = FilterItem(
@@ -196,6 +200,7 @@ class _HomePageState extends State<HomePage> {
     // _searchController.addListener(_performSearch);
     if (user != null) {
       getUserProfile(user!.uid);
+      getFavDorm(user!.uid);
       // getDormAll(user!.uid);
     }
     // else {
@@ -205,6 +210,17 @@ class _HomePageState extends State<HomePage> {
     //   argument = argument!;
     // }
     // refreshData();
+  }
+
+  void getFavDorm(String uid) async {
+    print("hello");
+    try {
+      final response = await Caller.dio.get('/api/fav/getFav?userId=$uid');
+      DormList d = DormList.fromJson(response.data);
+      favDorm = d.data;
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -228,9 +244,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider user = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: const MyAppbar(),
-      endDrawer: const MyDrawer(),
+      endDrawer: MyDrawer(
+        refreshState: refreshState,
+      ),
       body: Container(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -316,6 +335,7 @@ class _HomePageState extends State<HomePage> {
                     List<DormItem> filteredData =
                         snapshot.data as List<DormItem>;
                     filteredData = _performSearch(filteredData);
+                    FavoritePage(refreshState: refreshState,);
                     return Expanded(
                         child: GridView.count(
                       crossAxisCount: 2,
@@ -325,8 +345,11 @@ class _HomePageState extends State<HomePage> {
                       children: List.generate(filteredData.length, (index) {
                         return GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context,
-                                '/dorms/${filteredData[index].dormId}');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => (DormDetail(
+                                        dormId: filteredData[index].dormId))));
                           },
                           child: DormInfoHome(
                             dormId: filteredData[index].dormId,

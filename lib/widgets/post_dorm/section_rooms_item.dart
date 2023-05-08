@@ -7,8 +7,9 @@ import '../../models/room.dart';
 
 class RoomItem extends StatefulWidget {
   final Room room;
+  final bool post;
 
-  const RoomItem({Key? key, required this.room}) : super(key: key);
+  const RoomItem({Key? key, required this.room, required this.post}) : super(key: key);
 
   @override
   State<RoomItem> createState() => _RoomItemState();

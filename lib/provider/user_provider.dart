@@ -92,4 +92,17 @@ class UserProvider extends ChangeNotifier {
     _userType = userType;
     notifyListeners();
   }
+
+  void clearUser() {
+    _userId = '';
+    _profileImage = '';
+    _username = '';
+    _firstname = '';
+    _lastname = '';
+    _email = '';
+    _tel = '';
+    _lineId = '';
+    _userType = '';
+    notifyListeners();
+  }
 }

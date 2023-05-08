@@ -32,7 +32,7 @@ class ShowRoom extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: Image.network(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR00L8GRKSQVHDXAnex599APwTABc7_5WRD_w&usqp=CAU',
+                  room.coverimageString,
                   fit: BoxFit.cover,
                   width: 100,
                   height: 100,

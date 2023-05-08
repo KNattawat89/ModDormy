@@ -1,31 +1,42 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/models/dorm_list.dart';
+import 'package:moddormy_flutter/provider/user_provider.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
+import 'package:provider/provider.dart';
+import '../models/dorm_item.dart';
 import '../utilities/caller.dart';
 import '../widgets/dorm_info_home.dart';
 import '../widgets/my_appbar.dart';
 
 class FavoritePage extends StatefulWidget {
-  const FavoritePage({Key? key}) : super(key: key);
+  const FavoritePage({Key? key, this.favDormArgu, this.refreshState}) : super(key: key);
+  final List<DormItem>? favDormArgu;
+  final Function? refreshState;
 
   @override
   State<FavoritePage> createState() => _FavoritePageState();
 }
 
 class _FavoritePageState extends State<FavoritePage> {
-  void getFavDorm() async {
-    try {
-      final response = await Caller.dio.get('/api/fav/getFav?userId=');
-      // put type here
-    } catch (e) {
-      print(e);
-    }
-  }
+  List<DormItem> defaultFavDorm = [];
 
-  bool isFav = true;
-  void updateIsFav() {
-    setState(() {
-      isFav = !isFav;
+  void removeFav(int dormId) {
+    defaultFavDorm.removeWhere((dorm) => dorm.dormId == dormId);
+    setState(() {});
+    defaultFavDorm.forEach((dorm) {
+      print('Dorm ${dorm.dormId}: ${dorm.isFav}');
     });
+  }
+  @override
+  void initState(){
+    super.initState();
+    if(defaultFavDorm != null){
+      setState(() {
+        defaultFavDorm = widget.favDormArgu!;
+      });
+
+    }
   }
 
   @override
@@ -46,26 +57,30 @@ class _FavoritePageState extends State<FavoritePage> {
               height: 20,
             ),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 40,
-                mainAxisSpacing: 20,
-                childAspectRatio: (8 / 10),
-                children: List.generate(5, (index) {
-                  return Container(
-                    child: Placeholder(),
-                    // dormInfoHome(
-                    //     5,
-                    //     'dorm $index',
-                    //     2000,
-                    //     5000,
-                    //     'http://moddormy.ivelse.com:8000/images/412494.jpeg',
-                    //     isFav,
-                    //     updateIsFav),
-                  );
-                }),
-              ),
-            )
+                child: GridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 40,
+              mainAxisSpacing: 20,
+              childAspectRatio: (8 / 10),
+              children: List.generate(defaultFavDorm.length, (index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                        context, '/dorms/${defaultFavDorm[index].dormId}');
+                  },
+                  child: DormInfoHome(
+                    dormId: defaultFavDorm[index].dormId,
+                    dormName: defaultFavDorm[index].dormName,
+                    pathImage: defaultFavDorm[index].coverImage,
+                    isFav: defaultFavDorm[index].isFav,
+                    minPrice: defaultFavDorm[index].minPrice,
+                    maxPrice: defaultFavDorm[index].maxPrice,
+                    rating: defaultFavDorm[index].overallRate,
+                    removeFav: removeFav,
+                  ),
+                );
+              }),
+            )),
           ],
         ),
       ),

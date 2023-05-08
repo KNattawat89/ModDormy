@@ -48,15 +48,24 @@ class _DormFormState extends State<DormForm> {
           ),
           InfoSection(dorm: widget.dorm),
           DescriptionSection(dorm: widget.dorm),
-          CoverImageSection(dorm: widget.dorm),
-          PhotosSection(dorm: widget.dorm),
+          CoverImageSection(
+            dorm: widget.dorm,
+            post: widget.post,
+          ),
+          PhotosSection(
+            dorm: widget.dorm,
+            post: widget.post,
+          ),
           FeatureSection(dorm: widget.dorm),
           DistanceSection(dorm: widget.dorm),
           ContractSection(dorm: widget.dorm),
           const Divider(
             thickness: 5,
           ),
-          RoomsSection(dorm: widget.dorm),
+          RoomsSection(
+            dorm: widget.dorm,
+            post: widget.post,
+          ),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
