@@ -46,7 +46,7 @@ class showReview extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context);
     return ListTile(
-      title: userHeader(reviews, user.userId),
+      title: userHeader(reviews, user.userId, context),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
       subtitle: Column(
         children: [
@@ -58,7 +58,7 @@ class showReview extends StatelessWidget {
   }
 }
 
-Widget userHeader(Review reviews, String userId) {
+Widget userHeader(Review reviews, String userId, BuildContext context) {
   return Row(
     children: [
       CircleAvatar(
@@ -109,12 +109,12 @@ Widget userHeader(Review reviews, String userId) {
 
       //delete button
       const Spacer(),
-      showDeleteButton(reviews, userId),
+      showDeleteButton(reviews, userId, context),
     ],
   );
 }
 
-Widget showDeleteButton(Review reviews, String userId) {
+Widget showDeleteButton(Review reviews, String userId, BuildContext context) {
   // final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8000'));
 
   void deleteDormReview(int reviewId) async {
@@ -132,7 +132,57 @@ Widget showDeleteButton(Review reviews, String userId) {
   if (reviews.user!.userId == userId) {
     return IconButton(
         onPressed: () {
-          deleteDormReview(reviews.reviewId);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                title: const Text(
+                  "Are you sure?",
+                  textAlign: TextAlign.center,
+                ),
+                content: const Text(
+                  "You will not be able to recover this review!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, color: Color(0xff838383)),
+                ),
+                actions: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: ElevatedButton.styleFrom(
+                            elevation: 8,
+                            backgroundColor: const Color(0xff838383),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          child: const Text("Cancel")),
+                      ElevatedButton(
+                          onPressed: () {
+                            // Perform the form submission here
+                            Navigator.pop(context);
+                            deleteDormReview(reviews.reviewId);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 8,
+                            backgroundColor: const Color(0xffDC6E46),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          child: const Text("Yes, delete it!")),
+                    ],
+                  ),
+                ],
+              );
+            },
+          );
         },
         icon: const Icon(Icons.delete_outline),
         color: const Color(0xffDC6E46));

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:moddormy_flutter/models/user_item.dart';
 import 'package:moddormy_flutter/widgets/review/dropdown_section.dart';
@@ -21,17 +21,17 @@ class AddReview extends StatefulWidget {
 class _AddReviewState extends State<AddReview> {
   void postReview(Review review) async {
     try {
-      print(review.toJson().toString() + 'try');
+      //print(review.toJson().toString() + 'try');
       final response = await Caller.dio
           .post('/api/review/addDormReview', data: review.toJson());
-      print(response.data.toString() + 'try');
+      //print(response.data.toString() + 'try');
       //print(FirebaseAuth.instance.currentUser);
     } on DioError catch (e) {
-      print(e.toString());
+      //print(e.toString());
       //print(review.toJson().toString() + 'catch');
       //print(FirebaseAuth.instance.currentUser);
       //print(e.toString());
-      print(e.response?.data.toString());
+      //print(e.response?.data.toString());
     }
   }
 
@@ -81,9 +81,61 @@ class _AddReviewState extends State<AddReview> {
             alignment: Alignment.bottomRight,
             child: ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState!.validate() || true) {
+                if (_formKey.currentState!.validate()) {
                   // do something with the form data
-                  postReview(review);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        elevation: 8,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        title: const Text(
+                          "Are you sure?",
+                          textAlign: TextAlign.center,
+                        ),
+                        content: const Text(
+                          "Are you sure to confirm your review?",
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(fontSize: 14, color: Color(0xff838383)),
+                        ),
+                        actions: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 8,
+                                    backgroundColor: const Color(0xff838383),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  child: const Text("Cancel")),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    // Perform the form submission here
+                                    Navigator.pop(context);
+                                    postReview(review);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 8,
+                                    backgroundColor: const Color(0xffDC6E46),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  child: const Text("Yes, post it!")),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+                  );
+
                   //print(user.userId);
                 }
               },
