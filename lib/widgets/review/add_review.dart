@@ -150,7 +150,7 @@ class _AddReviewState extends State<AddReview> {
                                       ratingSecurity: 0,
                                       ratingOverall: 0,
                                       createdAt: null,
-                                      userId: "",
+                                      userId: user.userId,
                                       user: null,
                                       reviewId: 0,
                                     );
