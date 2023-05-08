@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:moddormy_flutter/provider/user_provider.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
+import 'package:provider/provider.dart';
 import '../models/dorm.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -18,14 +21,25 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  Future<String> uploadImage(XFile? file) async {
-    String fileName = file!.path.split('/').last;
-    FormData formData = FormData.fromMap({
-      "file": await MultipartFile.fromFile(file.path, filename: fileName),
-    });
-    final response =
-        await Caller.dio.post("/api/upload/coverImage", data: formData);
-    return response.data;
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  String? coverImageFileName;
+  void uploadImage(XFile? file) async {
+    try {
+      String fileName = file!.path.split('/').last;
+      FormData formData = FormData.fromMap({
+        "image": await MultipartFile.fromFile(file.path, filename: fileName),
+      });
+      final response =
+          await Caller.dio.post("/api/upload/coverImage", data: formData);
+      print(response.data);
+
+      setState(() {
+        coverImageFileName = response.data["image"];
+      });
+      return response.data;
+    } on DioError catch (e) {
+      print('upload image error: ${e.response}');
+    }
   }
 
   void postDormDetail() async {
@@ -34,10 +48,9 @@ class _DetailScreenState extends State<DetailScreen> {
         "/api/manage-dorm/postDorm",
         data: {
           "DormName": widget.dorm.name,
-          "UserId":
-              "aH5CdH3VqlS1vVeqJ20WFKvGvmo2", // ใส่ id ของ user ที่ login อยู่
+          "UserId": uid, // ใส่ id ของ user ที่ login อยู่
           "CoverImage":
-              "xxxxxx", //"${widget.dorm.coverImage!.path}", // Upload รูป how?
+              "", //"${widget.dorm.coverImage!.path}", // Upload รูป how?
           "HouseNumber": widget.dorm.houseNo,
           "Street": widget.dorm.street,
           "Soi": widget.dorm.soi,
@@ -162,6 +175,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    uploadImage(widget.dorm.coverImage);
     return Scaffold(
       backgroundColor: const Color(0xfffff9f0),
       appBar: const MyAppbar(),
@@ -594,7 +608,6 @@ class _DetailScreenState extends State<DetailScreen> {
                         heroTag: "btn2",
                         backgroundColor: const Color(0xFFDC6E46),
                         onPressed: () {
-                          uploadImage(widget.dorm.coverImage);
                           if (widget.post) {
                             postDormDetail();
                           } else {
