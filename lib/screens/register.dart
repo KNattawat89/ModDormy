@@ -129,7 +129,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       controller: _fname,
                       decoration: const InputDecoration(
                           contentPadding: EdgeInsets.symmetric(horizontal: 12),
-                          hintText: "First name",
+                          labelText: "First name",
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
@@ -156,7 +156,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     child: TextFormField(
                       controller: _lname,
                       decoration: const InputDecoration(
-                          hintText: "Last name",
+                          labelText: "Last name",
                           contentPadding: EdgeInsets.symmetric(horizontal: 12),
                           filled: true,
                           fillColor: Colors.white,
@@ -184,7 +184,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     child: TextFormField(
                       controller: _email,
                       decoration: const InputDecoration(
-                          hintText: "Email",
+                          labelText: "Email",
                           contentPadding: EdgeInsets.symmetric(horizontal: 12),
                           filled: true,
                           fillColor: Colors.white,
@@ -249,7 +249,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     child: TextFormField(
                       obscureText: _confirmPass,
                       decoration: InputDecoration(
-                          hintText: "Confirm password",
+                          labelText: "Confirm password",
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 12),
                           filled: true,
@@ -403,138 +403,132 @@ class _RegisterFormState extends State<RegisterForm> {
                                     _isLoading = true;
                                   });
 
-                                 if (_isLoading) {
-                                   showDialog<String>(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        AlertDialog(
-                                      content:
-                                        SizedBox(
-                                            height: 250,
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: const[
-                                                SizedBox(
-                                                  width: 50,
-                                                  height: 50,
-                                                  child:  CircularProgressIndicator(
-                                                            color:
-                                                                Color(0xFFDC6E46)),
-                                                ),
-                                                       
-                                                                SizedBox(
-                                                                  height: 20,
-                                                                ),
-                                                                 Text("Registering...")
-                                                      ],
-                                            ),
-                                          )
-                                        )
-                                   );
-                                    final credential = await FirebaseAuth.instance
-                                      .createUserWithEmailAndPassword(
-                                          email: _email.text,
-                                          password: _pass.text);
-
-                                  setState(() {
-                                    err = false;
-                                  });
-
-                                  final registerAcc = await Caller.dio
-                                      .post("/api/auth/register", data: {
-                                    "userid": credential.user?.uid,
-                                    "username": _user.text,
-                                    "fname": _fname.text,
-                                    "lname": _lname.text,
-                                    "email": _email.text,
-                                    "account": _account == UserAccount.dormOwner
-                                        ? "DormOwner"
-                                        : "Customer",
-                                  });
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                  debugPrint(registerAcc.statusMessage);
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                 }
-
-                                 if (_isLoading == false) {
-                                     // ignore: use_build_context_synchronously
-                                     showDialog<String>(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        AlertDialog(
-                                      content:
-                                        
-                                          SizedBox(
+                                  if (_isLoading) {
+                                    showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                                content: SizedBox(
                                               height: 250,
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 20),
-                                                    child: Image.asset(
-                                                        'assets/images/checkedmark.png'),
-                                                  ),
-                                                  const Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 10.0),
-                                                    child: Text(
-                                                      'Successful Registration',
-                                                      style: TextStyle(
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                  const Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 20.0),
-                                                    child: Text(
-                                                        "Congraturations, your account has been successful created"),
+                                                children: const [
+                                                  SizedBox(
+                                                    width: 50,
+                                                    height: 50,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                            color: Color(
+                                                                0xFFDC6E46)),
                                                   ),
                                                   SizedBox(
-                                                    height: 39,
-                                                    child: ElevatedButton(
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          backgroundColor:
-                                                              const Color(
-                                                                  0xFFDC6E46),
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          12.5)),
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.popUntil(
-                                                              context,
-                                                              ModalRoute
-                                                                  .withName(
-                                                                      '/login'));
-                                                        },
-                                                        child: const Text(
-                                                          "Continue",
-                                                          style: TextStyle(
-                                                              fontSize: 14,
-                                                              color:
-                                                                  Colors.white),
-                                                        )),
-                                                  )
+                                                    height: 20,
+                                                  ),
+                                                  Text("Registering...")
                                                 ],
-                                              )),
-                                    ),
-                                  );
-                                 }
+                                              ),
+                                            )));
+                                    final credential = await FirebaseAuth
+                                        .instance
+                                        .createUserWithEmailAndPassword(
+                                            email: _email.text,
+                                            password: _pass.text);
+
+                                    setState(() {
+                                      err = false;
+                                    });
+
+                                    final registerAcc = await Caller.dio
+                                        .post("/api/auth/register", data: {
+                                      "userid": credential.user?.uid,
+                                      "username": _user.text,
+                                      "fname": _fname.text,
+                                      "lname": _lname.text,
+                                      "email": _email.text,
+                                      "account":
+                                          _account == UserAccount.dormOwner
+                                              ? "DormOwner"
+                                              : "Customer",
+                                    });
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                    debugPrint(registerAcc.statusMessage);
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                  }
+
+                                  if (_isLoading == false) {
+                                    // ignore: use_build_context_synchronously
+                                    showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        content: SizedBox(
+                                            height: 250,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 20),
+                                                  child: Image.asset(
+                                                      'assets/images/checkedmark.png'),
+                                                ),
+                                                const Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 10.0),
+                                                  child: Text(
+                                                    'Successful Registration',
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                                const Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 20.0),
+                                                  child: Text(
+                                                      "Congraturations, your account has been successful created"),
+                                                ),
+                                                SizedBox(
+                                                  height: 39,
+                                                  child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            const Color(
+                                                                0xFFDC6E46),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.5)),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.popUntil(
+                                                            context,
+                                                            ModalRoute.withName(
+                                                                '/login'));
+                                                      },
+                                                      child: const Text(
+                                                        "Continue",
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            color:
+                                                                Colors.white),
+                                                      )),
+                                                )
+                                              ],
+                                            )),
+                                      ),
+                                    );
+                                  }
                                   // ignore: use_build_context_synchronously
-                                
-                                  
                                 } on FirebaseAuthException catch (e) {
                                   setState(() {
                                     err = true;
