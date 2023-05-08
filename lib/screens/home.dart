@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/dorm_item.dart';
 import 'package:moddormy_flutter/models/dorm_list.dart';
+import 'package:moddormy_flutter/models/fav_preload.dart';
 import 'package:moddormy_flutter/models/filter_item.dart';
 import 'package:moddormy_flutter/models/user_item.dart';
 import 'package:moddormy_flutter/screens/favorite.dart';
@@ -203,6 +204,8 @@ class _HomePageState extends State<HomePage> {
       getFavDorm(user!.uid);
       // getDormAll(user!.uid);
     }
+
+    FavPreload.homeReload = refreshState;
     // else {
     //   getAllDorm();
     // }
@@ -244,12 +247,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    UserProvider user = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: const MyAppbar(),
-      endDrawer: MyDrawer(
-        refreshState: refreshState,
-      ),
+      endDrawer: const MyDrawer(),
       body: Container(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -257,7 +257,6 @@ class _HomePageState extends State<HomePage> {
           children: [
             SearchBar(
               filterItem: argument,
-              refreshState: refreshState,
             ),
             const SizedBox(
               height: 20,
@@ -335,7 +334,6 @@ class _HomePageState extends State<HomePage> {
                     List<DormItem> filteredData =
                         snapshot.data as List<DormItem>;
                     filteredData = _performSearch(filteredData);
-                    FavoritePage(refreshState: refreshState,);
                     return Expanded(
                         child: GridView.count(
                       crossAxisCount: 2,
@@ -352,13 +350,7 @@ class _HomePageState extends State<HomePage> {
                                         dormId: filteredData[index].dormId))));
                           },
                           child: DormInfoHome(
-                            dormId: filteredData[index].dormId,
-                            dormName: filteredData[index].dormName,
-                            pathImage: filteredData[index].coverImage,
-                            isFav: filteredData[index].isFav,
-                            minPrice: filteredData[index].minPrice,
-                            maxPrice: filteredData[index].maxPrice,
-                            rating: filteredData[index].overallRate,
+                            dormItem: filteredData[index],
                           ),
                         );
                       }),
