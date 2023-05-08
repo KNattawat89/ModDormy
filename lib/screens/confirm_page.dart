@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
@@ -16,6 +18,16 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+  Future<String> uploadImage(XFile? file) async {
+    String fileName = file!.path.split('/').last;
+    FormData formData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(file.path, filename: fileName),
+    });
+    final response =
+        await Caller.dio.post("/api/upload/coverImage", data: formData);
+    return response.data;
+  }
+
   void postDormDetail() async {
     try {
       final postdorm = await Caller.dio.post(
@@ -582,6 +594,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         heroTag: "btn2",
                         backgroundColor: const Color(0xFFDC6E46),
                         onPressed: () {
+                          uploadImage(widget.dorm.coverImage);
                           if (widget.post) {
                             postDormDetail();
                           } else {
