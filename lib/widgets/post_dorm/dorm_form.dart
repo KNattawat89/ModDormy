@@ -29,68 +29,71 @@ class _DormFormState extends State<DormForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(32),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  'Dorm Information',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          InfoSection(dorm: widget.dorm),
-          DescriptionSection(dorm: widget.dorm),
-          CoverImageSection(
-            dorm: widget.dorm,
-            post: widget.post,
-          ),
-          PhotosSection(
-            dorm: widget.dorm,
-            post: widget.post,
-            myimages: widget.myimages,
-
-          ),
-          FeatureSection(dorm: widget.dorm),
-          DistanceSection(dorm: widget.dorm),
-          ContractSection(dorm: widget.dorm),
-          const Divider(
-            thickness: 5,
-          ),
-          RoomsSection(
-            dorm: widget.dorm,
-            post: widget.post,
-          ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FloatingActionButton.extended(
-                backgroundColor: const Color(0xFFDC6E46),
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailScreen(
-                                  dorm: widget.dorm,
-                                  post: widget.post,
-                                )));
-                  }
-                },
-                label: const Text('Confirm'),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(32),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    'Dorm Information',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+            InfoSection(dorm: widget.dorm),
+            DescriptionSection(dorm: widget.dorm),
+            CoverImageSection(
+              dorm: widget.dorm,
+              post: widget.post,
+            ),
+            PhotosSection(
+              dorm: widget.dorm,
+              post: widget.post,
+              myimages: widget.myimages,
+
+            ),
+            FeatureSection(dorm: widget.dorm),
+            DistanceSection(dorm: widget.dorm),
+            ContractSection(dorm: widget.dorm),
+            const Divider(
+              thickness: 5,
+            ),
+            RoomsSection(
+              dorm: widget.dorm,
+              post: widget.post,
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FloatingActionButton.extended(
+                  backgroundColor: const Color(0xFFDC6E46),
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailScreen(
+                                    dorm: widget.dorm,
+                                    post: widget.post,
+                                  )));
+                    }
+                  },
+                  label: const Text('Confirm'),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

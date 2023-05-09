@@ -44,7 +44,7 @@ class _InfoSectionState extends State<InfoSection> {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: SizedBox(
-                  width: 110,
+                  width: 130,
                   child: Text(
                     'Dorm name',
                     textAlign: TextAlign.start,

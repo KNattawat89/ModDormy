@@ -264,20 +264,26 @@ class _DetailScreenState extends State<DetailScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
-                    width: 120,
+                    width: 130,
                     child: Text(
                       'Dorm name :',
                       textAlign: TextAlign.start,
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500 ),
+
                     ),
                   ),
-                  Text(
-                    textAlign: TextAlign.start,
-                    widget.dorm.name,
-                    style: const TextStyle(color: Colors.grey, fontSize: 18),
+                  Expanded(
+
+                    child: Text(
+                      textAlign: TextAlign.start,
+                      widget.dorm.name,
+                      style: const TextStyle(color: Colors.grey, fontSize: 18),
+                      softWrap: false, maxLines: 2, overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
@@ -326,21 +332,27 @@ class _DetailScreenState extends State<DetailScreen> {
                       style: const TextStyle(color: Colors.grey, fontSize: 18),
                     ),
                   ),
-                  const Text(
-                    'Cover Images :',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(0,16,0,16),
+                    child: Text(
+                      'Cover Images :',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                    ),
                   ),
                   Center(
                     child: Image.file(
                       File(widget.dorm.coverImage!.path),
                       fit: BoxFit.cover,
-                      height: 100,
-                      width: 100,
+                      height: 400,
+                      width: 400,
                     ),
                   ),
-                  const Text(
-                    'Images :',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(0,16,0,16),
+                    child: Text(
+                      'Images :',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8),
