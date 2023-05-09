@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/screens/confirm_page.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/section_contract.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/section_cover_image.dart';
@@ -14,8 +15,9 @@ import '../../models/dorm.dart';
 class DormForm extends StatefulWidget {
   final Dorm dorm;
   final bool post;
+  List<Imagestring> myimages = [];
 
-  const DormForm({Key? key, required this.dorm, required this.post})
+   DormForm({Key? key, required this.dorm, required this.post, required this.myimages})
       : super(key: key);
 
   @override
@@ -55,6 +57,8 @@ class _DormFormState extends State<DormForm> {
           PhotosSection(
             dorm: widget.dorm,
             post: widget.post,
+            myimages: widget.myimages,
+
           ),
           FeatureSection(dorm: widget.dorm),
           DistanceSection(dorm: widget.dorm),
