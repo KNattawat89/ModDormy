@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserProvider extends ChangeNotifier {
   String _userId;
@@ -10,6 +11,7 @@ class UserProvider extends ChangeNotifier {
   String _tel;
   String _lineId;
   String _userType;
+  XFile? _image;
 
   UserProvider({
     String userId = '',
@@ -21,6 +23,7 @@ class UserProvider extends ChangeNotifier {
     String tel = '',
     String lineId = '',
     String userType = '',
+    //XFile? image,
   })  : _userId = userId,
         _profileImage = profileImage,
         _username = username,
@@ -49,16 +52,34 @@ class UserProvider extends ChangeNotifier {
 
   String get userType => _userType;
 
+  XFile? get image => _image;
+
+  void setProfile(String username, String firstname, String lastname,
+      String email, String tel, String lineId) {
+    _username = username;
+    _firstname = firstname;
+    _lastname = lastname;
+    _email = email;
+    _tel = tel;
+    _lineId = lineId;
+    notifyListeners();
+  }
+
+  void setProfileImage(XFile image) {
+    _image = image;
+  }
+
   void setUser(
-      String userId,
-      String profileImage,
-      String username,
-      String firstname,
-      String lastname,
-      String email,
-      String tel,
-      String lineId,
-      String userType) {
+    String userId,
+    String profileImage,
+    String username,
+    String firstname,
+    String lastname,
+    String email,
+    String tel,
+    String lineId,
+    String userType,
+  ) {
     _userId = userId;
     _profileImage = profileImage;
     _username = username;
@@ -72,15 +93,16 @@ class UserProvider extends ChangeNotifier {
   }
 
   void updatedUser(
-      String userId,
-      String profileImage,
-      String username,
-      String firstname,
-      String lastname,
-      String email,
-      String tel,
-      String lineId,
-      String userType) {
+    String userId,
+    String profileImage,
+    String username,
+    String firstname,
+    String lastname,
+    String email,
+    String tel,
+    String lineId,
+    String userType,
+  ) {
     _userId = userId;
     _profileImage = profileImage;
     _username = username;
