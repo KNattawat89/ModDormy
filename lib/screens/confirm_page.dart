@@ -10,6 +10,7 @@ import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
+import 'package:moddormy_flutter/widgets/post_dorm/room_image.dart';
 import 'package:provider/provider.dart';
 import '../models/dorm.dart';
 
@@ -17,7 +18,11 @@ class DetailScreen extends StatefulWidget {
   final bool post;
   final List<Imagestring> myimages;
 
-  const DetailScreen({super.key, required this.dorm, required this.post, required this.myimages});
+  const DetailScreen(
+      {super.key,
+      required this.dorm,
+      required this.post,
+      required this.myimages});
 
   final Dorm dorm;
 
@@ -213,34 +218,46 @@ class _DetailScreenState extends State<DetailScreen> {
       }
       debugPrint(editeddorm.data["id"].toString());
 
-      // ignore: prefer_typing_uninitialized_variables
-      var editedroom;
+      if (widget.dorm.imageList.isNotEmpty) {
+        (uploadDormImages(widget.dorm.imageList, editeddorm.data["id"]));
+      }
+
+      Response editedroom;
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
         debugPrint(widget.dorm.rooms[i].id.toString());
-        editedroom = await Caller.dio
-            .put("/api/manage-room/editRoom?roomId=${widget.dorm.id}", data: {
-          "dorm_id": widget.dorm.id,
-          "room_Name": widget.dorm.rooms[i].name,
-          "price": widget.dorm.rooms[i].price,
-          "desc": widget.dorm.rooms[i].description,
-          "size": widget.dorm.rooms[i].size,
-          "roomFeature": {
-            "airc": widget.dorm.rooms[i].feature.airConditioner,
-            "furniture": widget.dorm.rooms[i].feature.furnished,
-            "waterHeater": widget.dorm.rooms[i].feature.waterHeater,
-            "fan": widget.dorm.rooms[i].feature.fan,
-            "fridge": widget.dorm.rooms[i].feature.furnished,
-            "bathroom": widget.dorm.rooms[i].feature.bathroom,
-            "tv": widget.dorm.rooms[i].feature.tv,
-          }
-        });
+        editedroom = await Caller.dio.put(
+            "/api/manage-room/editRoom?roomId=${widget.dorm.rooms[i].id}",
+            data: {
+              "dorm_id": widget.dorm.rooms[i].id,
+              "room_Name": widget.dorm.rooms[i].name,
+              "price": widget.dorm.rooms[i].price,
+              "desc": widget.dorm.rooms[i].description,
+              "size": widget.dorm.rooms[i].size,
+              "roomFeature": {
+                "airc": widget.dorm.rooms[i].feature.airConditioner,
+                "furniture": widget.dorm.rooms[i].feature.furnished,
+                "waterHeater": widget.dorm.rooms[i].feature.waterHeater,
+                "fan": widget.dorm.rooms[i].feature.fan,
+                "fridge": widget.dorm.rooms[i].feature.furnished,
+                "bathroom": widget.dorm.rooms[i].feature.bathroom,
+                "tv": widget.dorm.rooms[i].feature.tv,
+              }
+            });
+
         debugPrint(editedroom.data.toString());
         if (widget.dorm.rooms[i].coverImage != null) {
           uploadImage(widget.dorm.rooms[i].coverImage, false);
-          editedroom = await Caller.dio
-              .put("/api/manage-room/editRoom?roomId=${widget.dorm.id}", data: {
-            "CoverImage": coverImageList[i],
-          });
+          editedroom = await Caller.dio.put(
+              "/api/manage-room/editRoom?roomId=${widget.dorm.rooms[i].id}",
+              data: {
+                "CoverImage": coverImageList[i],
+              });
+        }
+
+        if (widget.dorm.rooms[i].imageList.isNotEmpty) {
+          print(widget.dorm.rooms[i].id);
+          uploadRoomImages(
+              widget.dorm.rooms[i].imageList, editedroom.data["room_id"]);
         }
       }
     } catch (e) {
@@ -370,57 +387,66 @@ class _DetailScreenState extends State<DetailScreen> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                     ),
                   ),
-                  Padding(padding: const EdgeInsets.only(left: 8),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: 200,
-                      child: GridView.builder(
-                        itemCount: widget.myimages.length,
-                        itemBuilder: (BuildContext context, int j) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12.0),
-                              child: Image.network(
-                                widget.myimages[j].image,
-                                fit: BoxFit.cover,
-                                width: 100,
-                                height: 100,
-                              ),
+                  widget.myimages.isNotEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            height: 200,
+                            child: GridView.builder(
+                              itemCount: widget.myimages.length,
+                              itemBuilder: (BuildContext context, int j) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    child: Image.network(
+                                      widget.myimages[j].image,
+                                      fit: BoxFit.cover,
+                                      width: 100,
+                                      height: 100,
+                                    ),
+                                  ),
+                                );
+                              },
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3),
                             ),
-                          );
-                        },
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
-                      ),
-                    ),
-                  ),
-
-                 widget.dorm.imageList.isEmpty
-                     ? SizedBox(width: 1, height: 1,)
-                 : Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      child: GridView.builder(
-                        itemCount: widget.dorm.imageList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.file(
-                              File(widget.dorm.imageList[index].path),
-                              fit: BoxFit.cover,
-                              width: 200,
-                              height: 200,
+                          ),
+                        )
+                      : const SizedBox(
+                          width: 1,
+                          height: 1,
+                        ),
+                  widget.dorm.imageList.isEmpty
+                      ? const SizedBox(
+                          width: 1,
+                          height: 1,
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            child: GridView.builder(
+                              itemCount: widget.dorm.imageList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.file(
+                                    File(widget.dorm.imageList[index].path),
+                                    fit: BoxFit.cover,
+                                    width: 200,
+                                    height: 200,
+                                  ),
+                                );
+                              },
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3),
                             ),
-                          );
-                        },
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3),
-                      ),
-                    ),
-                  ),
+                          ),
+                        ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -630,47 +656,27 @@ class _DetailScreenState extends State<DetailScreen> {
                       Center(
                         child: widget.dorm.coverImage == null
                             ? Image.network(
-                          widget.dorm.rooms[index].coverimageString,
-                          fit: BoxFit.cover,
-                          height: 400,
-                          width: 400,
-                        )
+                                widget.dorm.rooms[index].coverimageString,
+                                fit: BoxFit.cover,
+                                height: 400,
+                                width: 400,
+                              )
                             : Image.file(
-                          File(widget.dorm.rooms[index].coverImage!.path),
-                          fit: BoxFit.cover,
-                          height: 400,
-                          width: 400,
-                        ),
+                                File(widget.dorm.rooms[index].coverImage!.path),
+                                fit: BoxFit.cover,
+                                height: 400,
+                                width: 400,
+                              ),
                       ),
                       const Text(
                         'Images :',
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w500),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.25,
-                          child: GridView.builder(
-                            itemCount:
-                                widget.dorm.rooms[index].imageList.length,
-                            itemBuilder: (BuildContext context, int j) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Image.file(
-                                  File(widget
-                                      .dorm.rooms[index].imageList[j].path),
-                                  fit: BoxFit.cover,
-                                  width: 200,
-                                  height: 200,
-                                ),
-                              );
-                            },
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3),
-                          ),
-                        ),
+                      RPhotosSection(
+                        room: widget.dorm.rooms[index],
+                        post: false,
+                        conf: true,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

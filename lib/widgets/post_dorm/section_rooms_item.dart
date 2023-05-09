@@ -179,7 +179,11 @@ class _RoomItemState extends State<RoomItem> {
             room: widget.room,
             post: widget.post,
           ),
-          RPhotosSection(room: widget.room),
+          RPhotosSection(
+            room: widget.room,
+            post: widget.post,
+            conf: false,
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(

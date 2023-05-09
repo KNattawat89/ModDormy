@@ -1,14 +1,15 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:moddormy_flutter/models/image.dart';
 import '../../models/dorm.dart';
-import '../../utilities/caller.dart';
 
 class PhotosSection extends StatefulWidget {
   final Dorm dorm;
   final bool post;
-  List<Imagestring> myimages = [];
+  List<Imagestring> myimages;
 
   PhotosSection(
       {Key? key,
@@ -91,7 +92,7 @@ class _PhotosSectionState extends State<PhotosSection> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(7),
                             ),
-                            child: Icon(Icons.delete_outline,
+                            child: const Icon(Icons.delete_outline,
                                 color: Color(0xff2A8089)),
                           ),
                         ),
@@ -175,7 +176,7 @@ class _PhotosSectionState extends State<PhotosSection> {
                             width: 200,
                             height: 200,
                           ),
-                        ),
+                         ),
                         Positioned(
                           top: 8,
                           right: 8,
@@ -185,7 +186,7 @@ class _PhotosSectionState extends State<PhotosSection> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(7),
                               ),
-                              child: Icon(Icons.delete_outline,
+                              child: const Icon(Icons.delete_outline,
                                   color: Color(0xff2A8089)),
                             ),
                           ),
