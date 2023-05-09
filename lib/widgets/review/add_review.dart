@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+//import 'package:moddormy_flutter/widgets/review.dart';
 // import 'package:moddormy_flutter/models/user_item.dart';
 import 'package:moddormy_flutter/widgets/review/dropdown_section.dart';
 import 'package:moddormy_flutter/widgets/review/star_section.dart';
@@ -12,8 +13,10 @@ import '../../provider/user_provider.dart';
 import '../../utilities/caller.dart';
 
 class AddReview extends StatefulWidget {
+  final Function refresh;
   final int dormId;
-  const AddReview(this.dormId, {super.key});
+  const AddReview(
+      {super.key, required this.dormId, required void Function() this.refresh});
   @override
   State<AddReview> createState() => _AddReviewState();
 }
@@ -21,9 +24,10 @@ class AddReview extends StatefulWidget {
 class _AddReviewState extends State<AddReview> {
   void postReview(Review review) async {
     try {
-      print(review.toJson().toString() + 'try');
+      //print(review.toJson().toString() + 'try');
       final response = await Caller.dio
           .post('/api/review/addDormReview', data: review.toJson());
+      widget.refresh();
       //print(response.data.toString() + 'try');
       //print(FirebaseAuth.instance.currentUser);
     } on DioError catch (e) {
@@ -50,6 +54,7 @@ class _AddReviewState extends State<AddReview> {
       user: null,
       reviewId: 0);
 
+  @override
   void initState() {
     super.initState();
     review = Review(

@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+// import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
@@ -12,8 +12,12 @@ import '../../utilities/caller.dart';
 //List<ReviewM> reviews = generateMockReviews();
 
 class UserReview extends StatefulWidget {
+  final Function refresh;
   final List<Review> reviews;
-  const UserReview({super.key, required this.reviews});
+  const UserReview(
+      {super.key,
+      required this.reviews,
+      required void Function() this.refresh});
 
   @override
   State<UserReview> createState() => _UserReviewState();
@@ -32,7 +36,8 @@ class _UserReviewState extends State<UserReview> {
               widget.reviews.length *
               0.226,
           child: Column(children: [
-            for (var review in widget.reviews) showReview(reviews: review),
+            for (var review in widget.reviews)
+              showReview(reviews: review, refresh: widget.refresh),
           ]));
     }
   }
@@ -41,13 +46,14 @@ class _UserReviewState extends State<UserReview> {
 // ignore: camel_case_types
 class showReview extends StatelessWidget {
   final Review reviews;
-  const showReview({super.key, required this.reviews});
+  final Function refresh;
+  const showReview({super.key, required this.reviews, required this.refresh});
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context);
     return ListTile(
-      title: userHeader(reviews, user.userId, context),
+      title: userHeader(reviews, user.userId, context, refresh),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
       subtitle: Column(
         children: [
@@ -59,7 +65,8 @@ class showReview extends StatelessWidget {
   }
 }
 
-Widget userHeader(Review reviews, String userId, BuildContext context) {
+Widget userHeader(
+    Review reviews, String userId, BuildContext context, Function refresh) {
   return Row(
     children: [
       CircleAvatar(
@@ -110,12 +117,13 @@ Widget userHeader(Review reviews, String userId, BuildContext context) {
 
       //delete button
       const Spacer(),
-      showDeleteButton(reviews, userId, context),
+      showDeleteButton(reviews, userId, context, refresh),
     ],
   );
 }
 
-Widget showDeleteButton(Review reviews, String userId, BuildContext context) {
+Widget showDeleteButton(
+    Review reviews, String userId, BuildContext context, Function refresh) {
   // final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8000'));
 
   void deleteDormReview(int reviewId) async {
@@ -123,6 +131,7 @@ Widget showDeleteButton(Review reviews, String userId, BuildContext context) {
     try {
       final response = await Caller.dio
           .delete('/api/review/deleteDormReview?reviewId=$reviewId');
+      refresh();
       //print(response.data.toString());
     } catch (e) {
       //print(e.toString());
