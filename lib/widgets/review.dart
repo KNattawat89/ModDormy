@@ -4,8 +4,10 @@ import 'package:moddormy_flutter/widgets/review/add_review.dart';
 import 'package:moddormy_flutter/widgets/review/dorm_rating.dart';
 // import 'package:moddormy_flutter/widgets/review/review_mockup.dart';
 import 'package:moddormy_flutter/widgets/review/user_review.dart';
+import 'package:provider/provider.dart';
 
 import '../models/review.dart';
+import '../provider/user_provider.dart';
 import '../utilities/caller.dart';
 
 //List<ReviewM> reviews = generateMockReviews();
@@ -77,8 +79,19 @@ class _DormReviewState extends State<DormReview> {
             ),
             DormRating(reviews: reviews),
             UserReview(reviews: reviews, refresh: refresh),
-            AddReview(dormId: widget.dormId, refresh: refresh),
+            //AddReview(dormId: widget.dormId, refresh: refresh),
+            showAddReview(context, widget.dormId, refresh)
           ],
         ));
+  }
+}
+
+Widget showAddReview(
+    BuildContext context, int dormId, void Function() refresh) {
+  final user = Provider.of<UserProvider>(context);
+  if (user.userType == 'DormOwner') {
+    return const SizedBox();
+  } else {
+    return AddReview(dormId: dormId, refresh: refresh);
   }
 }
