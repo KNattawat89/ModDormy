@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/widgets/edit_profile_image.dart';
+// import 'package:moddormy_flutter/widgets/edit_profile_image.dart';
 
 import 'package:provider/provider.dart';
 

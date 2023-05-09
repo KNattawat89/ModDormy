@@ -14,14 +14,15 @@ class _TextSectionState extends State<TextSection> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
+        errorStyle: TextStyle(color: Colors.red[700]),
         border: InputBorder.none,
         hintText: 'Write your review here...',
-        hintStyle: TextStyle(color: Color(0xff858585), fontSize: 14),
-        contentPadding: EdgeInsets.all(10),
+        hintStyle: const TextStyle(color: Color(0xff858585), fontSize: 14),
+        contentPadding: const EdgeInsets.all(10),
       ),
       // autofocus: true,
-      maxLines: 10,
+      maxLines: 9,
       onChanged: (value) {
         setState(() {
           widget.review.review = value;
@@ -33,7 +34,6 @@ class _TextSectionState extends State<TextSection> {
         }
         return null;
       },
-      autovalidateMode: AutovalidateMode.onUserInteraction,
     );
   }
 }

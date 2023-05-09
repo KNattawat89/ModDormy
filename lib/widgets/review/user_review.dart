@@ -22,18 +22,19 @@ class UserReview extends StatefulWidget {
 class _UserReviewState extends State<UserReview> {
   @override
   Widget build(BuildContext context) {
-    var count = 0;
     if (widget.reviews.isEmpty) {
-      count = 1;
+      return const Center(
+        child: Text('No review yet.'),
+      );
     } else {
-      count = widget.reviews.length;
+      return SizedBox(
+          height: MediaQuery.of(context).size.height *
+              widget.reviews.length *
+              0.226,
+          child: Column(children: [
+            for (var review in widget.reviews) showReview(reviews: review),
+          ]));
     }
-    //for (var room in widget.dorm.rooms) RoomItem(room: room),
-    return SizedBox(
-        height: MediaQuery.of(context).size.height * count * 0.226,
-        child: Column(children: [
-          for (var review in widget.reviews) showReview(reviews: review),
-        ]));
   }
 }
 
@@ -46,7 +47,7 @@ class showReview extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context);
     return ListTile(
-      title: userHeader(reviews, user.userId),
+      title: userHeader(reviews, user.userId, context),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
       subtitle: Column(
         children: [
@@ -58,7 +59,7 @@ class showReview extends StatelessWidget {
   }
 }
 
-Widget userHeader(Review reviews, String userId) {
+Widget userHeader(Review reviews, String userId, BuildContext context) {
   return Row(
     children: [
       CircleAvatar(
@@ -109,12 +110,12 @@ Widget userHeader(Review reviews, String userId) {
 
       //delete button
       const Spacer(),
-      showDeleteButton(reviews, userId),
+      showDeleteButton(reviews, userId, context),
     ],
   );
 }
 
-Widget showDeleteButton(Review reviews, String userId) {
+Widget showDeleteButton(Review reviews, String userId, BuildContext context) {
   // final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8000'));
 
   void deleteDormReview(int reviewId) async {
@@ -132,7 +133,57 @@ Widget showDeleteButton(Review reviews, String userId) {
   if (reviews.user!.userId == userId) {
     return IconButton(
         onPressed: () {
-          deleteDormReview(reviews.reviewId);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                title: const Text(
+                  "Are you sure?",
+                  textAlign: TextAlign.center,
+                ),
+                content: const Text(
+                  "You will not be able to recover this review!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, color: Color(0xff838383)),
+                ),
+                actions: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: ElevatedButton.styleFrom(
+                            elevation: 8,
+                            backgroundColor: const Color(0xff838383),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          child: const Text("Cancel")),
+                      ElevatedButton(
+                          onPressed: () {
+                            // Perform the form submission here
+                            Navigator.pop(context);
+                            deleteDormReview(reviews.reviewId);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 8,
+                            backgroundColor: const Color(0xffDC6E46),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          child: const Text("Yes, delete it!")),
+                    ],
+                  ),
+                ],
+              );
+            },
+          );
         },
         icon: const Icon(Icons.delete_outline),
         color: const Color(0xffDC6E46));
