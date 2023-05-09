@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:moddormy_flutter/widgets/review.dart';
@@ -145,23 +147,73 @@ class _AddReviewState extends State<AddReview> {
                               ElevatedButton(
                                   onPressed: () {
                                     // Perform the form submission here
-                                    Navigator.pop(context);
-                                    postReview(review);
-                                    review = Review(
-                                      dormId: widget.dormId,
-                                      review: "",
-                                      ratingPrice: 0,
-                                      ratingLocation: 0,
-                                      ratingFacility: 0,
-                                      ratingSanitary: 0,
-                                      ratingSecurity: 0,
-                                      ratingOverall: 0,
-                                      createdAt: null,
-                                      userId: user.userId,
-                                      user: null,
-                                      reviewId: 0,
-                                    );
-                                    _formKey.currentState!.reset();
+                                    if (user.userId != '' &&
+                                        FirebaseAuth.instance.currentUser !=
+                                            null) {
+                                      Navigator.pop(context);
+                                      postReview(review);
+                                      review = Review(
+                                        dormId: widget.dormId,
+                                        review: "",
+                                        ratingPrice: 0,
+                                        ratingLocation: 0,
+                                        ratingFacility: 0,
+                                        ratingSanitary: 0,
+                                        ratingSecurity: 0,
+                                        ratingOverall: 0,
+                                        createdAt: null,
+                                        userId: user.userId,
+                                        user: null,
+                                        reviewId: 0,
+                                      );
+                                      _formKey.currentState!.reset();
+                                    } else {
+                                      Navigator.pop(context);
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            elevation: 8,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            title: const Text(
+                                              "Error",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            content: const Text(
+                                              "Please login to post a review",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Color(0xff838383)),
+                                            ),
+                                            actions: [
+                                              Center(
+                                                child: ElevatedButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(context),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      elevation: 8,
+                                                      backgroundColor:
+                                                          const Color(
+                                                              0xffDC6E46),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20.0),
+                                                      ),
+                                                    ),
+                                                    child: const Text("OK")),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 8,
