@@ -86,7 +86,7 @@ class _DormsEachOwnerState extends State<DormsEachOwner> {
     }
     return Scrollbar(
       thumbVisibility: true, //always show scrollbar
-      thickness: 10, //width of scrollbar
+      thickness: 5, //width of scrollbar
       radius: const Radius.circular(20), //corner radius of scrollbar
       scrollbarOrientation: ScrollbarOrientation.right,
       child: ListView.builder(

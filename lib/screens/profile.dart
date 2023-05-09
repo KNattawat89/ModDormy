@@ -4,6 +4,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/models/profile_reload.dart';
 import 'package:moddormy_flutter/screens/edit_profile.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/screens/post_form.dart';
@@ -16,8 +17,22 @@ import 'package:provider/provider.dart';
 
 import '../provider/user_provider.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  void refreshState() {
+    setState(() {});
+  }
+
+  void initState() {
+    super.initState();
+    ProfilePreload.profileReload = refreshState;
+  }
 
   @override
   Widget build(BuildContext context) {

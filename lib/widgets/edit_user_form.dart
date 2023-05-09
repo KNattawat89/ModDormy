@@ -1,6 +1,10 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/models/profile_reload.dart';
+import 'package:moddormy_flutter/screens/profile.dart';
+import 'package:moddormy_flutter/utilities/caller.dart';
+import 'package:moddormy_flutter/widgets/edit_profile_image.dart';
 // import 'package:moddormy_flutter/widgets/edit_profile_image.dart';
 
 import 'package:provider/provider.dart';
@@ -29,6 +33,38 @@ class _EditUserFormState extends State<EditUserForm> {
   // FocusNode myFocusNode4 = FocusNode();
   // FocusNode myFocusNode5 = FocusNode();
 
+  Future<void> editData(String userId) async {
+    final user = Provider.of<UserProvider>(context, listen: false);
+    try {
+      print('head');
+      final response = await Caller.dio.put(
+        '/api/profile/editUser?userId=$userId',
+        data: {
+          "profile_image": user.profileImage,
+          "username": user.username,
+          "fname": _FnameController.text,
+          "lname": _LnameController.text,
+          "email": _EmailController.text,
+          "tel": _TelController.text,
+          "line_id": _LineIDController.text,
+          "user_type": user.userType,
+        },
+      );
+      user.updatedUser(
+          user.profileImage,
+          user.username,
+          _FnameController.text,
+          _LnameController.text,
+          _EmailController.text,
+          _TelController.text,
+          _LineIDController.text);
+      ProfilePreload.profileReload!();
+      print('tail');
+    } catch (e) {
+      print('error: $e');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -51,21 +87,9 @@ class _EditUserFormState extends State<EditUserForm> {
     super.dispose();
   }
 
-  // void _requestFocus() {
-  //   setState(() {
-  //     FocusScope.of(context).requestFocus(focusNode1);
-  //   });
-  // }
-
-  // void _requestFocus2() {
-  //   setState(() {
-  //     FocusScope.of(context).requestFocus(myFocusNode2);
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context);
+    final user = Provider.of<UserProvider>(context, listen: false);
     //late FocusNode focusNode1 = FocusNode();
     return Scaffold(
       endDrawer: const MyDrawer(),
@@ -96,40 +120,40 @@ class _EditUserFormState extends State<EditUserForm> {
                             ),
                           ),
                           child: GestureDetector(
-                              // onTap: () {
-                              //   Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //       builder: (context) =>
-                              //           const EditProfileImage(),
-                              //     ),
-                              //   );
-                              // },
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const EditProfileImage(),
+                                  ),
+                                );
+                              },
                               child: Stack(children: [
-                            Positioned(
-                              bottom: 2,
-                              right: 2,
-                              child: Container(
-                                width: 32,
-                                height: 32,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFFDC6E46),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Center(
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 5, 5, 5),
-                                    child: Image.asset(
-                                      'assets/images/edit.png',
-                                      width: 17,
-                                      height: 17,
+                                Positioned(
+                                  bottom: 2,
+                                  right: 2,
+                                  child: Container(
+                                    width: 32,
+                                    height: 32,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFDC6E46),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            6, 5, 5, 5),
+                                        child: Image.asset(
+                                          'assets/images/edit.png',
+                                          width: 17,
+                                          height: 17,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ])))
+                              ])))
                     ],
                   ),
                 ])
@@ -274,9 +298,14 @@ class _EditUserFormState extends State<EditUserForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    // Add your code for handling the button press here
-                    Navigator.pop(context);
+                  onPressed: () async {
+                    await editData(user.userId);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfilePage(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(
