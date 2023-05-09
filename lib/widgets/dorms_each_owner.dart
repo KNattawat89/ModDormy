@@ -144,46 +144,76 @@ class _DormsEachOwnerState extends State<DormsEachOwner> {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Center(
-                                        child: Text('Are you sure?')),
-                                    content: const Text(
-                                        'You will not be able to recover this dorm!'),
-                                    actions: <Widget>[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                  return Container(
+                                    child: AlertDialog(
+                                      backgroundColor: Color(0xffDFDADA),
+                                      title: Center(
+                                          child: Text(
+                                        'Are you sure?',
+                                        style: TextStyle(fontSize: 24),
+                                      )),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          ElevatedButton(
-                                            child: const Text('Cancel'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
+                                          Text(
+                                            'You will not be able to',
+                                            style: TextStyle(fontSize: 18),
                                           ),
-                                          const Padding(
-                                              padding: EdgeInsets.all(3)),
-                                          ElevatedButton(
-                                            child:
-                                                const Text('Yes, delete it!'),
-                                            onPressed: () async {
-                                              // Perform API call to delete the dorm
-                                              await deleteRooms(dorm.dormId);
-                                              await deleteDorm(dorm.dormId);
-                                              // Pop the dialog and refresh the dorm list
-                                              // ignore: use_build_context_synchronously
-                                              Navigator.of(context).pop();
-                                              setState(() async {
-                                                // reload the dorm list
-                                                _profileDorms =
-                                                    await _fetchDorms(
-                                                            user.userId)
-                                                        as List<ProfileDorm>;
-                                              });
-                                            },
-                                          ),
+                                          Text('recover this dorm!',
+                                              style: TextStyle(fontSize: 18)),
                                         ],
-                                      )
-                                    ],
+                                      ),
+                                      actions: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Color(
+                                                      0xff858585) // set background color
+                                                  // padding:
+                                                  //     const EdgeInsets.symmetric(
+                                                  //         horizontal: 1,
+                                                  //         vertical: 1),
+                                                  // minimumSize:
+                                                  //     const Size(100, 30),
+                                                  ),
+                                              child: const Text('Cancel'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            const Padding(
+                                                padding: EdgeInsets.all(3)),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    const Color.fromARGB(
+                                                        237, 215, 106, 56),
+                                              ),
+                                              child:
+                                                  const Text('Yes, delete it!'),
+                                              onPressed: () async {
+                                                // Perform API call to delete the dorm
+                                                await deleteRooms(dorm.dormId);
+                                                await deleteDorm(dorm.dormId);
+                                                // Pop the dialog and refresh the dorm list
+                                                // ignore: use_build_context_synchronously
+                                                Navigator.of(context).pop();
+                                                setState(() async {
+                                                  // reload the dorm list
+                                                  _profileDorms =
+                                                      await _fetchDorms(
+                                                              user.userId)
+                                                          as List<ProfileDorm>;
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   );
                                 },
                               );
