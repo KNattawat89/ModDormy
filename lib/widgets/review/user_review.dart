@@ -129,6 +129,7 @@ Widget showDeleteButton(
   void deleteDormReview(int reviewId) async {
     //print(reviewId);
     try {
+      // ignore: unused_local_variable
       final response = await Caller.dio
           .delete('/api/review/deleteDormReview?reviewId=$reviewId');
       refresh();
