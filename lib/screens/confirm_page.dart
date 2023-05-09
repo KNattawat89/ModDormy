@@ -137,6 +137,7 @@ class _DetailScreenState extends State<DetailScreen> {
       print(widget.dorm.rooms.length);
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
         uploadImage(widget.dorm.rooms[i].coverImage, false);
+        print(coverImageList[i]);
         final postroom = await Caller.dio.post("/api/manage-room/postRoom", data: {
           "dormId": postdorm.data["id"],
           "roomName": widget.dorm.rooms[i].name,
