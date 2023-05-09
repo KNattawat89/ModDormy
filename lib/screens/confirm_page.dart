@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:line_icons/line_icon.dart';
 import 'package:moddormy_flutter/provider/user_provider.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
@@ -23,7 +24,8 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   String? coverImageFileName;
-  void uploadImage(XFile? file) async {
+  List <String> coverImageList = [];
+  void uploadImage(XFile? file, bool d) async {
     try {
       String fileName = file!.path.split('/').last;
       FormData formData = FormData.fromMap({
@@ -31,18 +33,24 @@ class _DetailScreenState extends State<DetailScreen> {
       });
       final response =
           await Caller.dio.post("/api/upload/coverImage", data: formData);
-      print(response.data);
+
 
       setState(() {
-        coverImageFileName = response.data["image"];
+        if(d){coverImageFileName = response.data["image"];print('dorm ' + coverImageFileName!);}
+        else{
+         // for(var r= 0 ; r<widget.dorm.rooms.length ; r++){
+          coverImageList.add(response.data["image"]);for (var o=0 ; o< coverImageList.length;o++){print('roomImage $o  ${coverImageList[o]}' );}
+          //}
+        }
       });
-      return response.data;
+      return response.data["image"];
     } on DioError catch (e) {
       print('upload image error: ${e.response}');
     }
   }
 
   void postDormDetail() async {
+    uploadImage(widget.dorm.coverImage, true);
     try {
       final postdorm = await Caller.dio.post(
         "/api/manage-dorm/postDorm",
@@ -50,7 +58,7 @@ class _DetailScreenState extends State<DetailScreen> {
           "DormName": widget.dorm.name,
           "UserId": uid, // ใส่ id ของ user ที่ login อยู่
           "CoverImage":
-              "", //"${widget.dorm.coverImage!.path}", // Upload รูป how?
+              coverImageFileName, //"${widget.dorm.coverImage!.path}", // Upload รูป how?
           "HouseNumber": widget.dorm.houseNo,
           "Street": widget.dorm.street,
           "Soi": widget.dorm.soi,
@@ -83,11 +91,13 @@ class _DetailScreenState extends State<DetailScreen> {
       // ignore: prefer_typing_uninitialized_variables, unused_local_variable
       var postroom;
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
+        uploadImage(widget.dorm.rooms[i].coverImage, false);
+        print(coverImageList[i]);
         postroom = await Caller.dio.post("/api/manage-room/postRoom", data: {
           "dormId": postdorm.data["id"],
           "roomName": widget.dorm.rooms[i].name,
-          "coverImage": "xxxxxx",
-          "price": 1223,
+          "CoverImage": coverImageList[i],
+          "price": widget.dorm.rooms[i].price,
           "desc": widget.dorm.rooms[i].description,
           "size": widget.dorm.rooms[i].size,
           "roomFeature": {
@@ -101,8 +111,8 @@ class _DetailScreenState extends State<DetailScreen> {
           }
         });
       }
-    } catch (e) {
-      debugPrint(e.toString());
+    } on DioError catch (e) {
+      print("room ${e.response}");
     }
   }
 
@@ -175,7 +185,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    uploadImage(widget.dorm.coverImage);
     return Scaffold(
       backgroundColor: const Color(0xfffff9f0),
       appBar: const MyAppbar(),
@@ -608,7 +617,9 @@ class _DetailScreenState extends State<DetailScreen> {
                         heroTag: "btn2",
                         backgroundColor: const Color(0xFFDC6E46),
                         onPressed: () {
+
                           if (widget.post) {
+                            // uploadImage(widget.dorm.coverImage);
                             postDormDetail();
                           } else {
                             updateDormDetail();
