@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:moddormy_flutter/models/fav_preload.dart';
 import 'package:moddormy_flutter/models/filter_controller.dart';
 import 'package:moddormy_flutter/models/filter_item.dart';
@@ -8,9 +9,7 @@ import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:moddormy_flutter/widgets/review/headline_filter.dart';
 
 class FilterForm extends StatefulWidget {
-  const FilterForm(
-      {Key? key, required this.filterItem})
-      : super(key: key);
+  const FilterForm({Key? key, required this.filterItem}) : super(key: key);
 
   final FilterItem filterItem;
   @override
@@ -263,21 +262,21 @@ class _FilterFormState extends State<FilterForm> {
                       selectFaci("Parking");
                     },
                     child: filterFacility(getFacilitySelection("Parking"),
-                        "Parking", Icons.car_crash),
+                        "Parking", LineIcons.car),
                   ),
                   GestureDetector(
                     onTap: () {
                       selectFaci("Wifi");
                     },
                     child: filterFacility(
-                        getFacilitySelection("Wifi"), "Wifi", Icons.wifi),
+                        getFacilitySelection("Wifi"), "Wifi", LineIcons.wifi),
                   ),
                   GestureDetector(
                     onTap: () {
                       selectFaci("Smoke-free");
                     },
                     child: filterFacility(getFacilitySelection("Smoke-free"),
-                        "Smoke-free", Icons.smoke_free),
+                        "Smoke-free", LineIcons.smokingBan),
                   ),
                 ],
               ),
@@ -294,7 +293,7 @@ class _FilterFormState extends State<FilterForm> {
                     child: filterFacility(
                         getFacilitySelection("Security guard"),
                         "Security guard",
-                        Icons.security),
+                        LineIcons.userShield),
                   ),
                   const SizedBox(
                     width: 10,
@@ -304,7 +303,7 @@ class _FilterFormState extends State<FilterForm> {
                       selectFaci("Pet friendly");
                     },
                     child: filterFacility(getFacilitySelection("Pet friendly"),
-                        "Pet friendly", Icons.pets),
+                        "Pet friendly", Icons.pets_outlined),
                   ),
                 ],
               ),
@@ -321,7 +320,7 @@ class _FilterFormState extends State<FilterForm> {
                     child: filterFacility(
                         getFacilitySelection("Air conditioner"),
                         "Air conditioner",
-                        Icons.air_outlined),
+                        Icons.ac_unit),
                   ),
                   const SizedBox(
                     width: 10,
@@ -331,7 +330,7 @@ class _FilterFormState extends State<FilterForm> {
                       selectFaci("Fan");
                     },
                     child: filterFacility(
-                        getFacilitySelection("Fan"), "Fan", FontAwesome5.fan),
+                        getFacilitySelection("Fan"), "Fan", LineIcons.fan),
                   ),
                 ],
               ),
