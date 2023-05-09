@@ -63,8 +63,7 @@ class _CoverImageSectionState extends State<CoverImageSection> {
                     ),
             ],
           ));
-    } else {
-      // edit
+    } else { // edit
       return Padding(
           padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
           child: Column(
