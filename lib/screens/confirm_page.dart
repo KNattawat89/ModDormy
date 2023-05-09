@@ -121,9 +121,7 @@ class _DetailScreenState extends State<DetailScreen> {
       final editeddorm = await Caller.dio.put(
         '/api/manage-dorm/editDorm?dormId=${widget.dorm.id}',
         data: {
-          "dorm_name": widget.dorm.name,
-          "cover_Image":
-              "xxxxxx", //"${widget.dorm.coverImage!.path}", // Upload รูป how?
+          "dorm_name": widget.dorm.name, //"${widget.dorm.coverImage!.path}", // Upload รูป how?
           "house_number": widget.dorm.houseNo,
           "street": widget.dorm.street,
           "soi": widget.dorm.soi,
@@ -151,6 +149,14 @@ class _DetailScreenState extends State<DetailScreen> {
           },
         },
       );
+      if(widget.dorm.coverImage != null){
+        uploadImage(widget.dorm.coverImage, true);
+        final result1 = await Caller.dio.put(
+            '/api/manage-dorm/editDorm?dormId=${widget.dorm.id}',
+            data: {
+              "CoverImage": coverImageFileName,
+            });
+      }
       debugPrint(editeddorm.data["id"].toString());
 
       // ignore: prefer_typing_uninitialized_variables
@@ -161,8 +167,7 @@ class _DetailScreenState extends State<DetailScreen> {
             .put("/api/manage-room/editRoom?roomId=${widget.dorm.id}", data: {
           "dorm_id": widget.dorm.id,
           "room_Name": widget.dorm.rooms[i].name,
-          "cover_Image": "xxxxxx",
-          "price": 1223,
+          "price": widget.dorm.rooms[i].price,
           "desc": widget.dorm.rooms[i].description,
           "size": widget.dorm.rooms[i].size,
           "roomFeature": {
@@ -176,6 +181,13 @@ class _DetailScreenState extends State<DetailScreen> {
           }
         });
         debugPrint(editedroom.data.toString());
+        if (widget.dorm.rooms[i].coverImage != null ){
+          uploadImage(widget.dorm.rooms[i].coverImage, false);
+          editedroom = await Caller.dio
+              .put("/api/manage-room/editRoom?roomId=${widget.dorm.id}", data: {
+            "CoverImage": coverImageList[i],
+          });
+        }
       }
     } catch (e) {
       debugPrint('room error');

@@ -9,7 +9,8 @@ class RoomItem extends StatefulWidget {
   final Room room;
   final bool post;
 
-  const RoomItem({Key? key, required this.room, required this.post}) : super(key: key);
+  const RoomItem({Key? key, required this.room, required this.post})
+      : super(key: key);
 
   @override
   State<RoomItem> createState() => _RoomItemState();
@@ -174,7 +175,10 @@ class _RoomItemState extends State<RoomItem> {
               ),
             ],
           ),
-          RCoverImageSection(room: widget.room),
+          RCoverImageSection(
+            room: widget.room,
+            post: widget.post,
+          ),
           RPhotosSection(room: widget.room),
           Padding(
             padding: const EdgeInsets.all(8.0),
