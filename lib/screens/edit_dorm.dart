@@ -59,7 +59,7 @@ class _EditFormState extends State<EditForm> {
       setState(() {
         myimages = r;
       });
-      // debugPrint(myimages.toString());
+      debugPrint(myimages.toString());
     } catch (e) {
       debugPrint('$e error image');
     }
@@ -102,6 +102,7 @@ class _EditFormState extends State<EditForm> {
               DormForm(
                 dorm: dorm!,
                 post: false,
+                myimages: myimages,
               ),
             ],
           ),

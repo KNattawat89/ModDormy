@@ -25,11 +25,13 @@ class _AddReviewState extends State<AddReview> {
   void postReview(Review review) async {
     try {
       //print(review.toJson().toString() + 'try');
+      // ignore: unused_local_variable
       final response = await Caller.dio
           .post('/api/review/addDormReview', data: review.toJson());
       widget.refresh();
       //print(response.data.toString() + 'try');
       //print(FirebaseAuth.instance.currentUser);
+      // ignore: unused_catch_clause
     } on DioError catch (e) {
       //print(e.toString());
       //print(review.toJson().toString() + 'catch');

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/dorm_feature.dart';
+import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/dorm_form.dart';
@@ -13,6 +14,7 @@ class PostForm extends StatefulWidget {
 }
 
 class _PostFormState extends State<PostForm> {
+  List<Imagestring> myimages = [];
   Dorm dorm = Dorm(
     id: 0,
     name: '',
@@ -62,6 +64,7 @@ class _PostFormState extends State<PostForm> {
               DormForm(
                 dorm: dorm,
                 post: true,
+                myimages: myimages,
               ),
             ],
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/models/room.dart';
@@ -9,6 +10,8 @@ import 'package:moddormy_flutter/widgets/post_dorm/description.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/show_rooms.dart';
 import 'package:moddormy_flutter/widgets/review.dart';
 
+import '../models/review.dart';
+
 class DormDetail extends StatefulWidget {
   const DormDetail({Key? key, required this.dormId}) : super(key: key);
   final int dormId;
@@ -18,6 +21,7 @@ class DormDetail extends StatefulWidget {
 
 class _DormDetailState extends State<DormDetail> {
   Dorm? dorm;
+  double rating = 0;
   List<Imagestring> myimages = [];
   String? description;
   Future<void> getDormDetail() async {
@@ -60,11 +64,35 @@ class _DormDetailState extends State<DormDetail> {
     }
   }
 
+  Future<void> overallRate(int dormId) async {
+    List<Review> reviews = [];
+    try {
+      final response =
+          await Caller.dio.get('/api/review/getDormReview?dormId=$dormId');
+      //print(response.data.toString());
+      List<Review> r =
+          response.data.map<Review>((json) => Review.fromJson(json)).toList();
+      //r.forEach((e) => print(e.toJson().toString()));
+      setState(() {
+        reviews = r;
+      });
+    } catch (e) {
+      //print(e.toString());
+    }
+
+    int sum = 0;
+    for (Review review in reviews) {
+      sum += review.ratingOverall;
+    }
+    rating = sum / reviews.length;
+  }
+
   @override
   void initState() {
     super.initState();
     getDormDetail();
     getDormImages();
+    overallRate(widget.dormId);
   }
 
   @override
@@ -165,13 +193,16 @@ class _DormDetailState extends State<DormDetail> {
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
-                            const Text(
-                              'Rateing here',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                            RatingBarIndicator(
+                              rating: rating,
+                              itemBuilder: (context, index) => const Icon(
+                                Icons.star,
+                                color: Color(0xffDC6E46),
+                              ),
+                              unratedColor: Colors.white,
+                              itemCount: 5,
+                              itemSize: 20.0,
+                              direction: Axis.horizontal,
                             ),
                           ],
                         ))

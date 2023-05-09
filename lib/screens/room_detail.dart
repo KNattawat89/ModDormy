@@ -260,7 +260,7 @@ class _RoomDetailState extends State<RoomDetail> {
                       itemBuilder: (BuildContext context, int index) {
                         return Row(
                           children: [
-                            RoomFeatureMapping(
+                            IconFeatureMapping(
                                 name: room!.feature.roomFeatureToList()[index]),
                             Text(room!.feature.roomFeatureToList()[index],
                                 style: const TextStyle(fontSize: 18)),
