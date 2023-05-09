@@ -8,7 +8,8 @@ import 'package:moddormy_flutter/screens/room_detail.dart';
 class ShowRoom extends StatelessWidget {
   final Room room;
   final Dorm dorm;
-  const ShowRoom({super.key, required this.room, required this.dorm});
+  final String ownerId;
+  const ShowRoom({super.key, required this.room, required this.dorm, required this.ownerId});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class ShowRoom extends StatelessWidget {
                   builder: (context) => RoomDetail(
                         roomNo: room.id,
                         dorm: dorm,
+                        ownerId: ownerId,
                       )));
         },
         child: Row(

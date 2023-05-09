@@ -10,6 +10,9 @@ class Dorm {
   @JsonKey(name: 'dormId')
   int id;
 
+  // @JsonKey(name: 'userId')
+  // String ownerId;
+
   @JsonKey(name: 'dormName')
   String name;
 
@@ -69,6 +72,7 @@ class Dorm {
 
   Dorm({
     required this.id,
+    // required this.ownerId,
     required this.name,
     required this.houseNo,
     required this.soi,

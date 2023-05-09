@@ -20,6 +20,7 @@ class DormDetail extends StatefulWidget {
 }
 
 class _DormDetailState extends State<DormDetail> {
+  String? ownerId;
   Dorm? dorm;
   double rating = 0;
   List<Imagestring> myimages = [];
@@ -37,9 +38,11 @@ class _DormDetailState extends State<DormDetail> {
       Dorm d = Dorm.fromJson(response.data);
       d.rooms = rooms;
       setState(() {
+        ownerId = response.data["userId"];
         dorm = d;
         description = dorm!.description;
       });
+      print(ownerId);
     } catch (e) {
       debugPrint('$e error dormDetail');
     }
@@ -292,6 +295,7 @@ class _DormDetailState extends State<DormDetail> {
                 ShowRoom(
                   room: room,
                   dorm: dorm!,
+                  ownerId: ownerId!,
                 ),
 
               const Padding(
