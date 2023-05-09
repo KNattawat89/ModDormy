@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/screens/edit_profile.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/screens/post_form.dart';
+import 'package:moddormy_flutter/widgets/dorms_each_owner.dart';
 import 'package:moddormy_flutter/widgets/edit_user_form.dart';
 // import 'package:moddormy_flutter/widgets/dorms_each_owner.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
@@ -89,6 +90,7 @@ class ProfilePage extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
+                                    //EditUserForm()
                                     builder: (context) => const EditUserForm(),
                                   ),
                                 );
@@ -217,12 +219,16 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                     Row(
-                      children: [
-                        Column(
-                            //children: const [DormsEachOwner()],
-                            )
+                      children: const [
+                        SizedBox(
+                          width: 335,
+                          height: 250,
+                          child: Center(
+                            child: DormsEachOwner(),
+                          ),
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ]),

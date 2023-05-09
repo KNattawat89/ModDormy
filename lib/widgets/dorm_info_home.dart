@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/widgets/build_star_rate.dart';
 import 'package:provider/provider.dart';
@@ -32,8 +33,9 @@ class _DormInfoHomeState extends State<DormInfoHome> {
   Widget build(BuildContext context) {
     final String currentRouteName = ModalRoute.of(context)?.settings.name ?? "";
     final user = Provider.of<UserProvider>(context);
+    User? userLogin = FirebaseAuth.instance.currentUser;
     void updateIsFav() async {
-      if (user.userId != '') {
+      if (user.userId != '' && userLogin != null) {
         if (widget.dormItem.isFav) {
           setState(() {
             _isLoading = true;
