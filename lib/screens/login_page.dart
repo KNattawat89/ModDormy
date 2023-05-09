@@ -253,7 +253,12 @@ class _LoginFormState extends State<LoginForm> {
                       setState(() {
                         err = true;
                         message = e.code;
+                        _isLoading = false;
                       });
+
+                      if (_isLoading == false) {
+                         Navigator.of(context).pop();
+                      }
                       if (e.code == 'user-not-found') {
                         debugPrint('No user found for that email.');
                       } else if (e.code == 'wrong-password') {
