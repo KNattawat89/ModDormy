@@ -24,7 +24,7 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   String? coverImageFileName;
-  List <String> coverImageList = [];
+  List<String> coverImageList = [];
   void uploadImage(XFile? file, bool d) async {
     try {
       String fileName = file!.path.split('/').last;
@@ -34,16 +34,40 @@ class _DetailScreenState extends State<DetailScreen> {
       final response =
           await Caller.dio.post("/api/upload/coverImage", data: formData);
 
-
       setState(() {
-        if(d){coverImageFileName = response.data["image"];print('dorm ' + coverImageFileName!);}
-        else{
-         // for(var r= 0 ; r<widget.dorm.rooms.length ; r++){
-          coverImageList.add(response.data["image"]);for (var o=0 ; o< coverImageList.length;o++){print('roomImage $o  ${coverImageList[o]}' );}
+        if (d) {
+          coverImageFileName = response.data["image"];
+          print('dorm ' + coverImageFileName!);
+        } else {
+          // for(var r= 0 ; r<widget.dorm.rooms.length ; r++){
+          coverImageList.add(response.data["image"]);
+          for (var o = 0; o < coverImageList.length; o++) {
+            print('roomImage $o  ${coverImageList[o]}');
+          }
           //}
         }
       });
       return response.data["image"];
+    } on DioError catch (e) {
+      print('upload image error: ${e.response}');
+    }
+  }
+
+  void uploadDormImages(List<XFile> file, int id) async {
+    try {
+      for (var i = 0; i < file.length; i++) {
+        String fileName = file[i].path.split('/').last;
+        FormData formData = FormData.fromMap({
+          "image": await MultipartFile.fromFile(
+            file[i].path,
+            filename: fileName,
+          ),
+          "dormId": id,
+        });
+        final response =
+            await Caller.dio.post("/api/upload/dorm", data: formData);
+        print(response.data);
+      }
     } on DioError catch (e) {
       print('upload image error: ${e.response}');
     }
@@ -87,7 +111,7 @@ class _DetailScreenState extends State<DetailScreen> {
         },
       );
       debugPrint(postdorm.data["id"].toString());
-
+      (uploadDormImages(widget.dorm.imageList, postdorm.data["id"]));
       // ignore: prefer_typing_uninitialized_variables, unused_local_variable
       var postroom;
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
@@ -121,7 +145,8 @@ class _DetailScreenState extends State<DetailScreen> {
       final editeddorm = await Caller.dio.put(
         '/api/manage-dorm/editDorm?dormId=${widget.dorm.id}',
         data: {
-          "dorm_name": widget.dorm.name, //"${widget.dorm.coverImage!.path}", // Upload รูป how?
+          "dorm_name": widget.dorm
+              .name, //"${widget.dorm.coverImage!.path}", // Upload รูป how?
           "house_number": widget.dorm.houseNo,
           "street": widget.dorm.street,
           "soi": widget.dorm.soi,
@@ -149,13 +174,12 @@ class _DetailScreenState extends State<DetailScreen> {
           },
         },
       );
-      if(widget.dorm.coverImage != null){
+      if (widget.dorm.coverImage != null) {
         uploadImage(widget.dorm.coverImage, true);
-        final result1 = await Caller.dio.put(
-            '/api/manage-dorm/editDorm?dormId=${widget.dorm.id}',
-            data: {
-              "CoverImage": coverImageFileName,
-            });
+        final result1 = await Caller.dio
+            .put('/api/manage-dorm/editDorm?dormId=${widget.dorm.id}', data: {
+          "CoverImage": coverImageFileName,
+        });
       }
       debugPrint(editeddorm.data["id"].toString());
 
@@ -181,7 +205,7 @@ class _DetailScreenState extends State<DetailScreen> {
           }
         });
         debugPrint(editedroom.data.toString());
-        if (widget.dorm.rooms[i].coverImage != null ){
+        if (widget.dorm.rooms[i].coverImage != null) {
           uploadImage(widget.dorm.rooms[i].coverImage, false);
           editedroom = await Caller.dio
               .put("/api/manage-room/editRoom?roomId=${widget.dorm.id}", data: {
@@ -629,7 +653,6 @@ class _DetailScreenState extends State<DetailScreen> {
                         heroTag: "btn2",
                         backgroundColor: const Color(0xFFDC6E46),
                         onPressed: () {
-
                           if (widget.post) {
                             // uploadImage(widget.dorm.coverImage);
                             postDormDetail();

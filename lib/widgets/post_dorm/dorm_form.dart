@@ -15,7 +15,7 @@ import '../../models/dorm.dart';
 class DormForm extends StatefulWidget {
   final Dorm dorm;
   final bool post;
-  List<Imagestring> myimages = [];
+  List<Imagestring> myimages;
 
    DormForm({Key? key, required this.dorm, required this.post, required this.myimages})
       : super(key: key);
