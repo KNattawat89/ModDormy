@@ -35,21 +35,28 @@ class MyDrawer extends StatelessWidget {
                               backgroundImage: NetworkImage(
                                   'http://moddormy.ivelse.com:8000${user.profileImage}')),
                       const SizedBox(width: 15),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            user.username,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            user.email,
-                            style:const TextStyle(color: Colors.white, fontSize: 14),
-                          )
-                        ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user.username,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.ellipsis,
+                              //textAlign: TextAlign.justify,
+                            ),
+                            Text(
+                              user.email,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 14),
+                              overflow: TextOverflow.ellipsis,
+                              //textAlign: TextAlign.justify,
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   )
