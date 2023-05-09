@@ -58,8 +58,8 @@ class _CoverImageSectionState extends State<CoverImageSection> {
                   : Image.file(
                       File(widget.dorm.coverImage!.path),
                       fit: BoxFit.cover,
-                      height: 100,
-                      width: 100,
+                      height: 400,
+                      width: 400,
                     ),
             ],
           ));
