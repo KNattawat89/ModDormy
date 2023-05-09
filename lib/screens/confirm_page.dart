@@ -41,17 +41,18 @@ class _DetailScreenState extends State<DetailScreen> {
         } else {
           // for(var r= 0 ; r<widget.dorm.rooms.length ; r++){
           coverImageList.add(response.data["image"]);
-          for (var o = 0; o < coverImageList.length; o++) {
-            print('roomImage $o  ${coverImageList[o]}');
-          }
+          //for (var o = 0; o < coverImageList.length; o++) {
+            //print('roomImage $o  ${coverImageList[o]}');
+          //}
           //}
         }
       });
       return response.data["image"];
     } on DioError catch (e) {
-      print('upload image error: ${e.response}');
+      print('upload cover image error: ${e.response}');
     }
   }
+
 
   void uploadDormImages(List<XFile> file, int id) async {
     try {
@@ -69,7 +70,27 @@ class _DetailScreenState extends State<DetailScreen> {
         print(response.data);
       }
     } on DioError catch (e) {
-      print('upload image error: ${e.response}');
+      print('upload dorm image error: ${e.response} $e');
+    }
+  }
+
+  void uploadRoomImages(List<XFile> file, int id) async {
+    try {
+      for (var i = 0; i < file.length; i++) {
+        String fileName = file[i].path.split('/').last;
+        FormData formData = FormData.fromMap({
+          "image": await MultipartFile.fromFile(
+            file[i].path,
+            filename: fileName,
+          ),
+          "roomId": id,
+        });
+        final response =
+        await Caller.dio.post("/api/upload/room", data: formData);
+        print(response.data);
+      }
+    } on DioError catch (e) {
+      print('upload room image error: ${e.response} $e');
     }
   }
 
@@ -113,11 +134,10 @@ class _DetailScreenState extends State<DetailScreen> {
       debugPrint(postdorm.data["id"].toString());
       (uploadDormImages(widget.dorm.imageList, postdorm.data["id"]));
       // ignore: prefer_typing_uninitialized_variables, unused_local_variable
-      var postroom;
+      print(widget.dorm.rooms.length);
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
         uploadImage(widget.dorm.rooms[i].coverImage, false);
-        print(coverImageList[i]);
-        postroom = await Caller.dio.post("/api/manage-room/postRoom", data: {
+        final postroom = await Caller.dio.post("/api/manage-room/postRoom", data: {
           "dormId": postdorm.data["id"],
           "roomName": widget.dorm.rooms[i].name,
           "CoverImage": coverImageList[i],
@@ -133,10 +153,13 @@ class _DetailScreenState extends State<DetailScreen> {
             "bathroom": widget.dorm.rooms[i].feature.bathroom,
             "tv": widget.dorm.rooms[i].feature.tv,
           }
-        });
+        }
+        );
+        print(postroom.data["room_id"]);
+        uploadRoomImages(widget.dorm.rooms[i].imageList, postroom.data["room_id"]);
       }
     } on DioError catch (e) {
-      print("room ${e.response}");
+      print("room error ${e.response} $e");
     }
   }
 
@@ -566,7 +589,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         child: SizedBox(
                           height: MediaQuery.of(context).size.height * 0.25,
                           child: GridView.builder(
-                            itemCount: widget.dorm.imageList.length,
+                            itemCount: widget.dorm.rooms[index].imageList.length,
                             itemBuilder: (BuildContext context, int j) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
