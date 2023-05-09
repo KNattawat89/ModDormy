@@ -93,7 +93,6 @@ class UserProvider extends ChangeNotifier {
   }
 
   void updatedUser(
-    String userId,
     String profileImage,
     String username,
     String firstname,
@@ -101,9 +100,7 @@ class UserProvider extends ChangeNotifier {
     String email,
     String tel,
     String lineId,
-    String userType,
   ) {
-    _userId = userId;
     _profileImage = profileImage;
     _username = username;
     _firstname = firstname;
@@ -111,7 +108,6 @@ class UserProvider extends ChangeNotifier {
     _email = email;
     _tel = tel;
     _lineId = lineId;
-    _userType = userType;
     notifyListeners();
   }
 
