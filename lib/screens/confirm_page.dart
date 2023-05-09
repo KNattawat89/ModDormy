@@ -22,8 +22,8 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   String uid = FirebaseAuth.instance.currentUser!.uid;
-  String? coverImageFileName;
-  void uploadImage(XFile? file) async {
+  String? dormCoverImage;
+  void uploadDormCoverImage(XFile? file) async {
     try {
       String fileName = file!.path.split('/').last;
       FormData formData = FormData.fromMap({
@@ -31,26 +31,48 @@ class _DetailScreenState extends State<DetailScreen> {
       });
       final response =
           await Caller.dio.post("/api/upload/coverImage", data: formData);
-      print(response.data);
+      debugPrint(response.data);
 
       setState(() {
-        coverImageFileName = response.data["image"];
+        dormCoverImage = response.data["image"];
       });
+      // ignore: void_checks
       return response.data;
     } on DioError catch (e) {
-      print('upload image error: ${e.response}');
+      debugPrint('upload image error: ${e.response}');
+    }
+  }
+
+  String? roomCoverImage;
+  void uploadRoomCoverImage(XFile? file) async {
+    try {
+      String fileName = file!.path.split('/').last;
+      FormData formData = FormData.fromMap({
+        "image": await MultipartFile.fromFile(file.path, filename: fileName),
+      });
+      final response =
+          await Caller.dio.post("/api/upload/coverImage", data: formData);
+      debugPrint(response.data);
+
+      setState(() {
+        roomCoverImage = response.data["image"];
+      });
+      // ignore: void_checks
+      return response.data;
+    } on DioError catch (e) {
+      debugPrint('upload image error: ${e.response}');
     }
   }
 
   void postDormDetail() async {
+    uploadDormCoverImage(widget.dorm.coverImage);
     try {
       final postdorm = await Caller.dio.post(
         "/api/manage-dorm/postDorm",
         data: {
           "DormName": widget.dorm.name,
           "UserId": uid, // ใส่ id ของ user ที่ login อยู่
-          "CoverImage":
-              "", //"${widget.dorm.coverImage!.path}", // Upload รูป how?
+          "CoverImage": dormCoverImage,
           "HouseNumber": widget.dorm.houseNo,
           "Street": widget.dorm.street,
           "Soi": widget.dorm.soi,
@@ -83,11 +105,12 @@ class _DetailScreenState extends State<DetailScreen> {
       // ignore: prefer_typing_uninitialized_variables, unused_local_variable
       var postroom;
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
+        uploadRoomCoverImage(widget.dorm.rooms[i].coverImage);
         postroom = await Caller.dio.post("/api/manage-room/postRoom", data: {
           "dormId": postdorm.data["id"],
           "roomName": widget.dorm.rooms[i].name,
-          "coverImage": "xxxxxx",
-          "price": 1223,
+          "coverImage": roomCoverImage,
+          "price": widget.dorm.rooms[i].price,
           "desc": widget.dorm.rooms[i].description,
           "size": widget.dorm.rooms[i].size,
           "roomFeature": {
@@ -107,13 +130,20 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   void updateDormDetail() async {
+    if (widget.dorm.coverImage != null) {
+      uploadDormCoverImage(widget.dorm.coverImage);
+       final editeddorm = await Caller.dio.put(
+        '/api/manage-dorm/editDorm?dormId=${widget.dorm.id}',
+        data: {
+          "cover_Image"
+        });
+
+    }
     try {
       final editeddorm = await Caller.dio.put(
         '/api/manage-dorm/editDorm?dormId=${widget.dorm.id}',
         data: {
-          "dorm_name": widget.dorm.name,
-          "cover_Image":
-              "xxxxxx", //"${widget.dorm.coverImage!.path}", // Upload รูป how?
+          "dorm_name": widget.dorm.name,//"${widget.dorm.coverImage!.path}", // Upload รูป how?
           "house_number": widget.dorm.houseNo,
           "street": widget.dorm.street,
           "soi": widget.dorm.soi,
@@ -175,7 +205,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    uploadImage(widget.dorm.coverImage);
     return Scaffold(
       backgroundColor: const Color(0xfffff9f0),
       appBar: const MyAppbar(),
