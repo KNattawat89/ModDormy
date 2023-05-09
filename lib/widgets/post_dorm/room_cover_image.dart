@@ -25,8 +25,6 @@ class _RCoverImageSectionState extends State<RCoverImageSection> {
       });
     }
 
-    print(widget.room.coverimageString);
-
     if (widget.post) {
       return Padding(
           padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
