@@ -41,6 +41,15 @@ class _DormReviewState extends State<DormReview> {
     }
   }
 
+  bool isLoaded = false;
+
+  void refresh() async {
+    getDormReview(widget.dormId);
+    setState(() {
+      isLoaded = true;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -67,8 +76,8 @@ class _DormReviewState extends State<DormReview> {
                   color: Colors.black),
             ),
             DormRating(reviews: reviews),
-            UserReview(reviews: reviews),
-            AddReview(widget.dormId),
+            UserReview(reviews: reviews, refresh: refresh),
+            AddReview(dormId: widget.dormId, refresh: refresh),
           ],
         ));
   }
