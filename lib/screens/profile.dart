@@ -33,14 +33,6 @@ class ProfilePage extends StatelessWidget {
             children: [
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Column(
-                  // when u want to update user profile on db please use this method together
-                  // it will update UserProvider as well
-                  //-----------------
-                  // UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
-                  // UserItem userProfile = await UserApiService.getUserProfile(uid, userProvider);
-                  // noted: in the getUserProfile method, it has async function already don't have to use async func.
-                  //-----------------
-
                   children: [
                     Container(
                       width: 150,
