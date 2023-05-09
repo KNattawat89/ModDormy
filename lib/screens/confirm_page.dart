@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_icons/line_icon.dart';
+import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/provider/user_provider.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
@@ -14,7 +15,10 @@ import '../models/dorm.dart';
 
 class DetailScreen extends StatefulWidget {
   final bool post;
-  const DetailScreen({super.key, required this.dorm, required this.post});
+  final List<Imagestring> myimages;
+
+  const DetailScreen({super.key, required this.dorm, required this.post, required this.myimages});
+
   final Dorm dorm;
 
   @override
@@ -25,6 +29,7 @@ class _DetailScreenState extends State<DetailScreen> {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   String? coverImageFileName;
   List<String> coverImageList = [];
+
   void uploadImage(XFile? file, bool d) async {
     try {
       String fileName = file!.path.split('/').last;
@@ -42,7 +47,7 @@ class _DetailScreenState extends State<DetailScreen> {
           // for(var r= 0 ; r<widget.dorm.rooms.length ; r++){
           coverImageList.add(response.data["image"]);
           //for (var o = 0; o < coverImageList.length; o++) {
-            //print('roomImage $o  ${coverImageList[o]}');
+          //print('roomImage $o  ${coverImageList[o]}');
           //}
           //}
         }
@@ -52,7 +57,6 @@ class _DetailScreenState extends State<DetailScreen> {
       print('upload cover image error: ${e.response}');
     }
   }
-
 
   void uploadDormImages(List<XFile> file, int id) async {
     try {
@@ -86,7 +90,7 @@ class _DetailScreenState extends State<DetailScreen> {
           "roomId": id,
         });
         final response =
-        await Caller.dio.post("/api/upload/room", data: formData);
+            await Caller.dio.post("/api/upload/room", data: formData);
         print(response.data);
       }
     } on DioError catch (e) {
@@ -101,9 +105,10 @@ class _DetailScreenState extends State<DetailScreen> {
         "/api/manage-dorm/postDorm",
         data: {
           "DormName": widget.dorm.name,
-          "UserId": uid, // ใส่ id ของ user ที่ login อยู่
-          "CoverImage":
-              coverImageFileName, //"${widget.dorm.coverImage!.path}", // Upload รูป how?
+          "UserId": uid,
+          // ใส่ id ของ user ที่ login อยู่
+          "CoverImage": coverImageFileName,
+          //"${widget.dorm.coverImage!.path}", // Upload รูป how?
           "HouseNumber": widget.dorm.houseNo,
           "Street": widget.dorm.street,
           "Soi": widget.dorm.soi,
@@ -138,7 +143,8 @@ class _DetailScreenState extends State<DetailScreen> {
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
         uploadImage(widget.dorm.rooms[i].coverImage, false);
         print(coverImageList[i]);
-        final postroom = await Caller.dio.post("/api/manage-room/postRoom", data: {
+        final postroom =
+            await Caller.dio.post("/api/manage-room/postRoom", data: {
           "dormId": postdorm.data["id"],
           "roomName": widget.dorm.rooms[i].name,
           "CoverImage": coverImageList[i],
@@ -154,10 +160,10 @@ class _DetailScreenState extends State<DetailScreen> {
             "bathroom": widget.dorm.rooms[i].feature.bathroom,
             "tv": widget.dorm.rooms[i].feature.tv,
           }
-        }
-        );
+        });
         print(postroom.data["room_id"]);
-        uploadRoomImages(widget.dorm.rooms[i].imageList, postroom.data["room_id"]);
+        uploadRoomImages(
+            widget.dorm.rooms[i].imageList, postroom.data["room_id"]);
       }
     } on DioError catch (e) {
       print("room error ${e.response} $e");
@@ -273,17 +279,17 @@ class _DetailScreenState extends State<DetailScreen> {
                       'Dorm name :',
                       textAlign: TextAlign.start,
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500 ),
-
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                     ),
                   ),
                   Expanded(
-
                     child: Text(
                       textAlign: TextAlign.start,
                       widget.dorm.name,
                       style: const TextStyle(color: Colors.grey, fontSize: 18),
-                      softWrap: false, maxLines: 2, overflow: TextOverflow.ellipsis,
+                      softWrap: false,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
@@ -334,28 +340,65 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.fromLTRB(0,16,0,16),
+                    padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
                     child: Text(
                       'Cover Images :',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                     ),
                   ),
                   Center(
-                    child: Image.file(
-                      File(widget.dorm.coverImage!.path),
-                      fit: BoxFit.cover,
-                      height: 400,
-                      width: 400,
-                    ),
+                    child: widget.dorm.coverImage == null
+                        ? Image.network(
+                            widget.dorm.coverimageString,
+                            fit: BoxFit.cover,
+                            height: 400,
+                            width: 400,
+                          )
+                        : Image.file(
+                            File(widget.dorm.coverImage!.path),
+                            fit: BoxFit.cover,
+                            height: 400,
+                            width: 400,
+                          ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.fromLTRB(0,16,0,16),
+                    padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
                     child: Text(
                       'Images :',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                     ),
                   ),
-                  Padding(
+                  Padding(padding: const EdgeInsets.only(left: 8),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: 200,
+                      child: GridView.builder(
+                        itemCount: widget.myimages.length,
+                        itemBuilder: (BuildContext context, int j) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12.0),
+                              child: Image.network(
+                                widget.myimages[j].image,
+                                fit: BoxFit.cover,
+                                width: 100,
+                                height: 100,
+                              ),
+                            ),
+                          );
+                        },
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
+                      ),
+                    ),
+                  ),
+
+                 widget.dorm.imageList.isEmpty
+                     ? SizedBox(width: 1, height: 1,)
+                 : Padding(
                     padding: const EdgeInsets.only(left: 8),
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.25,
@@ -585,11 +628,18 @@ class _DetailScreenState extends State<DetailScreen> {
                             fontSize: 20, fontWeight: FontWeight.w500),
                       ),
                       Center(
-                        child: Image.file(
+                        child: widget.dorm.coverImage == null
+                            ? Image.network(
+                          widget.dorm.rooms[index].coverimageString,
+                          fit: BoxFit.cover,
+                          height: 400,
+                          width: 400,
+                        )
+                            : Image.file(
                           File(widget.dorm.rooms[index].coverImage!.path),
                           fit: BoxFit.cover,
-                          height: 100,
-                          width: 100,
+                          height: 400,
+                          width: 400,
                         ),
                       ),
                       const Text(
@@ -602,7 +652,8 @@ class _DetailScreenState extends State<DetailScreen> {
                         child: SizedBox(
                           height: MediaQuery.of(context).size.height * 0.25,
                           child: GridView.builder(
-                            itemCount: widget.dorm.rooms[index].imageList.length,
+                            itemCount:
+                                widget.dorm.rooms[index].imageList.length,
                             itemBuilder: (BuildContext context, int j) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),

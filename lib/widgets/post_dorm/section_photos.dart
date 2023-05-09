@@ -34,6 +34,12 @@ class _PhotosSectionState extends State<PhotosSection> {
     });
   }
 
+  void deleteImage(int index) {
+    setState(() {
+      widget.dorm.imageList.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.post) {
@@ -65,14 +71,32 @@ class _PhotosSectionState extends State<PhotosSection> {
               child: GridView.builder(
                 itemCount: widget.dorm.imageList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.file(
-                      File(widget.dorm.imageList[index].path),
-                      fit: BoxFit.cover,
-                      width: 200,
-                      height: 200,
-                    ),
+                  return Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.file(
+                          File(widget.dorm.imageList[index].path),
+                          fit: BoxFit.cover,
+                          width: 200,
+                          height: 200,
+                        ),
+                      ),
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: GestureDetector(
+                          onTap: () => deleteImage(index),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                            ),
+                            child: Icon(Icons.delete_outline,
+                                color: Color(0xff2A8089)),
+                          ),
+                        ),
+                      ),
+                    ],
                   );
                 },
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -141,14 +165,32 @@ class _PhotosSectionState extends State<PhotosSection> {
                 child: GridView.builder(
                   itemCount: widget.dorm.imageList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.file(
-                        File(widget.dorm.imageList[index].path),
-                        fit: BoxFit.cover,
-                        width: 200,
-                        height: 200,
-                      ),
+                    return Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.file(
+                            File(widget.dorm.imageList[index].path),
+                            fit: BoxFit.cover,
+                            width: 200,
+                            height: 200,
+                          ),
+                        ),
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: GestureDetector(
+                            onTap: () => deleteImage(index),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: Icon(Icons.delete_outline,
+                                  color: Color(0xff2A8089)),
+                            ),
+                          ),
+                        ),
+                      ],
                     );
                   },
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

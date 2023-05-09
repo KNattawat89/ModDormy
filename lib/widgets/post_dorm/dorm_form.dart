@@ -85,6 +85,7 @@ class _DormFormState extends State<DormForm> {
                               builder: (context) => DetailScreen(
                                     dorm: widget.dorm,
                                     post: widget.post,
+                                    myimages: widget.myimages,
                                   )));
                     }
                   },
