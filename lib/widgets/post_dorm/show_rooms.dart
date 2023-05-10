@@ -9,7 +9,11 @@ class ShowRoom extends StatelessWidget {
   final Room room;
   final Dorm dorm;
   final String ownerId;
-  const ShowRoom({super.key, required this.room, required this.dorm, required this.ownerId});
+  const ShowRoom(
+      {super.key,
+      required this.room,
+      required this.dorm,
+      required this.ownerId});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +57,7 @@ class ShowRoom extends StatelessWidget {
                           fontSize: 18, fontWeight: FontWeight.w500),
                     ),
                     Text(
-                      room.size,
+                      "Room size: ${room.size}",
                       textAlign: TextAlign.start,
                       style: const TextStyle(fontSize: 16, color: Colors.grey),
                     ),

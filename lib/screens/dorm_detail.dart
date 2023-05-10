@@ -3,6 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/models/room.dart';
+import 'package:moddormy_flutter/screens/full_screen_image.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
@@ -101,6 +102,18 @@ class _DormDetailState extends State<DormDetail> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void _showFullScreenImage(int currentIndex) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FullScreenImageScreen(
+          imageUrls: myimages.map((image) => image.image).toList(),
+          currentIndex: currentIndex,
+        ),
+      ),
+    );
   }
 
   @override
@@ -257,13 +270,16 @@ class _DormDetailState extends State<DormDetail> {
                     itemBuilder: (BuildContext context, int j) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12.0),
-                          child: Image.network(
-                            myimages[j].image,
-                            fit: BoxFit.cover,
-                            width: 100,
-                            height: 100,
+                        child: GestureDetector(
+                          onTap: () => _showFullScreenImage(j),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: Image.network(
+                              myimages[j].image,
+                              fit: BoxFit.cover,
+                              width: 100,
+                              height: 100,
+                            ),
                           ),
                         ),
                       );

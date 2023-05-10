@@ -76,11 +76,14 @@ class _PhotosSectionState extends State<PhotosSection> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Image.file(
-                          File(widget.dorm.imageList[index].path),
-                          fit: BoxFit.cover,
-                          width: 200,
-                          height: 200,
+                        child:ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                          child: Image.file(
+                            File(widget.dorm.imageList[index].path),
+                            fit: BoxFit.cover,
+                            width: 200,
+                            height: 200,
+                          ),
                         ),
                       ),
                       Positioned(
@@ -129,11 +132,14 @@ class _PhotosSectionState extends State<PhotosSection> {
                     padding: const EdgeInsets.all(8.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12.0),
-                      child: Image.network(
-                        widget.myimages[j].image,
-                        fit: BoxFit.cover,
-                        width: 100,
-                        height: 100,
+                      child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                        child: Image.network(
+                          widget.myimages[j].image,
+                          fit: BoxFit.cover,
+                          width: 100,
+                          height: 100,
+                        ),
                       ),
                     ),
                   );
@@ -170,11 +176,14 @@ class _PhotosSectionState extends State<PhotosSection> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Image.file(
-                            File(widget.dorm.imageList[index].path),
-                            fit: BoxFit.cover,
-                            width: 200,
-                            height: 200,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: Image.file(
+                              File(widget.dorm.imageList[index].path),
+                              fit: BoxFit.cover,
+                              width: 200,
+                              height: 200,
+                            ),
                           ),
                          ),
                         Positioned(
