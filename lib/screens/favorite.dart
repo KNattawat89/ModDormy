@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/dorm_list.dart';
-import 'package:moddormy_flutter/models/fav_page_preload.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import '../models/dorm_item.dart';
 import '../utilities/caller.dart';
