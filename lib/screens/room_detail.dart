@@ -16,6 +16,7 @@ class RoomDetail extends StatefulWidget {
   final Dorm dorm;
   final int roomNo;
   final String ownerId;
+
   const RoomDetail(
       {super.key,
       required this.roomNo,
@@ -563,10 +564,8 @@ class _RoomDetailState extends State<RoomDetail> {
                               width: 50,
                               child: IconButton(
                                   onPressed: () {
-                                    final Uri url = Uri(
-                                        scheme: 'tel',
-                                        path: ownerInfo!.telephone);
-                                    launchUrl(url);
+                                    String url = 'tel://${ownerInfo!.telephone}';
+                                    launch(url);
                                   },
                                   icon: const Icon(
                                     Icons.phone,
@@ -574,18 +573,24 @@ class _RoomDetailState extends State<RoomDetail> {
                                   )),
                             ),
                             SizedBox(
-                              height: 35,
-                              width: 35,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12.0),
-                                child: Image.network(
-                                  "https://cdn-icons-png.flaticon.com/512/124/124027.png",
-                                  fit: BoxFit.cover,
-                                  height: 30,
-                                  width: 30,
-                                ),
-                              ),
-                            )
+                                height: 35,
+                                width: 35,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    String url =
+                                        'http://line.me/ti/p/~${ownerInfo?.lineId}';
+                                    launch(url);
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    child: Image.network(
+                                      "https://cdn-icons-png.flaticon.com/512/124/124027.png",
+                                      fit: BoxFit.cover,
+                                      height: 30,
+                                      width: 30,
+                                    ),
+                                  ),
+                                ))
                           ],
                         )
                       ],
