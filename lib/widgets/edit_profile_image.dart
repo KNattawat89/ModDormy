@@ -68,14 +68,14 @@ class _EditProfileImageState extends State<EditProfileImage> {
                         maximumSize: Size.fromRadius(70),
                       ),
                       onPressed: () async {
-                        //getImage();
-                        XFile? file = await ImagePicker()
-                            .pickImage(source: ImageSource.gallery);
-                        final Response = await Caller.dio
-                            .post("/api/upload/coverImage", data: file);
-                        user.setProfileImage(file.toString());
-                        print(user.profileImage);
-                        Navigator.pop(context);
+                        getImage();
+                        // XFile? file = await ImagePicker()
+                        //     .pickImage(source: ImageSource.gallery);
+                        // final Response = await Caller.dio
+                        //     .post("/api/upload/coverImage", data: file);
+                        // user.setProfileImage(file.toString());
+                        // print(user.profileImage);
+                        // Navigator.pop(context);
                       },
                       child: Row(
                         children: const [
