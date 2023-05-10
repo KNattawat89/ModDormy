@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/dorm_list.dart';
+import 'package:moddormy_flutter/screens/dorm_detail.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import '../models/dorm_item.dart';
 import '../utilities/caller.dart';
@@ -24,7 +25,6 @@ class _FavoritePageState extends State<FavoritePage> {
     favDorm.removeWhere((dorm) => dorm.dormId == dormId);
     setState(() {});
   }
-
 
   @override
   void initState() {

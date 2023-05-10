@@ -8,7 +8,7 @@ class Caller {
     // 10.0.2.2 or IP of your network -> when using android emulator
     baseUrl: "http://moddormy.ivelse.com:8000",
     connectTimeout: const Duration(seconds: 5),
-    receiveTimeout: const Duration(seconds: 3),
+    receiveTimeout: const Duration(seconds: 10),
   );
 
   static Dio dio = Dio(options);

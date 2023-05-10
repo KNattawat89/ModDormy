@@ -106,66 +106,38 @@ class _DormDetailState extends State<DormDetail> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getDormDetail();
-    getDormImages();
-    overallRate(widget.dormId);
-    widget.dormItem.isFav;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  void _showFullScreenImage(int currentIndex) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FullScreenImageScreen(
-          imageUrls: myimages.map((image) => image.image).toList(),
-          currentIndex: currentIndex,
-        ),
-      ),
-    );
-  }
-
+  User? userLogin = FirebaseAuth.instance.currentUser;
   void updateIsFav() async {
-    final user = Provider.of<UserProvider>(context, listen: false);
-    User? userLogin = FirebaseAuth.instance.currentUser;
-    if (user.userId != '' && userLogin != null) {
+    if (userLogin != null) {
       if (widget.dormItem.isFav) {
         setState(() {
           widget.dormItem.isFav = !widget.dormItem.isFav;
         });
         try {
           await Caller.dio.delete(
-              '/api/fav/deleteFav?userId=${user.userId}&dormId=${widget.dormId}');
-          debugPrint('remove fav from dorm detail');
-          if (widget.removeFav != null) {
-            widget.removeFav!(widget.dormId);
+              '/api/fav/deleteFav?userId=${userLogin!.uid}&dormId=${widget.dormItem.dormId}');
+          debugPrint('remove fav from home');
+          if (FavPreload.homeReload != null) {
+            FavPreload.homeReload!();
           }
         } catch (e) {
-          debugPrint("hi jaja${e.toString()}");
+          debugPrint("hi ${e.toString()}");
         }
       } else {
         setState(() {
           widget.dormItem.isFav = !widget.dormItem.isFav;
         });
         try {
-          await Caller.dio.post('/api/fav/postFav',
-              data: {"dorm_id": widget.dormId, "user_id": user.userId});
+          await Caller.dio.post('/api/fav/postFav', data: {
+            "dorm_id": widget.dormItem.dormId,
+            "user_id": userLogin!.uid
+          });
           // FavPreload.refreshFav();
           debugPrint("called post fav");
         } on DioError catch (e) {
           debugPrint(e.response.toString());
           Caller.handle(context, e);
         }
-      }
-      if (FavPreload.homeReload != null) {
-        FavPreload.homeReload!();
       }
     } else {
       showDialog(
@@ -195,6 +167,32 @@ class _DormDetailState extends State<DormDetail> {
                 ],
               ));
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getDormDetail();
+    getDormImages();
+    overallRate(widget.dormId);
+    widget.dormItem.isFav;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void _showFullScreenImage(int currentIndex) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FullScreenImageScreen(
+          imageUrls: myimages.map((image) => image.image).toList(),
+          currentIndex: currentIndex,
+        ),
+      ),
+    );
   }
 
   @override

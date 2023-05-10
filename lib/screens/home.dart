@@ -248,6 +248,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: const MyAppbar(),
       endDrawer: const MyDrawer(),
       body: Container(
