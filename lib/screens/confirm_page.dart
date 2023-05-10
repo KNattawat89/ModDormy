@@ -271,7 +271,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       backgroundColor: const Color(0xfffff9f0),
       appBar: const MyAppbar(),
-      drawer: const MyDrawer(),
+      endDrawer: const MyDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ListView(

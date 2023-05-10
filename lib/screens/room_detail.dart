@@ -105,7 +105,7 @@ class _RoomDetailState extends State<RoomDetail> {
     }
     return Scaffold(
       appBar: const MyAppbar(),
-      drawer: const MyDrawer(),
+      endDrawer: const MyDrawer(),
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(20),
