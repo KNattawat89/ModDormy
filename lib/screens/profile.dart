@@ -10,6 +10,7 @@ import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/screens/post_form.dart';
 import 'package:moddormy_flutter/widgets/dorms_each_owner.dart';
 import 'package:moddormy_flutter/widgets/edit_user_form.dart';
+
 // import 'package:moddormy_flutter/widgets/dorms_each_owner.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
@@ -50,19 +51,25 @@ class _ProfilePageState extends State<ProfilePage> {
                 Column(
                   children: [
                     Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: user.profileImage != null
-                              ? const AssetImage(
-                                  'assets/images/profileNull.png') //ใส่เป็นnullไว้ก่อน ยังไม่มีรูป
-                              : const AssetImage(
-                                  'assets/images/profileNull.png'),
-                        ),
-                      ),
+                      // width: 150,
+                      // height: 150,
+                      // decoration: BoxDecoration(
+                      //   shape: BoxShape.circle),
+                      child: Stack(children: [
+                        user.profileImage == "" || user.profileImage == null
+                            ? const CircleAvatar(
+                                backgroundImage: AssetImage(
+                                  'assets/images/profileNull.png',
+                                ),
+                                radius: 80,
+                              )
+                            : CircleAvatar(
+                                radius: 80,
+                                backgroundImage: NetworkImage(
+                                  "http://moddormy.ivelse.com:8000${user.profileImage}",
+                                ),
+                              ),
+                      ]),
                     ),
                     const SizedBox(height: 10),
                     Text(

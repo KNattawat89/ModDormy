@@ -2,15 +2,17 @@
 
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:moddormy_flutter/models/profile_reload.dart';
 import 'package:moddormy_flutter/screens/profile.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
-import 'package:moddormy_flutter/widgets/edit_profile_image.dart';
 // import 'package:moddormy_flutter/widgets/edit_profile_image.dart';
 
 import 'package:provider/provider.dart';
 
+import '../models/upload_cover_image.dart';
 import '../provider/user_provider.dart';
 import 'my_appbar.dart';
 import 'my_drawer.dart';
@@ -24,6 +26,7 @@ class EditUserForm extends StatefulWidget {
 
 class _EditUserFormState extends State<EditUserForm> {
   final _formkey = GlobalKey<FormState>();
+  bool newImage = false;
   TextEditingController _UnameController = TextEditingController();
   TextEditingController _FnameController = TextEditingController();
   TextEditingController _LnameController = TextEditingController();
@@ -33,9 +36,10 @@ class _EditUserFormState extends State<EditUserForm> {
 
   Future<void> editData(String userId) async {
     final user = Provider.of<UserProvider>(context, listen: false);
+    user.setProfileImage(user.image);
     try {
-      print('head');
-      final response = await Caller.dio.put(
+      // print('head');
+      await Caller.dio.put(
         '/api/profile/editUser?userId=$userId',
         data: {
           "profile_image": user.profileImage,
@@ -49,7 +53,6 @@ class _EditUserFormState extends State<EditUserForm> {
         },
       );
       user.updatedUser(
-          user.profileImage,
           _UnameController.text,
           _FnameController.text,
           _LnameController.text,
@@ -57,9 +60,9 @@ class _EditUserFormState extends State<EditUserForm> {
           _TelController.text,
           _LineIDController.text);
       ProfilePreload.profileReload!();
-      print('tail');
+      // print('tail');
     } catch (e) {
-      print('error: $e');
+      debugPrint('error: $e');
     }
   }
 
@@ -79,10 +82,49 @@ class _EditUserFormState extends State<EditUserForm> {
   void dispose() {
     super.dispose();
   }
+  void uploadNewImage() async {
+    final user = Provider.of<UserProvider>(context, listen: false);
+    XFile? file = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (file == null) {
+      // User did not select an image
+      return;
+    }
+    final bytes = await file.readAsBytes();
+    final formData = FormData.fromMap({
+      'image': await MultipartFile.fromBytes(
+        bytes,
+        filename: 'image.jpg',
+        // contentType: MediaType.parse('image/jpeg'),
+      )
+    });
 
+    try {
+      final profileimage = await Caller.dio.post(
+        "/api/upload/coverImage",
+        data: formData,
+        options: Options(
+          contentType: 'multipart/form-data', // Specify the content type here
+        ),
+      );
+      UploadCoverImage d = UploadCoverImage.fromJson(profileimage.data);
+      setState(() {
+        user.setPreviewImage(d.image);
+        newImage = true;
+      });
+      debugPrint(user.image);
+    } on DioError catch (e) {
+      debugPrint('error: ${e.message}');
+    }
+
+    // setState(() {
+    //   user.setProfileImage(file);
+    // });
+  }
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context, listen: false);
+
+
     return Scaffold(
       endDrawer: const MyDrawer(),
       appBar: const MyAppbar(),
@@ -99,39 +141,38 @@ class _EditUserFormState extends State<EditUserForm> {
                   // decoration: BoxDecoration(
                   //   shape: BoxShape.circle),
                   child: Stack(children: [
-                    user.profileImage == "" || user.profileImage == null
-                        ? Image.asset(
-                            'assets/images/profileNull.png',
-                            scale: 3.5,
+                    newImage
+                        ? CircleAvatar(
+                            radius: 80,
+                            backgroundImage: NetworkImage(
+                                "http://moddormy.ivelse.com:8000${user.image}"),
                           )
-                        : Image.network(
-                            "http://moddormy.ivelse.com:8000${user.profileImage}"),
+                        : user.profileImage == "" || user.profileImage == null
+                            ? const CircleAvatar(
+                                radius: 80,
+                                backgroundImage:
+                                    AssetImage('assets/images/profileNull.png'),
+                              )
+                            : CircleAvatar(
+                                radius: 80,
+                                backgroundImage: NetworkImage(
+                                    "http://moddormy.ivelse.com:8000${user.profileImage}"),
+                              ),
                     Positioned(
                       bottom: 2,
                       right: 2,
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFDC6E46),
-                          shape: BoxShape.circle,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const EditProfileImage(),
-                              ),
-                            );
-                          },
+                      child: GestureDetector(
+                        onTap: () {
+                         uploadNewImage();
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Color(0xFFDC6E46),
                           child: Center(
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(6, 5, 5, 5),
                               child: Image.asset(
                                 'assets/images/edit.png',
-                                width: 17,
-                                height: 17,
+                                scale: 25,
                               ),
                             ),
                           ),
@@ -302,8 +343,30 @@ class _EditUserFormState extends State<EditUserForm> {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 1, vertical: 1),
+                      minimumSize: const Size(100, 40),
+                      backgroundColor: Colors.grey),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfilePage(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                // SizedBox(
+                //   width: 30,
+                // ),
                 ElevatedButton(
                   onPressed: () async {
                     await editData(user.userId);
