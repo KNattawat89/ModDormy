@@ -13,6 +13,7 @@ import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/room_image.dart';
 import 'package:provider/provider.dart';
 import '../models/dorm.dart';
+import 'dorm_detail.dart';
 
 class DetailScreen extends StatefulWidget {
   final bool post;
@@ -366,17 +367,23 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   Center(
                     child: widget.dorm.coverImage == null
-                        ? Image.network(
-                            widget.dorm.coverimageString,
-                            fit: BoxFit.cover,
-                            height: 400,
-                            width: 400,
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: Image.network(
+                              widget.dorm.coverimageString,
+                              fit: BoxFit.cover,
+                              height: 400,
+                              width: 400,
+                            ),
                           )
-                        : Image.file(
-                            File(widget.dorm.coverImage!.path),
-                            fit: BoxFit.cover,
-                            height: 400,
-                            width: 400,
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: Image.file(
+                              File(widget.dorm.coverImage!.path),
+                              fit: BoxFit.cover,
+                              height: 400,
+                              width: 400,
+                            ),
                           ),
                   ),
                   const Padding(
@@ -400,11 +407,14 @@ class _DetailScreenState extends State<DetailScreen> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(12.0),
-                                    child: Image.network(
-                                      widget.myimages[j].image,
-                                      fit: BoxFit.cover,
-                                      width: 100,
-                                      height: 100,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      child: Image.network(
+                                        widget.myimages[j].image,
+                                        fit: BoxFit.cover,
+                                        width: 100,
+                                        height: 100,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -433,11 +443,14 @@ class _DetailScreenState extends State<DetailScreen> {
                               itemBuilder: (BuildContext context, int index) {
                                 return Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Image.file(
-                                    File(widget.dorm.imageList[index].path),
-                                    fit: BoxFit.cover,
-                                    width: 200,
-                                    height: 200,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    child: Image.file(
+                                      File(widget.dorm.imageList[index].path),
+                                      fit: BoxFit.cover,
+                                      width: 200,
+                                      height: 200,
+                                    ),
                                   ),
                                 );
                               },
@@ -648,30 +661,43 @@ class _DetailScreenState extends State<DetailScreen> {
                               ),
                             ),
                           ]),
-                      const Text(
-                        'Cover Images :',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                        child: Text(
+                          'Cover Images :',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
+                        ),
                       ),
                       Center(
                         child: widget.dorm.coverImage == null
-                            ? Image.network(
-                                widget.dorm.rooms[index].coverimageString,
-                                fit: BoxFit.cover,
-                                height: 400,
-                                width: 400,
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(12.0),
+                                child: Image.network(
+                                  widget.dorm.rooms[index].coverimageString,
+                                  fit: BoxFit.cover,
+                                  height: 400,
+                                  width: 400,
+                                ),
                               )
-                            : Image.file(
-                                File(widget.dorm.rooms[index].coverImage!.path),
-                                fit: BoxFit.cover,
-                                height: 400,
-                                width: 400,
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(12.0),
+                                child: Image.file(
+                                  File(widget
+                                      .dorm.rooms[index].coverImage!.path),
+                                  fit: BoxFit.cover,
+                                  height: 400,
+                                  width: 400,
+                                ),
                               ),
                       ),
-                      const Text(
-                        'Images :',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                        child: Text(
+                          'Images :',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
+                        ),
                       ),
                       RPhotosSection(
                         room: widget.dorm.rooms[index],
@@ -809,7 +835,11 @@ class _DetailScreenState extends State<DetailScreen> {
                                               BorderRadius.circular(20),
                                         ),
                                       ),
-                                      onPressed: () => Navigator.pop(context),
+                                      onPressed: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => (DormDetail(
+                                                  dormId: widget.dorm.id)))),
                                       child: const Text('Go to post'),
                                     ),
                                   ),

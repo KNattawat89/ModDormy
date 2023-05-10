@@ -42,7 +42,12 @@ class _DescriptionSectionState extends State<DescriptionSection> {
             onChanged: (value) {
               widget.dorm.description = descriptionController.text;
             },
-            decoration: const InputDecoration(border: OutlineInputBorder()),
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12.5))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF2A8089), width: 2),
+                    borderRadius: BorderRadius.all(Radius.circular(12.5)))),
             // validator: (value) {
             //   if (value == null || value.isEmpty) {
             //     return 'required';

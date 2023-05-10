@@ -59,8 +59,8 @@ class _RCoverImageSectionState extends State<RCoverImageSection> {
                     : Image.file(
                         File(widget.room.coverImage!.path),
                         fit: BoxFit.cover,
-                        height: 100,
-                        width: 100,
+                        height: 400,
+                        width: 400,
                       ),
             ],
           ));
@@ -90,18 +90,24 @@ class _RCoverImageSectionState extends State<RCoverImageSection> {
                 ],
               ),
               widget.room.coverImage == null
-                  ? Image.network(
-                      widget.room.coverimageString,
-                      fit: BoxFit.cover,
-                      height: 400,
-                      width: 400,
-                    )
-                  : Image.file(
-                      File(widget.room.coverImage!.path),
-                      fit: BoxFit.cover,
-                      height: 400,
-                      width: 400,
-                    ),
+                  ? ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                    child: Image.network(
+                        widget.room.coverimageString,
+                        fit: BoxFit.cover,
+                        height: 400,
+                        width: 400,
+                      ),
+                  )
+                  : ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                    child: Image.file(
+                        File(widget.room.coverImage!.path),
+                        fit: BoxFit.cover,
+                        height: 400,
+                        width: 400,
+                      ),
+                  ),
             ],
           ));
     }
