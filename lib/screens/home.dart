@@ -347,7 +347,9 @@ class _HomePageState extends State<HomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => (DormDetail(
-                                        dormId: filteredData[index].dormId))));
+                                          dormId: filteredData[index].dormId,
+                                          dormItem: filteredData[index],
+                                        ))));
                           },
                           child: DormInfoHome(
                             dormItem: filteredData[index],

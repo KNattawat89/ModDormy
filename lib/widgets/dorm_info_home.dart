@@ -29,6 +29,13 @@ class _DormInfoHomeState extends State<DormInfoHome> {
     // widget.dormItem.isFav = widget.isFav;
   }
 
+  String compareMinMaxPrice(int min, int max) {
+    if (min == max) {
+      return '$min';
+    }
+    return '$min - $max';
+  }
+
   @override
   Widget build(BuildContext context) {
     final String currentRouteName = ModalRoute.of(context)?.settings.name ?? "";
@@ -87,7 +94,7 @@ class _DormInfoHomeState extends State<DormInfoHome> {
               }
             }
           } catch (e) {
-            debugPrint("hi ${e.toString()}");
+            debugPrint("hi ka${e.toString()}");
           }
         } else {
           setState(() {
@@ -107,39 +114,33 @@ class _DormInfoHomeState extends State<DormInfoHome> {
         }
       } else {
         showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  title: const Text("Login required"),
-                  content: const Text("Please log in to favorite this dorm."),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: const Color(0xFFDC6E46),
-                      ),
-                      child: const Text("Cancel"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/login');
-                      },
-                      style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: const Color(0xFFDC6E46)),
-                      child: const Text("Login"),
-                    )
-                  ],
-                ));
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Login required"),
+            content: const Text("Please log in to favorite this dorm."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: const Color(0xFFDC6E46),
+                ),
+                child: const Text("Cancel"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+                style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: const Color(0xFFDC6E46)),
+                child: const Text("Login"),
+              )
+            ],
+          ),
+        );
       }
-    }
-
-    String compareMinMaxPrice(int min, int max) {
-      if (min == max) {
-        return '$min';
-      }
-      return '$min - $max';
     }
 
     return Column(
