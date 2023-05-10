@@ -69,10 +69,7 @@ Widget userHeader(
     Review reviews, String userId, BuildContext context, Function refresh) {
   return Row(
     children: [
-      CircleAvatar(
-        backgroundImage: AssetImage(
-            reviews.user!.profileImage ?? 'assets/images/profileNull.png'),
-      ),
+      showProfileImage(reviews),
       const SizedBox(width: 10.0),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,6 +117,19 @@ Widget userHeader(
       showDeleteButton(reviews, userId, context, refresh),
     ],
   );
+}
+
+Widget showProfileImage(Review reviews) {
+  if (reviews.user!.profileImage == "" || reviews.user!.profileImage == null) {
+    return const CircleAvatar(
+      backgroundImage: AssetImage('assets/images/profileNull.png'),
+    );
+  } else {
+    return CircleAvatar(
+      backgroundImage: NetworkImage(
+          'http://moddormy.ivelse.com:8000${reviews.user!.profileImage!}'),
+    );
+  }
 }
 
 Widget showDeleteButton(
