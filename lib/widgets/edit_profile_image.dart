@@ -1,9 +1,13 @@
+// ignore_for_file: unnecessary_null_comparison, await_only_futures
+
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:moddormy_flutter/provider/user_provider.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
+import 'package:moddormy_flutter/widgets/my_appbar.dart';
+import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:provider/provider.dart';
 
 class EditProfileImage extends StatefulWidget {
@@ -35,7 +39,7 @@ class _EditProfileImageState extends State<EditProfileImage> {
             await Caller.dio.post("/api/upload/coverImage", data: formData);
         print('response: ${profileimage.data}');
       } on DioError catch (e) {
-        print(e.message);
+        print('error: ${e.message}');
       }
 
       // setState(() {
@@ -43,37 +47,57 @@ class _EditProfileImageState extends State<EditProfileImage> {
       // });
     }
 
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
+    return Scaffold(
+        endDrawer: const MyDrawer(),
+        appBar: const MyAppbar(),
+        body: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Profile Image : ',
-                    style:
-                        TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[500]),
-                  onPressed: () {
-                    getImage();
-                  },
-                  child: Row(
-                    children: const [
-                      Icon(Icons.add),
-                      Text('Profile Image'),
-                    ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Profile Image : ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 23)),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[500],
+                        maximumSize: Size.fromRadius(70),
+                      ),
+                      onPressed: () async {
+                        //getImage();
+                        XFile? file = await ImagePicker()
+                            .pickImage(source: ImageSource.gallery);
+                        final Response = await Caller.dio
+                            .post("/api/upload/coverImage", data: file);
+                        user.setProfileImage(file.toString());
+                        print(user.profileImage);
+                        Navigator.pop(context);
+                      },
+                      child: Row(
+                        children: const [
+                          Icon(Icons.add),
+                          Text('Profile Image'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(13.0),
+                  child: Container(
+                    width: 230,
+                    height: 230,
+                    child: user.profileImage == "" || user.profileImage == null
+                        ? Image.asset('assets/images/profileNull.png')
+                        : Image.network(
+                            "http://moddormy.ivelse.com:8000${user.profileImage}"),
                   ),
                 ),
               ],
-            ),
-            user.profileImage == ""
-                ? Image.asset('assets/images/profileNull.png')
-                : Image.network(
-                    "http://moddormy.ivelse.com:8000${user.profileImage}"),
-          ],
-        ));
+            )));
   }
 }

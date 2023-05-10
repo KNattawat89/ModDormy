@@ -94,7 +94,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       )),
                   Container(
                     margin: const EdgeInsets.only(top: 10.0, bottom: 5),
-                    height: 50,
+                  
                     child: TextFormField(
                       controller: _user,
                       autofocus: true,
@@ -124,7 +124,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
-                    height: 50,
+                   
                     child: TextFormField(
                       controller: _fname,
                       decoration: const InputDecoration(
@@ -152,7 +152,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
-                    height: 50,
+                   
                     child: TextFormField(
                       controller: _lname,
                       decoration: const InputDecoration(
@@ -180,7 +180,6 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
-                    height: 50,
                     child: TextFormField(
                       controller: _email,
                       decoration: const InputDecoration(
@@ -209,7 +208,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
-                    height: 50,
+                  
                     child: TextFormField(
                       controller: _pass,
                       obscureText: _hindOfOpen,
@@ -245,7 +244,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
-                    height: 50,
+                   
                     child: TextFormField(
                       obscureText: _confirmPass,
                       decoration: InputDecoration(
@@ -455,9 +454,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                       _isLoading = false;
                                     });
                                     debugPrint(registerAcc.statusMessage);
-                                    setState(() {
-                                      _isLoading = false;
-                                    });
+                                   
                                   }
 
                                   if (_isLoading == false) {
@@ -533,7 +530,11 @@ class _RegisterFormState extends State<RegisterForm> {
                                   setState(() {
                                     err = true;
                                     message = e.message;
+                                    _isLoading = false;
                                   });
+                                  if (_isLoading == false) {
+                                     Navigator.of(context).pop();
+                                  }
                                   debugPrint(e.message);
                                 }
                               }
