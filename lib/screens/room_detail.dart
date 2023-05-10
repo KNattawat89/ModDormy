@@ -4,6 +4,8 @@ import 'package:line_icons/line_icons.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/models/room.dart';
+import 'package:moddormy_flutter/models/user_item.dart';
+import 'package:moddormy_flutter/models/user_list.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
@@ -27,10 +29,7 @@ class RoomDetail extends StatefulWidget {
 class _RoomDetailState extends State<RoomDetail> {
   Room? room;
   List<Imagestring> myimages = [];
-  String? ownerFName;
-  String? ownerLName;
-  String? ownerTel;
-  String? ownerLine;
+  UserItem? ownerInfo;
 
   Future<void> getRoomDetail() async {
     debugPrint(widget.roomNo.toString());
@@ -70,9 +69,13 @@ class _RoomDetailState extends State<RoomDetail> {
     try {
       final response = await Caller.dio
           .get('/api/profile/getProfile?userId=${widget.ownerId}');
-      print(response.data["fname"]);
+      UserList owner = UserList.fromJson(response.data);
+      print("owner data :");
+      print(owner.data);
 
-      setState(() {});
+      setState(() {
+        ownerInfo = owner.data[0];
+      });
     } on DioError catch (e) {
       debugPrint(e.response.toString());
     }
@@ -487,57 +490,65 @@ class _RoomDetailState extends State<RoomDetail> {
               const Divider(
                 thickness: 5,
               ),
-              Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 30,
-                    backgroundImage:
-                        AssetImage('assets/images/profileNull.png'),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'ownerFName ownerLName',
-                          style: TextStyle(
-                            fontSize: 16,
+              ownerInfo == null
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [CircularProgressIndicator()],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const CircleAvatar(
+                          radius: 30,
+                          backgroundImage:
+                              AssetImage('assets/images/profileNull.png'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${ownerInfo!.firstname} ${ownerInfo!.lastname}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const Text(
+                                'Owner',
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.grey),
+                              )
+                            ],
                           ),
                         ),
-                        Text(
-                          'Owner',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                              height: 40,
+                              width: 40,
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    Icons.phone,
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 40,
+                              width: 40,
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                      Icons.chat_bubble_outline_rounded)),
+                            ),
+                          ],
                         )
                       ],
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SizedBox(
-                        height: 40,
-                        width: 40,
-                        child: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.phone,
-                            )),
-                      ),
-                      SizedBox(
-                        height: 40,
-                        width: 40,
-                        child: IconButton(
-                            onPressed: () {},
-                            icon:
-                                const Icon(Icons.chat_bubble_outline_rounded)),
-                      ),
-                    ],
-                  )
-                ],
-              )
+                    )
             ],
           ),
         ),
