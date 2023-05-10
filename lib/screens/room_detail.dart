@@ -541,8 +541,9 @@ class _RoomDetailState extends State<RoomDetail> {
                               width: 40,
                               child: IconButton(
                                   onPressed: () {
-                                    final Uri url =
-                                        Uri(scheme: 'tel', path: "0945574551");
+                                    final Uri url = Uri(
+                                        scheme: 'tel',
+                                        path: ownerInfo!.telephone);
                                     launchUrl(url);
                                   },
                                   icon: const Icon(
