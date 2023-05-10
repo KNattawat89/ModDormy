@@ -28,12 +28,7 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   void initState() {
     super.initState();
-    print("fav screen init state");
-    // if(FavPreload.favs != null){
-    //   setState(() {
-    //     favDorm = FavPreload.favs!;
-    //   });
-    // }
+    debugPrint("fav screen init state");
     if (user != null) {
       getFavDorm();
     }
@@ -53,6 +48,9 @@ class _FavoritePageState extends State<FavoritePage> {
       });
       print("gatfaved");
     } catch (e) {
+      setState(() {
+        _isLoading=false;
+      });
       debugPrint(e.toString());
     }
   }
