@@ -66,16 +66,14 @@ class _DormReviewState extends State<DormReview> {
   @override
   Widget build(BuildContext context) {
     return Container(
+        padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
         color: const Color(0xffFFF8F0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Review (" '$reviewCount' ")",
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
             DormRating(reviews: reviews),
             UserReview(reviews: reviews, refresh: refresh),
