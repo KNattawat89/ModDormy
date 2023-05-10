@@ -91,67 +91,67 @@ class _EditUserFormState extends State<EditUserForm> {
           padding: const EdgeInsets.all(30.0),
           child: Column(children: [
             // Other widgets here
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(children: [
-                  Stack(
-                    children: [
-                      Container(
-                          width: 150,
-                          height: 150,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: user.profileImage == "" ||
-                                      user.profileImage == null
-                                  ? const AssetImage(
-                                      'assets/images/profileNull.png')
-                                  : const AssetImage(
-                                      'assets/images/profileNull.png'),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Column(children: [
+                Container(
+                  // width: 150,
+                  // height: 150,
+                  // decoration: BoxDecoration(
+                  //   shape: BoxShape.circle),
+                  child: Stack(children: [
+                    user.profileImage == "" || user.profileImage == null
+                        ? Image.asset(
+                            'assets/images/profileNull.png',
+                            scale: 3.5,
+                          )
+                        : Image.network(
+                            "http://moddormy.ivelse.com:8000${user.profileImage}"),
+                    Positioned(
+                      bottom: 2,
+                      right: 2,
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFDC6E46),
+                          shape: BoxShape.circle,
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const EditProfileImage(),
+                              ),
+                            );
+                          },
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(6, 5, 5, 5),
+                              child: Image.asset(
+                                'assets/images/edit.png',
+                                width: 17,
+                                height: 17,
+                              ),
                             ),
                           ),
-                          child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const EditProfileImage(),
-                                  ),
-                                );
-                              },
-                              child: Stack(children: [
-                                Positioned(
-                                  bottom: 2,
-                                  right: 2,
-                                  child: Container(
-                                    width: 32,
-                                    height: 32,
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFFDC6E46),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            6, 5, 5, 5),
-                                        child: Image.asset(
-                                          'assets/images/edit.png',
-                                          width: 17,
-                                          height: 17,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ])))
-                    ],
-                  ),
-                ])
-              ],
-            ),
+                        ),
+                      ),
+                    )
+                  ]),
+                  // child: GestureDetector(
+                  //     onTap: () {
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) =>
+                  //               const EditProfileImage(),
+                  //         ),
+                  //       );
+                  //     },
+                ),
+              ]),
+            ]),
 
             const Padding(padding: EdgeInsets.only(bottom: 20)),
             Row(
