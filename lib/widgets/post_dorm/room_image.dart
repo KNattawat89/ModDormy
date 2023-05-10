@@ -231,6 +231,13 @@ class _RPhotosSectionState extends State<RPhotosSection> {
                 ),
               ),
             ),
+            Row(
+              children: const [
+                Text('New Images : ',
+                    style:
+                        TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
