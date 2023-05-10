@@ -174,71 +174,71 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
-              //if (user.userType == "DormOwner")
-              Row(children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 13, 0, 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text(
-                                "Dorm Description",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
+              if (user.userType == "DormOwner")
+                Row(children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 13, 0, 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text(
+                                  "Dorm Description",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 70),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const PostForm()),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                                237, 215, 106, 56), // set background color
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 1, vertical: 1),
-                            minimumSize: const Size(100, 30),
-                          ),
-                          child: const Text(
-                            "Add Dorm",
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 255, 255, 255),
-                              fontWeight: FontWeight.bold,
+                              ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: const [
-                        SizedBox(
-                          width: 335,
-                          height: 250,
-                          child: Center(
-                            child: DormsEachOwner(),
+                          const SizedBox(width: 70),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const PostForm()),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(
+                                  237, 215, 106, 56), // set background color
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 1, vertical: 1),
+                              minimumSize: const Size(100, 30),
+                            ),
+                            child: const Text(
+                              "Add Dorm",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ]),
+                        ],
+                      ),
+                      Row(
+                        children: const [
+                          SizedBox(
+                            width: 335,
+                            height: 250,
+                            child: Center(
+                              child: DormsEachOwner(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ]),
             ],
           ),
         ),
