@@ -260,11 +260,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       'This feature will be available when you are logged in only'),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
-                        ),
+                        "/login",
                       );
                     },
                     style: ElevatedButton.styleFrom(
