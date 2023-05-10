@@ -226,7 +226,7 @@ Widget reviewContent(Review reviews) {
           flex: 2,
           child: Text(
             reviews.review,
-            maxLines: 3,
+            maxLines: 5,
             overflow: TextOverflow.ellipsis,
           ),
         ),
