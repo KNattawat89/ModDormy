@@ -3,8 +3,10 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:moddormy_flutter/models/dorm_item.dart';
 
 import 'package:moddormy_flutter/models/image.dart';
+import 'package:moddormy_flutter/screens/dorm_detail.dart';
 
 import 'package:moddormy_flutter/screens/splash.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
@@ -849,8 +851,17 @@ class _DetailScreenState extends State<DetailScreen> {
                                       onPressed: () => Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  (const Splash()))),
+                                              builder: (context) => (DormDetail(
+                                                  dormId: widget.dorm.id,
+                                                  dormItem: DormItem(
+                                                      coverImage: '',
+                                                      dormId: widget.dorm.id,
+                                                      dormName:
+                                                          widget.dorm.name,
+                                                      isFav: false,
+                                                      maxPrice: 0,
+                                                      minPrice: 0,
+                                                      overallRate: 0))))),
                                       child: const Text('Go to post'),
                                     ),
                                   ),
