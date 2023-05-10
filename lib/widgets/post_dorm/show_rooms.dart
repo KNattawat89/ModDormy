@@ -9,6 +9,7 @@ class ShowRoom extends StatelessWidget {
   final Room room;
   final Dorm dorm;
   final String ownerId;
+
   const ShowRoom(
       {super.key,
       required this.room,
@@ -19,9 +20,13 @@ class ShowRoom extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8),
-      child: OutlinedButton(
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+          elevation: MaterialStateProperty.all<double>(0.0),
+        ),
         onPressed: () {
-          debugPrint("Room id: " + room.id.toString());
+          debugPrint("Room id: ${room.id}");
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -54,7 +59,7 @@ class ShowRoom extends StatelessWidget {
                       room.name,
                       textAlign: TextAlign.start,
                       style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w500),
+                          fontSize: 18, fontWeight: FontWeight.w500,color: Color(0xFF2A8089)),
                     ),
                     Text(
                       "Room size: ${room.size}",
@@ -62,10 +67,10 @@ class ShowRoom extends StatelessWidget {
                       style: const TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                     Text(
-                      room.price.toString() + " Baht/Month",
+                      "${room.price} Baht/Month",
                       textAlign: TextAlign.start,
                       style: const TextStyle(
-                          fontSize: 16, color: Colors.blueAccent),
+                          fontSize: 16, color: Color(0xFF2A8089)),
                     ),
                   ],
                 ),
