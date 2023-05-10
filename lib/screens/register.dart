@@ -94,7 +94,6 @@ class _RegisterFormState extends State<RegisterForm> {
                       )),
                   Container(
                     margin: const EdgeInsets.only(top: 10.0, bottom: 5),
-                  
                     child: TextFormField(
                       controller: _user,
                       autofocus: true,
@@ -124,7 +123,6 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
-                   
                     child: TextFormField(
                       controller: _fname,
                       decoration: const InputDecoration(
@@ -152,7 +150,6 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
-                   
                     child: TextFormField(
                       controller: _lname,
                       decoration: const InputDecoration(
@@ -208,7 +205,6 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
-                  
                     child: TextFormField(
                       controller: _pass,
                       obscureText: _hindOfOpen,
@@ -244,7 +240,6 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
-                   
                     child: TextFormField(
                       obscureText: _confirmPass,
                       decoration: InputDecoration(
@@ -454,7 +449,6 @@ class _RegisterFormState extends State<RegisterForm> {
                                       _isLoading = false;
                                     });
                                     debugPrint(registerAcc.statusMessage);
-                                   
                                   }
 
                                   if (_isLoading == false) {
@@ -490,7 +484,9 @@ class _RegisterFormState extends State<RegisterForm> {
                                                   padding: EdgeInsets.only(
                                                       bottom: 20.0),
                                                   child: Text(
-                                                      "Congraturations, your account has been successful created"),
+                                                    "Congraturations, your account has been successful created",
+                                                    textAlign: TextAlign.center,
+                                                  ),
                                                 ),
                                                 SizedBox(
                                                   height: 39,
@@ -533,7 +529,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                     _isLoading = false;
                                   });
                                   if (_isLoading == false) {
-                                     Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
                                   }
                                   debugPrint(e.message);
                                 }
