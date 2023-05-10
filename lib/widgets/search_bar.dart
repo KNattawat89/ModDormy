@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/models/fav_preload.dart';
 import 'package:moddormy_flutter/widgets/filter_form.dart';
 
 import '../models/filter_item.dart';
 
-
 class SearchBar extends StatefulWidget {
-  const SearchBar({Key? key, required this.filterItem, required this.refreshState}) : super(key: key);
+  const SearchBar({Key? key, required this.filterItem}) : super(key: key);
   final FilterItem filterItem;
-  final Function refreshState;
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -39,9 +38,12 @@ class _SearchBarState extends State<SearchBar> {
                 ),
                 Expanded(
                   child: TextField(
-                    onChanged: (value){
+                    onChanged: (value) {
                       widget.filterItem.search = value;
-                      widget.refreshState();
+                      if (FavPreload.homeReload != null) {
+                        FavPreload.homeReload!();
+                      }
+                      // widget.refreshState();
                     },
                     style: const TextStyle(fontSize: 14),
                     cursorColor: Colors.black87,
@@ -67,9 +69,9 @@ class _SearchBarState extends State<SearchBar> {
               showModalBottomSheet(
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                    )),
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
+                )),
                 context: context,
                 isScrollControlled: true,
                 builder: (BuildContext context) {
@@ -98,7 +100,9 @@ class _SearchBarState extends State<SearchBar> {
                             ),
                           ],
                         ),
-                        FilterForm(filterItem: widget.filterItem,refreshState: widget.refreshState,),
+                        FilterForm(
+                          filterItem: widget.filterItem,
+                        ),
                       ]),
                     ),
                   );
@@ -115,4 +119,3 @@ class _SearchBarState extends State<SearchBar> {
     );
   }
 }
-

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:moddormy_flutter/models/fav_preload.dart';
 import 'package:moddormy_flutter/models/filter_controller.dart';
 import 'package:moddormy_flutter/models/filter_item.dart';
 import 'package:moddormy_flutter/widgets/filter_facility.dart';
@@ -7,11 +9,9 @@ import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:moddormy_flutter/widgets/review/headline_filter.dart';
 
 class FilterForm extends StatefulWidget {
-  const FilterForm({Key? key, required this.filterItem, required this.refreshState}) : super(key: key);
+  const FilterForm({Key? key, required this.filterItem}) : super(key: key);
 
   final FilterItem filterItem;
-  final Function refreshState;
-
   @override
   State<FilterForm> createState() => _FilterFormState();
 }
@@ -23,7 +23,12 @@ class _FilterFormState extends State<FilterForm> {
   bool _isLoading = false;
   bool isSelect = false;
   FilterItem filterItem = FilterItem(
-      minPrice: 0, maxPrice: 0, distant: 0, overallRating: '', facilities: [],search: '');
+      minPrice: 0,
+      maxPrice: 0,
+      distant: 0,
+      overallRating: '',
+      facilities: [],
+      search: '');
 
   void selectRate(String select) {
     if (filterItem.overallRating == select) {
@@ -84,7 +89,10 @@ class _FilterFormState extends State<FilterForm> {
       widget.filterItem.maxPrice = filterItem.maxPrice;
       widget.filterItem.minPrice = filterItem.minPrice;
     });
-    widget.refreshState();
+    // widget.refreshState();
+    if (FavPreload.homeReload != null) {
+      FavPreload.homeReload!();
+    }
     Navigator.pop(context);
     // Navigator.pushReplacement(
     //   context,
@@ -149,7 +157,7 @@ class _FilterFormState extends State<FilterForm> {
                         if (int.parse(value) <
                             int.parse(controller.minPriceController.text)) {
                           return 'Max price >= min price';
-                        }else if (!RegExp(r'^\d+$').hasMatch(value)) {
+                        } else if (!RegExp(r'^\d+$').hasMatch(value)) {
                           return 'Enter only number';
                         }
                       }
@@ -224,15 +232,13 @@ class _FilterFormState extends State<FilterForm> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(
-                    5,
-                    (index) => GestureDetector(
-                          onTap: () {
-                            selectRate(
-                                (5 - index) == 5 ? "5" : "≥${5 - index}");
-                          },
-                          child: rateFilter(
-                              getRateSelection(5 - index), 5 - index),
-                        ),
+                  5,
+                  (index) => GestureDetector(
+                    onTap: () {
+                      selectRate((5 - index) == 5 ? "5" : "≥${5 - index}");
+                    },
+                    child: rateFilter(getRateSelection(5 - index), 5 - index),
+                  ),
                 ),
               )
             ],
@@ -256,21 +262,21 @@ class _FilterFormState extends State<FilterForm> {
                       selectFaci("Parking");
                     },
                     child: filterFacility(getFacilitySelection("Parking"),
-                        "Parking", Icons.car_crash),
+                        "Parking", LineIcons.car),
                   ),
                   GestureDetector(
                     onTap: () {
                       selectFaci("Wifi");
                     },
                     child: filterFacility(
-                        getFacilitySelection("Wifi"), "Wifi", Icons.wifi),
+                        getFacilitySelection("Wifi"), "Wifi", LineIcons.wifi),
                   ),
                   GestureDetector(
                     onTap: () {
                       selectFaci("Smoke-free");
                     },
                     child: filterFacility(getFacilitySelection("Smoke-free"),
-                        "Smoke-free", Icons.smoke_free),
+                        "Smoke-free", LineIcons.smokingBan),
                   ),
                 ],
               ),
@@ -287,7 +293,7 @@ class _FilterFormState extends State<FilterForm> {
                     child: filterFacility(
                         getFacilitySelection("Security guard"),
                         "Security guard",
-                        Icons.security),
+                        LineIcons.userShield),
                   ),
                   const SizedBox(
                     width: 10,
@@ -297,7 +303,7 @@ class _FilterFormState extends State<FilterForm> {
                       selectFaci("Pet friendly");
                     },
                     child: filterFacility(getFacilitySelection("Pet friendly"),
-                        "Pet friendly", Icons.pets),
+                        "Pet friendly", Icons.pets_outlined),
                   ),
                 ],
               ),
@@ -314,7 +320,7 @@ class _FilterFormState extends State<FilterForm> {
                     child: filterFacility(
                         getFacilitySelection("Air conditioner"),
                         "Air conditioner",
-                        Icons.air_outlined),
+                        Icons.ac_unit),
                   ),
                   const SizedBox(
                     width: 10,
@@ -324,7 +330,7 @@ class _FilterFormState extends State<FilterForm> {
                       selectFaci("Fan");
                     },
                     child: filterFacility(
-                        getFacilitySelection("Fan"), "Fan", FontAwesome5.fan),
+                        getFacilitySelection("Fan"), "Fan", LineIcons.fan),
                   ),
                 ],
               ),
@@ -347,9 +353,11 @@ class _FilterFormState extends State<FilterForm> {
                     distant: controller.distantController.text.isNotEmpty
                         ? double.parse(controller.distantController.text)
                         : 0,
-                    overallRating: filterItem.overallRating=='' ? '0' : filterItem.overallRating,
+                    overallRating: filterItem.overallRating == ''
+                        ? '0'
+                        : filterItem.overallRating,
                     facilities: filterItem.facilities,
-                search: '');
+                    search: '');
                 // print('min price ${filterItem.minPrice}');
                 // print('max price ${filterItem.maxPrice}');
                 // print('distant ${filterItem.distant}');
@@ -366,18 +374,24 @@ class _FilterFormState extends State<FilterForm> {
               decoration: BoxDecoration(
                   color: const Color(0xFFDC6E46),
                   borderRadius: BorderRadius.circular(30)),
-              child:
-              const Text(
-                      "Apply",
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
+              child: const Text(
+                "Apply",
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ),
-         const SizedBox(height:20,),
-         _isLoading? const CircularProgressIndicator(color: Color(0xFFDC6E46),strokeWidth: 2,) : const Text("")
+          const SizedBox(
+            height: 20,
+          ),
+          _isLoading
+              ? const CircularProgressIndicator(
+                  color: Color(0xFFDC6E46),
+                  strokeWidth: 2,
+                )
+              : const Text("")
         ],
       ),
     );

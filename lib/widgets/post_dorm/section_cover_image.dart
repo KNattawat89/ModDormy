@@ -58,12 +58,13 @@ class _CoverImageSectionState extends State<CoverImageSection> {
                   : Image.file(
                       File(widget.dorm.coverImage!.path),
                       fit: BoxFit.cover,
-                      height: 100,
-                      width: 100,
+                      height: 400,
+                      width: 400,
                     ),
             ],
           ));
-    } else { // edit
+    } else {
+      // edit
       return Padding(
           padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
           child: Column(
@@ -89,12 +90,17 @@ class _CoverImageSectionState extends State<CoverImageSection> {
                 ],
               ),
               widget.dorm.coverImage == null
-                  ? Image.network(widget.dorm.coverimageString)
+                  ? Image.network(
+                      widget.dorm.coverimageString,
+                      fit: BoxFit.cover,
+                      height: 400,
+                      width: 400,
+                    )
                   : Image.file(
                       File(widget.dorm.coverImage!.path),
                       fit: BoxFit.cover,
-                      height: 100,
-                      width: 100,
+                      height: 400,
+                      width: 400,
                     ),
             ],
           ));

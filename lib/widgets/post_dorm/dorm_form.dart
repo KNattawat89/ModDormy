@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/screens/confirm_page.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/section_contract.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/section_cover_image.dart';
@@ -14,8 +15,9 @@ import '../../models/dorm.dart';
 class DormForm extends StatefulWidget {
   final Dorm dorm;
   final bool post;
+  List<Imagestring> myimages;
 
-  const DormForm({Key? key, required this.dorm, required this.post})
+   DormForm({Key? key, required this.dorm, required this.post, required this.myimages})
       : super(key: key);
 
   @override
@@ -27,66 +29,72 @@ class _DormFormState extends State<DormForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(32),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  'Dorm Information',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          InfoSection(dorm: widget.dorm),
-          DescriptionSection(dorm: widget.dorm),
-          CoverImageSection(
-            dorm: widget.dorm,
-            post: widget.post,
-          ),
-          PhotosSection(
-            dorm: widget.dorm,
-            post: widget.post,
-          ),
-          FeatureSection(dorm: widget.dorm),
-          DistanceSection(dorm: widget.dorm),
-          ContractSection(dorm: widget.dorm),
-          const Divider(
-            thickness: 5,
-          ),
-          RoomsSection(
-            dorm: widget.dorm,
-            post: widget.post,
-          ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FloatingActionButton.extended(
-                backgroundColor: const Color(0xFFDC6E46),
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailScreen(
-                                  dorm: widget.dorm,
-                                  post: widget.post,
-                                )));
-                  }
-                },
-                label: const Text('Confirm'),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(32),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    'Dorm Information',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+            InfoSection(dorm: widget.dorm),
+            DescriptionSection(dorm: widget.dorm),
+            CoverImageSection(
+              dorm: widget.dorm,
+              post: widget.post,
+            ),
+            PhotosSection(
+              dorm: widget.dorm,
+              post: widget.post,
+              myimages: widget.myimages,
+
+            ),
+            FeatureSection(dorm: widget.dorm),
+            DistanceSection(dorm: widget.dorm),
+            ContractSection(dorm: widget.dorm),
+            const Divider(
+              thickness: 5,
+            ),
+            RoomsSection(
+              dorm: widget.dorm,
+              post: widget.post,
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FloatingActionButton.extended(
+                  backgroundColor: const Color(0xFFDC6E46),
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailScreen(
+                                    dorm: widget.dorm,
+                                    post: widget.post,
+                                    myimages: widget.myimages,
+                                  )));
+                    }
+                  },
+                  label: const Text('Confirm'),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

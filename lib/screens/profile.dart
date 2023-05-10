@@ -4,9 +4,12 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:moddormy_flutter/models/profile_reload.dart';
 import 'package:moddormy_flutter/screens/edit_profile.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/screens/post_form.dart';
+import 'package:moddormy_flutter/widgets/dorms_each_owner.dart';
+import 'package:moddormy_flutter/widgets/edit_user_form.dart';
 // import 'package:moddormy_flutter/widgets/dorms_each_owner.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
@@ -14,8 +17,22 @@ import 'package:provider/provider.dart';
 
 import '../provider/user_provider.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  void refreshState() {
+    setState(() {});
+  }
+
+  void initState() {
+    super.initState();
+    ProfilePreload.profileReload = refreshState;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +48,6 @@ class ProfilePage extends StatelessWidget {
             children: [
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Column(
-                  // when u want to update user profile on db please use this method together
-                  // it will update UserProvider as well
-                  //-----------------
-                  // UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
-                  // UserItem userProfile = await UserApiService.getUserProfile(uid, userProvider);
-                  // noted: in the getUserProfile method, it has async function already don't have to use async func.
-                  //-----------------
-
                   children: [
                     Container(
                       width: 150,
@@ -88,8 +97,8 @@ class ProfilePage extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const EditProfilePage(),
+                                    //EditUserForm()
+                                    builder: (context) => const EditUserForm(),
                                   ),
                                 );
                               },
@@ -217,12 +226,16 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                     Row(
-                      children: [
-                        Column(
-                            //children: const [DormsEachOwner()],
-                            )
+                      children: const [
+                        SizedBox(
+                          width: 335,
+                          height: 250,
+                          child: Center(
+                            child: DormsEachOwner(),
+                          ),
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ]),
