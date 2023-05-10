@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/profile_reload.dart';
 import 'package:moddormy_flutter/screens/profile.dart';
@@ -22,16 +24,12 @@ class EditUserForm extends StatefulWidget {
 
 class _EditUserFormState extends State<EditUserForm> {
   final _formkey = GlobalKey<FormState>();
+  TextEditingController _UnameController = TextEditingController();
   TextEditingController _FnameController = TextEditingController();
   TextEditingController _LnameController = TextEditingController();
   TextEditingController _TelController = TextEditingController();
   TextEditingController _EmailController = TextEditingController();
   TextEditingController _LineIDController = TextEditingController();
-  // late FocusNode focusNode1 = FocusNode();
-  // FocusNode myFocusNode2 = FocusNode();
-  // FocusNode myFocusNode3 = FocusNode();
-  // FocusNode myFocusNode4 = FocusNode();
-  // FocusNode myFocusNode5 = FocusNode();
 
   Future<void> editData(String userId) async {
     final user = Provider.of<UserProvider>(context, listen: false);
@@ -41,7 +39,7 @@ class _EditUserFormState extends State<EditUserForm> {
         '/api/profile/editUser?userId=$userId',
         data: {
           "profile_image": user.profileImage,
-          "username": user.username,
+          "username": _UnameController.text,
           "fname": _FnameController.text,
           "lname": _LnameController.text,
           "email": _EmailController.text,
@@ -52,7 +50,7 @@ class _EditUserFormState extends State<EditUserForm> {
       );
       user.updatedUser(
           user.profileImage,
-          user.username,
+          _UnameController.text,
           _FnameController.text,
           _LnameController.text,
           _EmailController.text,
@@ -69,28 +67,22 @@ class _EditUserFormState extends State<EditUserForm> {
   void initState() {
     super.initState();
     final user = Provider.of<UserProvider>(context, listen: false);
+    _UnameController.text = user.username;
     _FnameController.text = user.firstname;
     _LnameController.text = user.lastname;
     _TelController.text = user.tel;
     _EmailController.text = user.email;
     _LineIDController.text = user.lineId;
-    // focusNode1 = FocusNode();
   }
 
   @override
   void dispose() {
-    // focusNode1.dispose();
-    // myFocusNode2.dispose();
-    // myFocusNode3.dispose();
-    // myFocusNode4.dispose();
-    // myFocusNode5.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context, listen: false);
-    //late FocusNode focusNode1 = FocusNode();
     return Scaffold(
       endDrawer: const MyDrawer(),
       appBar: const MyAppbar(),
@@ -112,7 +104,8 @@ class _EditUserFormState extends State<EditUserForm> {
                             shape: BoxShape.circle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: user.profileImage != null
+                              image: user.profileImage == "" ||
+                                      user.profileImage == null
                                   ? const AssetImage(
                                       'assets/images/profileNull.png')
                                   : const AssetImage(
@@ -159,11 +152,7 @@ class _EditUserFormState extends State<EditUserForm> {
                 ])
               ],
             ),
-            const SizedBox(height: 10),
-            Text(
-              user.username,
-              style: const TextStyle(fontSize: 24),
-            ),
+
             const Padding(padding: EdgeInsets.only(bottom: 20)),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -186,6 +175,24 @@ class _EditUserFormState extends State<EditUserForm> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            const SizedBox(height: 10.0),
+                            TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: 'Username',
+                                labelStyle: TextStyle(
+                                    color: Color.fromARGB(128, 38, 38, 38)),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          DefaultSelectionStyle.defaultColor),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Color(0xFF2A8089)),
+                                ),
+                              ),
+                              controller: _UnameController,
+                            ),
                             const SizedBox(height: 10.0),
                             TextFormField(
                               //focusNode: focusNode1,
@@ -300,6 +307,7 @@ class _EditUserFormState extends State<EditUserForm> {
                 ElevatedButton(
                   onPressed: () async {
                     await editData(user.userId);
+                    // ignore: use_build_context_synchronously
                     Navigator.push(
                       context,
                       MaterialPageRoute(
