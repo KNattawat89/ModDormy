@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/models/room.dart';
@@ -499,11 +499,19 @@ class _RoomDetailState extends State<RoomDetail> {
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        const CircleAvatar(
-                          radius: 30,
-                          backgroundImage:
-                              AssetImage('assets/images/profileNull.png'),
-                        ),
+                        ownerInfo!.profileImage == null
+                            ? const CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage:
+                                    AssetImage('assets/images/profileNull.png'))
+                            : CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage: NetworkImage(
+                                  ownerInfo!.profileImage.toString(),
+                                ),
+                              ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
@@ -532,7 +540,11 @@ class _RoomDetailState extends State<RoomDetail> {
                               height: 40,
                               width: 40,
                               child: IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    final Uri url =
+                                        Uri(scheme: 'tel', path: "0945574551");
+                                    launchUrl(url);
+                                  },
                                   icon: const Icon(
                                     Icons.phone,
                                   )),
