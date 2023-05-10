@@ -60,7 +60,15 @@ class _InfoSectionState extends State<InfoSection> {
                     widget.dorm.name = nameController.text;
                   },
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), hintText: 'Dorm Name'),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF2A8089), width: 2),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      hintText: 'Dorm Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -95,7 +103,15 @@ class _InfoSectionState extends State<InfoSection> {
                     widget.dorm.houseNo = houseNoController.text;
                   },
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'House No.'),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF2A8089), width: 2),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      labelText: 'House No.'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -115,7 +131,15 @@ class _InfoSectionState extends State<InfoSection> {
                     widget.dorm.soi = soiController.text;
                   },
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Soi'),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF2A8089), width: 2),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      labelText: 'Soi'),
                 ),
               ),
             )
@@ -132,7 +156,15 @@ class _InfoSectionState extends State<InfoSection> {
                     widget.dorm.street = streetController.text;
                   },
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Street'),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF2A8089), width: 2),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      labelText: 'Street'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -155,7 +187,15 @@ class _InfoSectionState extends State<InfoSection> {
                     widget.dorm.subDistrict = subDistrictController.text;
                   },
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Sub-district'),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF2A8089), width: 2),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      labelText: 'Sub-district'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -178,7 +218,15 @@ class _InfoSectionState extends State<InfoSection> {
                     widget.dorm.district = districtController.text;
                   },
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'District'),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF2A8089), width: 2),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      labelText: 'District'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -201,7 +249,15 @@ class _InfoSectionState extends State<InfoSection> {
                     widget.dorm.city = cityController.text;
                   },
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'City'),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF2A8089), width: 2),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      labelText: 'City'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -221,7 +277,15 @@ class _InfoSectionState extends State<InfoSection> {
                     widget.dorm.zipCode = int.parse(zipCodeController.text);
                   },
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Zipcode'),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF2A8089), width: 2),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.5))),
+                      labelText: 'Zipcode'),
                   validator: (value) {
                     if (value == null || value.isEmpty || value.length != 5) {
                       return 'required 5 digit number';

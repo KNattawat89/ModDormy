@@ -59,7 +59,14 @@ class _RoomItemState extends State<RoomItem> {
                           widget.room.name = nameController.text;
                         },
                         decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.5))),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFF2A8089), width: 2),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.5))),
                             hintText: 'Room name'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -96,7 +103,15 @@ class _RoomItemState extends State<RoomItem> {
                           widget.room.price = int.parse(priceController.text);
                         },
                         decoration: const InputDecoration(
-                            border: OutlineInputBorder(), hintText: 'Price'),
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.5))),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFF2A8089), width: 2),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.5))),
+                            hintText: 'Price'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'required';
@@ -131,7 +146,14 @@ class _RoomItemState extends State<RoomItem> {
                           widget.room.size = sizeController.text;
                         },
                         decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.5))),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFF2A8089), width: 2),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.5))),
                             hintText: 'Room size'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -165,7 +187,13 @@ class _RoomItemState extends State<RoomItem> {
                 onChanged: (value) {
                   widget.room.description = descriptionController.text;
                 },
-                decoration: const InputDecoration(border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12.5))),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFF2A8089), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(12.5)))),
                 // validator: (value) {
                 //   if (value == null || value.isEmpty) {
                 //     return 'required';

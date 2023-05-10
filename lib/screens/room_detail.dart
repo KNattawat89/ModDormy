@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/models/room.dart';
@@ -185,7 +185,13 @@ class _RoomDetailState extends State<RoomDetail> {
                         right: 20,
                         child: Row(
                           children: [
-                            const Icon(Icons.wallet_rounded),
+                            const Padding(
+                              padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child: Icon(
+                                Icons.wallet_rounded,
+                                color: Colors.white,
+                              ),
+                            ),
                             Text(
                               // room price
                               '${room!.price} Bath/month',
@@ -286,8 +292,12 @@ class _RoomDetailState extends State<RoomDetail> {
                       itemBuilder: (BuildContext context, int index) {
                         return Row(
                           children: [
-                            IconFeatureMapping(
-                                name: room!.feature.roomFeatureToList()[index]),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: IconFeatureMapping(
+                                  name:
+                                      room!.feature.roomFeatureToList()[index]),
+                            ),
                             Text(room!.feature.roomFeatureToList()[index],
                                 style: const TextStyle(fontSize: 18)),
                           ],
@@ -389,10 +399,19 @@ class _RoomDetailState extends State<RoomDetail> {
                     padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
                     child: Row(
                       children: [
-                        const Icon(Icons.location_pin),
-                        Text(
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(Icons.location_pin),
+                        ),
+                        Expanded(
+                          child: Text(
                             ' Distance away from KMUTT ${widget.dorm.distance} KM',
-                            style: const TextStyle(fontSize: 18)),
+                            style: const TextStyle(fontSize: 18),
+                            softWrap: false,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -404,8 +423,11 @@ class _RoomDetailState extends State<RoomDetail> {
                       itemBuilder: (BuildContext context, int index) {
                         return Row(
                           children: [
-                            IconFeatureMapping(
-                                name: widget.dorm.feature.toList()[index]),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: IconFeatureMapping(
+                                  name: widget.dorm.feature.toList()[index]),
+                            ),
                             Text(widget.dorm.feature.toList()[index],
                                 style: const TextStyle(fontSize: 18)),
                           ],
@@ -499,11 +521,19 @@ class _RoomDetailState extends State<RoomDetail> {
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        const CircleAvatar(
-                          radius: 30,
-                          backgroundImage:
-                              AssetImage('assets/images/profileNull.png'),
-                        ),
+                        ownerInfo!.profileImage == null
+                            ? const CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage:
+                                    AssetImage('assets/images/profileNull.png'))
+                            : CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage: NetworkImage(
+                                  ownerInfo!.profileImage.toString(),
+                                ),
+                              ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
@@ -526,25 +556,36 @@ class _RoomDetailState extends State<RoomDetail> {
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
-                              height: 40,
-                              width: 40,
+                              height: 50,
+                              width: 50,
                               child: IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    final Uri url = Uri(
+                                        scheme: 'tel',
+                                        path: ownerInfo!.telephone);
+                                    launchUrl(url);
+                                  },
                                   icon: const Icon(
                                     Icons.phone,
+                                    size: 30,
                                   )),
                             ),
                             SizedBox(
-                              height: 40,
-                              width: 40,
-                              child: IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                      Icons.chat_bubble_outline_rounded)),
-                            ),
+                              height: 35,
+                              width: 35,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12.0),
+                                child: Image.network(
+                                  "https://cdn-icons-png.flaticon.com/512/124/124027.png",
+                                  fit: BoxFit.cover,
+                                  height: 30,
+                                  width: 30,
+                                ),
+                              ),
+                            )
                           ],
                         )
                       ],

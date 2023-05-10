@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/profile_reload.dart';
 import 'package:moddormy_flutter/screens/profile.dart';
@@ -22,16 +24,12 @@ class EditUserForm extends StatefulWidget {
 
 class _EditUserFormState extends State<EditUserForm> {
   final _formkey = GlobalKey<FormState>();
+  TextEditingController _UnameController = TextEditingController();
   TextEditingController _FnameController = TextEditingController();
   TextEditingController _LnameController = TextEditingController();
   TextEditingController _TelController = TextEditingController();
   TextEditingController _EmailController = TextEditingController();
   TextEditingController _LineIDController = TextEditingController();
-  // late FocusNode focusNode1 = FocusNode();
-  // FocusNode myFocusNode2 = FocusNode();
-  // FocusNode myFocusNode3 = FocusNode();
-  // FocusNode myFocusNode4 = FocusNode();
-  // FocusNode myFocusNode5 = FocusNode();
 
   Future<void> editData(String userId) async {
     final user = Provider.of<UserProvider>(context, listen: false);
@@ -41,7 +39,7 @@ class _EditUserFormState extends State<EditUserForm> {
         '/api/profile/editUser?userId=$userId',
         data: {
           "profile_image": user.profileImage,
-          "username": user.username,
+          "username": _UnameController.text,
           "fname": _FnameController.text,
           "lname": _LnameController.text,
           "email": _EmailController.text,
@@ -52,7 +50,7 @@ class _EditUserFormState extends State<EditUserForm> {
       );
       user.updatedUser(
           user.profileImage,
-          user.username,
+          _UnameController.text,
           _FnameController.text,
           _LnameController.text,
           _EmailController.text,
@@ -69,28 +67,22 @@ class _EditUserFormState extends State<EditUserForm> {
   void initState() {
     super.initState();
     final user = Provider.of<UserProvider>(context, listen: false);
+    _UnameController.text = user.username;
     _FnameController.text = user.firstname;
     _LnameController.text = user.lastname;
     _TelController.text = user.tel;
     _EmailController.text = user.email;
     _LineIDController.text = user.lineId;
-    // focusNode1 = FocusNode();
   }
 
   @override
   void dispose() {
-    // focusNode1.dispose();
-    // myFocusNode2.dispose();
-    // myFocusNode3.dispose();
-    // myFocusNode4.dispose();
-    // myFocusNode5.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context, listen: false);
-    //late FocusNode focusNode1 = FocusNode();
     return Scaffold(
       endDrawer: const MyDrawer(),
       appBar: const MyAppbar(),
@@ -99,71 +91,68 @@ class _EditUserFormState extends State<EditUserForm> {
           padding: const EdgeInsets.all(30.0),
           child: Column(children: [
             // Other widgets here
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(children: [
-                  Stack(
-                    children: [
-                      Container(
-                          width: 150,
-                          height: 150,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: user.profileImage != null
-                                  ? const AssetImage(
-                                      'assets/images/profileNull.png')
-                                  : const AssetImage(
-                                      'assets/images/profileNull.png'),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Column(children: [
+                Container(
+                  // width: 150,
+                  // height: 150,
+                  // decoration: BoxDecoration(
+                  //   shape: BoxShape.circle),
+                  child: Stack(children: [
+                    user.profileImage == "" || user.profileImage == null
+                        ? Image.asset(
+                            'assets/images/profileNull.png',
+                            scale: 3.5,
+                          )
+                        : Image.network(
+                            "http://moddormy.ivelse.com:8000${user.profileImage}"),
+                    Positioned(
+                      bottom: 2,
+                      right: 2,
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFDC6E46),
+                          shape: BoxShape.circle,
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const EditProfileImage(),
+                              ),
+                            );
+                          },
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(6, 5, 5, 5),
+                              child: Image.asset(
+                                'assets/images/edit.png',
+                                width: 17,
+                                height: 17,
+                              ),
                             ),
                           ),
-                          child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const EditProfileImage(),
-                                  ),
-                                );
-                              },
-                              child: Stack(children: [
-                                Positioned(
-                                  bottom: 2,
-                                  right: 2,
-                                  child: Container(
-                                    width: 32,
-                                    height: 32,
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFFDC6E46),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            6, 5, 5, 5),
-                                        child: Image.asset(
-                                          'assets/images/edit.png',
-                                          width: 17,
-                                          height: 17,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ])))
-                    ],
-                  ),
-                ])
-              ],
-            ),
-            const SizedBox(height: 10),
-            Text(
-              user.username,
-              style: const TextStyle(fontSize: 24),
-            ),
+                        ),
+                      ),
+                    )
+                  ]),
+                  // child: GestureDetector(
+                  //     onTap: () {
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) =>
+                  //               const EditProfileImage(),
+                  //         ),
+                  //       );
+                  //     },
+                ),
+              ]),
+            ]),
+
             const Padding(padding: EdgeInsets.only(bottom: 20)),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -186,6 +175,24 @@ class _EditUserFormState extends State<EditUserForm> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            const SizedBox(height: 10.0),
+                            TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: 'Username',
+                                labelStyle: TextStyle(
+                                    color: Color.fromARGB(128, 38, 38, 38)),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          DefaultSelectionStyle.defaultColor),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Color(0xFF2A8089)),
+                                ),
+                              ),
+                              controller: _UnameController,
+                            ),
                             const SizedBox(height: 10.0),
                             TextFormField(
                               //focusNode: focusNode1,
@@ -300,6 +307,7 @@ class _EditUserFormState extends State<EditUserForm> {
                 ElevatedButton(
                   onPressed: () async {
                     await editData(user.userId);
+                    // ignore: use_build_context_synchronously
                     Navigator.push(
                       context,
                       MaterialPageRoute(

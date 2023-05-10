@@ -137,35 +137,11 @@ class _RPhotosSectionState extends State<RPhotosSection> {
           ],
         ),
       );
-    } else if (widget.conf) {
+    } else if (widget.conf && widget.post == false) {
       return Padding(
-        padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
         child: Column(
           children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              height: 200,
-              child: GridView.builder(
-                itemCount: myRimages.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.network(
-                          myRimages[index].image,
-                          fit: BoxFit.cover,
-                          width: 100,
-                          height: 100,
-                        ),
-                      ),
-                    ],
-                  );
-                },
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
-              ),
-            ),
             widget.room.imageList.isEmpty
                 ? const SizedBox(
                     height: 1,
@@ -181,11 +157,14 @@ class _RPhotosSectionState extends State<RPhotosSection> {
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Image.file(
-                              File(widget.room.imageList[index].path),
-                              fit: BoxFit.cover,
-                              width: 200,
-                              height: 200,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12.0),
+                              child: Image.file(
+                                File(widget.room.imageList[index].path),
+                                fit: BoxFit.cover,
+                                width: 200,
+                                height: 200,
+                              ),
                             ),
                           );
                         },
@@ -220,11 +199,14 @@ class _RPhotosSectionState extends State<RPhotosSection> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Image.network(
-                          myRimages[index].image,
-                          fit: BoxFit.cover,
-                          width: 100,
-                          height: 100,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12.0),
+                          child: Image.network(
+                            myRimages[index].image,
+                            fit: BoxFit.cover,
+                            width: 100,
+                            height: 100,
+                          ),
                         ),
                       ),
                     ],
@@ -261,11 +243,14 @@ class _RPhotosSectionState extends State<RPhotosSection> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Image.file(
-                            File(widget.room.imageList[index].path),
-                            fit: BoxFit.cover,
-                            width: 200,
-                            height: 200,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: Image.file(
+                              File(widget.room.imageList[index].path),
+                              fit: BoxFit.cover,
+                              width: 200,
+                              height: 200,
+                            ),
                           ),
                         ),
                         Positioned(

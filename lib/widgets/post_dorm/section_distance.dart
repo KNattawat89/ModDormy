@@ -42,7 +42,14 @@ class _DistanceSectionState extends State<DistanceSection> {
               widget.dorm.distance = double.parse(distanceController.text);
             },
             decoration: const InputDecoration(
-                border: OutlineInputBorder(), labelText: 'Distance'),
+                border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF2A8089), width: 2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))), labelText: 'Distance'),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Enter';

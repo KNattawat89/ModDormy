@@ -53,7 +53,14 @@ class _ContractSectionState extends State<ContractSection> {
                 widget.dorm.advPayment = int.parse(advPaymentController.text);
               },
               decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Advance payment'),
+                  border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF2A8089), width: 2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))), labelText: 'Advance payment'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Enter';
@@ -72,7 +79,14 @@ class _ContractSectionState extends State<ContractSection> {
                 widget.dorm.electric = double.parse(electricController.text);
               },
               decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Electric price'),
+                  border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF2A8089), width: 2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))), labelText: 'Electric price'),
             ),
           ),
           Padding(
@@ -85,7 +99,14 @@ class _ContractSectionState extends State<ContractSection> {
                 widget.dorm.water = double.parse(waterController.text);
               },
               decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Water price'),
+                  border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF2A8089), width: 2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))), labelText: 'Water price'),
             ),
           ),
           Padding(
@@ -97,7 +118,14 @@ class _ContractSectionState extends State<ContractSection> {
                 widget.dorm.other = otherController.text;
               },
               decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'other'),
+                  border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF2A8089), width: 2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.5))), labelText: 'other'),
             ),
           ),
         ],
