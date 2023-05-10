@@ -3,17 +3,16 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:line_icons/line_icon.dart';
+
 import 'package:moddormy_flutter/models/image.dart';
-import 'package:moddormy_flutter/provider/user_provider.dart';
+
+import 'package:moddormy_flutter/screens/splash.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/room_image.dart';
-import 'package:provider/provider.dart';
 import '../models/dorm.dart';
-import 'dorm_detail.dart';
 
 class DetailScreen extends StatefulWidget {
   final bool post;
@@ -477,7 +476,10 @@ class _DetailScreenState extends State<DetailScreen> {
                         padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
                         child: Row(
                           children: [
-                            const Icon(Icons.location_pin),
+                            const Padding(
+                              padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child: Icon(Icons.location_pin),
+                            ),
                             Text(
                                 ' Distance away from KMUTT\n${widget.dorm.distance} KM',
                                 style: const TextStyle(fontSize: 18)),
@@ -492,8 +494,13 @@ class _DetailScreenState extends State<DetailScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return Row(
                               children: [
-                                IconFeatureMapping(
-                                    name: widget.dorm.feature.toList()[index]),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                  child: IconFeatureMapping(
+                                      name:
+                                          widget.dorm.feature.toList()[index]),
+                                ),
                                 Text(' ${widget.dorm.feature.toList()[index]} ',
                                     style: const TextStyle(fontSize: 18)),
                               ],
@@ -723,9 +730,13 @@ class _DetailScreenState extends State<DetailScreen> {
                               itemBuilder: (BuildContext context, int j) {
                                 return Row(
                                   children: [
-                                    IconFeatureMapping(
-                                        name: widget.dorm.rooms[index].feature
-                                            .roomFeatureToList()[j]),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                      child: IconFeatureMapping(
+                                          name: widget.dorm.rooms[index].feature
+                                              .roomFeatureToList()[j]),
+                                    ),
                                     Text(
                                         '${widget.dorm.rooms[index].feature.roomFeatureToList()[j]} ',
                                         style: const TextStyle(fontSize: 18)),
@@ -838,8 +849,8 @@ class _DetailScreenState extends State<DetailScreen> {
                                       onPressed: () => Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => (DormDetail(
-                                                  dormId: widget.dorm.id)))),
+                                              builder: (context) =>
+                                                  (const Splash()))),
                                       child: const Text('Go to post'),
                                     ),
                                   ),
