@@ -137,6 +137,7 @@ class _RPhotosSectionState extends State<RPhotosSection> {
           ],
         ),
       );
+      // Edit conf
     } else if (widget.conf && widget.post == false) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -177,6 +178,7 @@ class _RPhotosSectionState extends State<RPhotosSection> {
           ],
         ),
       );
+      //edit Form?
     } else {
       return Padding(
         padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
