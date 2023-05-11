@@ -36,7 +36,7 @@ class _DistanceSectionState extends State<DistanceSection> {
           //Distance
           padding: const EdgeInsets.all(8),
           child: TextFormField(
-            keyboardType: TextInputType.number,
+            //keyboardType: TextInputType.number,
             controller: distanceController,
             onChanged: (value) {
               widget.dorm.distance = double.parse(distanceController.text);

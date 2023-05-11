@@ -47,7 +47,7 @@ class _ContractSectionState extends State<ContractSection> {
             //advance payment
             padding: const EdgeInsets.all(8),
             child: TextFormField(
-              keyboardType: TextInputType.number,
+              //keyboardType: TextInputType.number,
               controller: advPaymentController,
               onChanged: (value) {
                 widget.dorm.advPayment = int.parse(advPaymentController.text);
@@ -73,7 +73,7 @@ class _ContractSectionState extends State<ContractSection> {
             //electric price
             padding: const EdgeInsets.all(8),
             child: TextFormField(
-              keyboardType: TextInputType.number,
+              //keyboardType: TextInputType.number,
               controller: electricController,
               onChanged: (value) {
                 widget.dorm.electric = double.parse(electricController.text);
@@ -93,7 +93,7 @@ class _ContractSectionState extends State<ContractSection> {
             //water price
             padding: const EdgeInsets.all(8),
             child: TextFormField(
-              keyboardType: TextInputType.number,
+              //keyboardType: TextInputType.number,
               controller: waterController,
               onChanged: (value) {
                 widget.dorm.water = double.parse(waterController.text);
