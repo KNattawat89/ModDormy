@@ -302,7 +302,7 @@ class _InfoSectionState extends State<InfoSection> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
-                  keyboardType: TextInputType.number,
+                  // keyboardType: TextInputType.number,
                   controller: zipCodeController,
                   onChanged: (value) {
                     widget.dorm.zipCode = int.parse(zipCodeController.text);

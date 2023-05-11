@@ -69,7 +69,7 @@ class _RoomItemState extends State<RoomItem> {
                                     BorderRadius.all(Radius.circular(12.5))),
                             hintText: 'Room name'),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.isEmpty || value == '') {
                             return 'required';
                           }
                           return null;
@@ -97,7 +97,7 @@ class _RoomItemState extends State<RoomItem> {
                   child: Column(
                     children: [
                       TextFormField(
-                        keyboardType: TextInputType.number,
+                        //keyboardType: TextInputType.number,
                         controller: priceController,
                         onChanged: (value) {
                           widget.room.price = int.parse(priceController.text);
@@ -113,7 +113,7 @@ class _RoomItemState extends State<RoomItem> {
                                     BorderRadius.all(Radius.circular(12.5))),
                             hintText: 'Price'),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.isEmpty || value=='') {
                             return 'required';
                           }
                           return null;
