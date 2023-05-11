@@ -307,7 +307,7 @@ class _DormDetailState extends State<DormDetail> {
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.fromLTRB(8, 24, 8, 0),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -319,13 +319,13 @@ class _DormDetailState extends State<DormDetail> {
                               fontSize: 20, fontWeight: FontWeight.w500),
                         ),
                         Padding(
-                            padding: const EdgeInsets.only(top: 16, bottom: 16),
+                            padding: const EdgeInsets.only(top: 0, bottom: 16),
                             child: DescriptionTextWidget(
                               text: dorm!.description,
                             )),
                       ])),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
@@ -345,8 +345,15 @@ class _DormDetailState extends State<DormDetail> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.25,
+                  height: MediaQuery.of(context).size.height * 0.15,
                   child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
+                            // childAspectRatio: 3 / 2,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0),
+                    scrollDirection: Axis.horizontal,
                     itemCount: myimages.length,
                     itemBuilder: (BuildContext context, int j) {
                       return Padding(
@@ -365,14 +372,11 @@ class _DormDetailState extends State<DormDetail> {
                         ),
                       );
                     },
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
@@ -396,28 +400,28 @@ class _DormDetailState extends State<DormDetail> {
                 ),
 
               const Padding(
-                padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                padding: EdgeInsets.fromLTRB(8, 16, 0, 0),
                 child: Text("Address",
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                padding: const EdgeInsets.fromLTRB(16, 8, 8, 16),
                 child: Text(
                     '${dorm!.houseNo} ${dorm!.soi} ${dorm!.street} ${dorm!.subDistrict} ${dorm!.district} ${dorm!.city} ${dorm!.zipCode}',
                     style: const TextStyle(fontSize: 16, color: Colors.grey)),
               ),
               const Divider(
-                thickness: 5,
+                thickness: 3,
               ),
               const Padding(
-                padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                padding: EdgeInsets.fromLTRB(8, 8, 0, 0),
                 child: Text("Contact Detail",
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
                 child: Row(
                   children: [
                     const Text(
@@ -433,7 +437,7 @@ class _DormDetailState extends State<DormDetail> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
                 child: Row(
                   children: [
                     const Text(
@@ -449,11 +453,11 @@ class _DormDetailState extends State<DormDetail> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
                 child: Row(
                   children: [
                     const Text(
-                      'Water price :',
+                      'Water price : ',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
@@ -465,13 +469,15 @@ class _DormDetailState extends State<DormDetail> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.fromLTRB(16, 8, 0, 16),
                 child: Row(
                   children: [
                     const Text(
                       'Other : ',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          overflow: TextOverflow.ellipsis),
                     ),
                     Text(
                       dorm!.other,
@@ -481,7 +487,7 @@ class _DormDetailState extends State<DormDetail> {
                 ),
               ),
               const Divider(
-                thickness: 5,
+                thickness: 3,
               ),
               // REVIEW HERE
               DormReview(dormId: widget.dormId),
