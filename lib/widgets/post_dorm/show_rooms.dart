@@ -59,7 +59,9 @@ class ShowRoom extends StatelessWidget {
                       room.name,
                       textAlign: TextAlign.start,
                       style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w500,color: Color(0xFF2A8089)),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
                     ),
                     Text(
                       "Room size: ${room.size}",
@@ -70,7 +72,9 @@ class ShowRoom extends StatelessWidget {
                       "${room.price} Baht/Month",
                       textAlign: TextAlign.start,
                       style: const TextStyle(
-                          fontSize: 16, color: Color(0xFF2A8089)),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF2A8089)),
                     ),
                   ],
                 ),
