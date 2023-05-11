@@ -100,7 +100,10 @@ class _DormsEachOwnerState extends State<DormsEachOwner> {
                   size: const Size.fromRadius(39),
                   child: Image.network(dorm.coverImage.toString())),
             ),
-            title: Text(dorm.dormName),
+            title: Text(
+              dorm.dormName,
+              overflow: TextOverflow.ellipsis,
+            ),
             subtitle: Text(dorm.createdAt.toString().substring(0, 10)),
             trailing: AspectRatio(
               aspectRatio: 1.8,
