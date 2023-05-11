@@ -371,8 +371,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                   borderRadius: BorderRadius.circular(12.5)),
                             ),
                             onPressed: () {
-                              Navigator.pop(
-                                  context, ModalRoute.withName('/register'));
+                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginPage()), (route) => false);
                             },
                             child: const Text(
                               "Back to login",
@@ -503,10 +502,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                                                         12.5)),
                                                       ),
                                                       onPressed: () {
-                                                        Navigator.popUntil(
-                                                            context,
-                                                            ModalRoute.withName(
-                                                                '/login'));
+                                                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginPage()), (route) => false);
                                                       },
                                                       child: const Text(
                                                         "Continue",

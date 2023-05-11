@@ -154,7 +154,7 @@ class _LoginFormState extends State<LoginForm> {
               children: [
                 TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/forgotPass");
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => (const ForgotPassPage())));
                     },
                     child: const Text(
                       "Forgot password?",
@@ -246,7 +246,7 @@ class _LoginFormState extends State<LoginForm> {
                       }
                       if (_isLoading == false) {
                         // ignore: use_build_context_synchronously
-                        Navigator.popAndPushNamed(context, "/home");
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
                       }
                       // ignore: use_build_context_synchronously
                     } on FirebaseAuthException catch (e) {
@@ -285,7 +285,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/register");
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => (const RegisterPage())));
                     },
                     child: const Text(
                       "Create",

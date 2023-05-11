@@ -36,6 +36,7 @@ class _DetailScreenState extends State<DetailScreen> {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   String? coverImageFileName;
   List<String> coverImageList = [];
+  bool success = false;
 
   void uploadImage(XFile? file, bool d) async {
     try {
@@ -171,6 +172,7 @@ class _DetailScreenState extends State<DetailScreen> {
         print(postroom.data["room_id"]);
         uploadRoomImages(
             widget.dorm.rooms[i].imageList, postroom.data["room_id"]);
+        success = true;
       }
     } on DioError catch (e) {
       print("room error ${e.response} $e");
@@ -785,89 +787,158 @@ class _DetailScreenState extends State<DetailScreen> {
                         heroTag: "btn2",
                         backgroundColor: const Color(0xFFDC6E46),
                         onPressed: () {
+                          //post
                           if (widget.post) {
-                            // uploadImage(widget.dorm.coverImage);
                             postDormDetail();
+                            //success
+                            if (success) {
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  backgroundColor: const Color(0xFFD9D9D9),
+                                  title: const Icon(
+                                    Icons.verified_rounded,
+                                    color: Color(0xff2a8089),
+                                    size: 100,
+                                  ),
+                                  content: const Text(
+                                    'Your dorm information has been posted!',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  actions: <Widget>[
+                                    Center(
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFFDC6E46),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('Go to post'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                              //fail
+                            } else {
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  backgroundColor: const Color(0xFFD9D9D9),
+                                  title: const Icon(
+                                    Icons.cancel_outlined,
+                                    color: Color.fromARGB(255, 137, 42, 42),
+                                    size: 100,
+                                  ),
+                                  content: const Text(
+                                    'Something went wrong try again later',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  actions: <Widget>[
+                                    Center(
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFFDC6E46),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('Go to Back'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
                           } else {
                             updateDormDetail();
-                          }
-                          if (widget.post) {
-                            showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                backgroundColor: const Color(0xFFD9D9D9),
-                                title: const Icon(
-                                  Icons.verified_rounded,
-                                  color: Color(0xff2a8089),
-                                  size: 100,
-                                ),
-                                content: const Text(
-                                  'Your dorm information has been posted!',
-                                  textAlign: TextAlign.center,
-                                ),
-                                actions: <Widget>[
-                                  Center(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFDC6E46),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                      ),
-                                      onPressed: () => Navigator.pop(context),
-                                      child: const Text('Go to post'),
-                                    ),
+                            if (success) {
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  backgroundColor: const Color(0xFFD9D9D9),
+                                  title: const Icon(
+                                    Icons.verified_rounded,
+                                    color: Color(0xff2a8089),
+                                    size: 100,
                                   ),
-                                ],
-                              ),
-                            );
-                          } else {
-                            showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                backgroundColor: const Color(0xFFD9D9D9),
-                                title: const Icon(
-                                  Icons.verified_rounded,
-                                  color: Color(0xff2a8089),
-                                  size: 100,
-                                ),
-                                content: const Text(
-                                  'Your dorm information has been updated!',
-                                  textAlign: TextAlign.center,
-                                ),
-                                actions: <Widget>[
-                                  Center(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFDC6E46),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                      ),
-                                      onPressed: () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => (DormDetail(
-                                                  dormId: widget.dorm.id,
-                                                  dormItem: DormItem(
-                                                      coverImage: '',
-                                                      dormId: widget.dorm.id,
-                                                      dormName:
-                                                          widget.dorm.name,
-                                                      isFav: false,
-                                                      maxPrice: 0,
-                                                      minPrice: 0,
-                                                      overallRate: 0))))),
-                                      child: const Text('Go to post'),
-                                    ),
+                                  content: const Text(
+                                    'Your dorm information has been updated!',
+                                    textAlign: TextAlign.center,
                                   ),
-                                ],
-                              ),
-                            );
+                                  actions: <Widget>[
+                                    Center(
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFFDC6E46),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                        onPressed: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    (DormDetail(
+                                                        dormId: widget.dorm.id,
+                                                        dormItem: DormItem(
+                                                            coverImage: '',
+                                                            dormId:
+                                                                widget.dorm.id,
+                                                            dormName: widget
+                                                                .dorm.name,
+                                                            isFav: false,
+                                                            maxPrice: 0,
+                                                            minPrice: 0,
+                                                            overallRate: 0))))),
+                                        child: const Text('Go to post'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  backgroundColor: const Color(0xFFD9D9D9),
+                                  title: const Icon(
+                                    Icons.cancel_outlined,
+                                    color: Color.fromARGB(255, 137, 42, 42),
+                                    size: 100,
+                                  ),
+                                  content: const Text(
+                                    'Something went wrong try again later',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  actions: <Widget>[
+                                    Center(
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFFDC6E46),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('Go to Back'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
                           }
                         },
                         label: const Text('Confirm')),

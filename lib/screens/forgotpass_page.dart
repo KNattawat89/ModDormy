@@ -39,7 +39,8 @@ class _ForgotFormState extends State<ForgotForm> {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: _email.text);
       //ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, "/resetPass");
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => (const ResetPassPage())));
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
     }
@@ -115,8 +116,7 @@ class _ForgotFormState extends State<ForgotForm> {
                                 borderRadius: BorderRadius.circular(12.5)),
                           ),
                           onPressed: () {
-                            Navigator.pop(
-                                context, ModalRoute.withName('forgotPass'));
+                            Navigator.pop(context);
                           },
                           child: const Text(
                             "Back to login",

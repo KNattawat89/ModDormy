@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/fav_preload.dart';
+import 'package:moddormy_flutter/screens/home.dart';
 
 class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppbar({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: const Color(0xFFDC6E46),
       actions: [
-        Builder(builder: (BuildContext context) {
+        Builder(builder: (BuildContext context) { 
           return IconButton(
             onPressed: () {
               Scaffold.of(context).openEndDrawer();
@@ -33,7 +34,7 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
           icon: Image.asset('assets/logo/Logo.png'),
           onPressed: () => {
                 if (FavPreload.homeReload != null) {FavPreload.homeReload!()},
-                Navigator.popUntil(context, ModalRoute.withName('/home')),
+                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false)
               }),
       leadingWidth: 100,
     );
