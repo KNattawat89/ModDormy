@@ -21,7 +21,6 @@ class _InfoSectionState extends State<InfoSection> {
   final zipCodeController = TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // Step 2 <- SEE HERE
     nameController.text = widget.dorm.name;
@@ -41,14 +40,27 @@ class _InfoSectionState extends State<InfoSection> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: SizedBox(
                   width: 130,
-                  child: Text(
-                    'Dorm name',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  child: Row(
+                    children: const [
+                      Text(
+                        'Dorm name',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        '*',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red),
+                      ),
+                    ],
                   )),
             ),
             Expanded(
@@ -70,7 +82,7 @@ class _InfoSectionState extends State<InfoSection> {
                               BorderRadius.all(Radius.circular(12.5))),
                       hintText: 'Dorm Name'),
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null || value.isEmpty || value == '') {
                       return 'required';
                     }
                     return null;
@@ -80,15 +92,28 @@ class _InfoSectionState extends State<InfoSection> {
             ),
           ],
         ),
-        Row(children: const [
+        Row(children: [
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: SizedBox(
                 width: 100,
-                child: Text(
-                  'Address',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                child: Row(
+                  children: const [
+                    Text(
+                      'Address',
+                      textAlign: TextAlign.start,
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                    ),
+                    Text(
+                      '*',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.red),
+                    ),
+                  ],
                 )),
           ),
         ]),
@@ -111,7 +136,8 @@ class _InfoSectionState extends State<InfoSection> {
                               BorderSide(color: Color(0xFF2A8089), width: 2),
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
-                      labelText: 'House No.'),
+                      labelText: 'House No.*',
+                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -139,7 +165,8 @@ class _InfoSectionState extends State<InfoSection> {
                               BorderSide(color: Color(0xFF2A8089), width: 2),
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
-                      labelText: 'Soi'),
+                      labelText: 'Soi',
+                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
                 ),
               ),
             )
@@ -164,7 +191,8 @@ class _InfoSectionState extends State<InfoSection> {
                               BorderSide(color: Color(0xFF2A8089), width: 2),
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
-                      labelText: 'Street'),
+                      labelText: 'Street*',
+                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -195,7 +223,8 @@ class _InfoSectionState extends State<InfoSection> {
                               BorderSide(color: Color(0xFF2A8089), width: 2),
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
-                      labelText: 'Sub-district'),
+                      labelText: 'Sub-district*',
+                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -226,7 +255,8 @@ class _InfoSectionState extends State<InfoSection> {
                               BorderSide(color: Color(0xFF2A8089), width: 2),
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
-                      labelText: 'District'),
+                      labelText: 'District*',
+                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -257,7 +287,8 @@ class _InfoSectionState extends State<InfoSection> {
                               BorderSide(color: Color(0xFF2A8089), width: 2),
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
-                      labelText: 'City'),
+                      labelText: 'City*',
+                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -285,7 +316,8 @@ class _InfoSectionState extends State<InfoSection> {
                               BorderSide(color: Color(0xFF2A8089), width: 2),
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
-                      labelText: 'Zipcode'),
+                      labelText: 'Zipcode*',
+                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
                   validator: (value) {
                     if (value == null || value.isEmpty || value.length != 5) {
                       return 'required 5 digit number';

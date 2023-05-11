@@ -24,12 +24,24 @@ class _DescriptionSectionState extends State<DescriptionSection> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.all(8),
-          child: Text(
-            'Dorm description',
-            textAlign: TextAlign.start,
-            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+            children: const [
+              Text(
+                'Dorm description',
+                textAlign: TextAlign.start,
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+              ),
+              Text(
+                '*',
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.red),
+              ),
+            ],
           ),
         ),
         Padding(
@@ -48,12 +60,12 @@ class _DescriptionSectionState extends State<DescriptionSection> {
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFF2A8089), width: 2),
                     borderRadius: BorderRadius.all(Radius.circular(12.5)))),
-            // validator: (value) {
-            //   if (value == null || value.isEmpty) {
-            //     return 'required';
-            //   }
-            //   return null;
-            // },
+            validator: (value) {
+              if (value == null || value.isEmpty || value == '') {
+                return 'required';
+              }
+              return null;
+            },
           ),
         ),
       ],

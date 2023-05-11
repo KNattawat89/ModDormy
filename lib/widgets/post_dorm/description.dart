@@ -46,8 +46,8 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Text(
-                        flag ? "show more" : "show less",
-                        style: const TextStyle(color: Colors.blue),
+                        flag ? "SHOW MORE" : "SHOW LESS",
+                        style: const TextStyle(color: Color(0xFF2A8089)),
                       ),
                     ],
                   ),
