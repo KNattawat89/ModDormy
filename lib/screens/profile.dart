@@ -42,6 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
     if (user.userId != '' && FirebaseAuth.instance.currentUser != null) {
       String name = "Name  :   ${user.firstname} ${user.lastname}";
       return Scaffold(
+          backgroundColor: const Color(0xFFFFF8F0),
           endDrawer: const MyDrawer(),
           appBar: const MyAppbar(),
           body: Padding(
@@ -252,6 +253,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ])));
     } else {
       return Scaffold(
+        backgroundColor: const Color(0xFFFFF8F0),
         endDrawer: const MyDrawer(),
         appBar: const MyAppbar(),
         body: Column(
@@ -263,21 +265,36 @@ class _ProfilePageState extends State<ProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Image.asset(
+                    'assets/images/exclamation-mark.png',
+                    scale: 4,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   const Text(
-                      'This feature will be available when you are logged in only'),
+                    'This feature will be available when you are logged in only',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ( const LoginPage()))
-                      );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => (const LoginPage())));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(
-                          237, 215, 106, 56), // set background color
-                    ),
+                        backgroundColor:
+                            const Color.fromARGB(237, 215, 106, 56),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15,
+                            horizontal: 30) // set background color
+                        ),
                     child: const Text('Login'),
-                  ),
+                  )
                 ],
               ),
             ),

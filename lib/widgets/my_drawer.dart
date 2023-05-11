@@ -14,6 +14,7 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     UserProvider user = Provider.of<UserProvider>(context);
     return Drawer(
+      backgroundColor: Color(0xFFFFF8F0),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
