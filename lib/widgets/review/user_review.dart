@@ -105,7 +105,7 @@ Widget userHeader(
               const SizedBox(width: 4.0),
               Text(
                 '(${reviews.ratingOverall.toStringAsFixed(1)})',
-                style: const TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12, color: Color(0xff858585)),
               ),
             ],
           ),
@@ -205,7 +205,11 @@ Widget showDeleteButton(
             },
           );
         },
-        icon: const Icon(Icons.delete_outline),
+        icon: Image.asset(
+          'assets/images/delete.png',
+          height: 20,
+          width: 20,
+        ),
         color: const Color(0xffDC6E46));
   }
   return const SizedBox(

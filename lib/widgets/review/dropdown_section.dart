@@ -48,7 +48,7 @@ class _DropdownSectionState extends State<DropdownSection> {
             onChanged: (int? newValue) {
               setState(() => widget.review.ratingPrice = newValue!);
             },
-            items: <int>[1, 2, 3, 4, 5].map((int value) {
+            items: <int>[5, 4, 3, 2, 1].map((int value) {
               return DropdownMenuItem<int>(
                 value: value,
                 child: Row(
@@ -110,7 +110,7 @@ class _DropdownSectionState extends State<DropdownSection> {
             onChanged: (int? newValue) {
               setState(() => widget.review.ratingLocation = newValue!);
             },
-            items: <int>[1, 2, 3, 4, 5].map((int value) {
+            items: <int>[5, 4, 3, 2, 1].map((int value) {
               return DropdownMenuItem<int>(
                 value: value,
                 child: Row(
@@ -172,7 +172,7 @@ class _DropdownSectionState extends State<DropdownSection> {
             onChanged: (int? newValue) {
               setState(() => widget.review.ratingFacility = newValue!);
             },
-            items: <int>[1, 2, 3, 4, 5].map((int value) {
+            items: <int>[5, 4, 3, 2, 1].map((int value) {
               return DropdownMenuItem<int>(
                 value: value,
                 child: Row(
@@ -233,7 +233,7 @@ class _DropdownSectionState extends State<DropdownSection> {
             onChanged: (int? newValue) {
               setState(() => widget.review.ratingSanitary = newValue!);
             },
-            items: <int>[1, 2, 3, 4, 5].map((int value) {
+            items: <int>[5, 4, 3, 2, 1].map((int value) {
               return DropdownMenuItem<int>(
                 value: value,
                 child: Row(
@@ -295,7 +295,7 @@ class _DropdownSectionState extends State<DropdownSection> {
             onChanged: (int? newValue) {
               setState(() => widget.review.ratingSecurity = newValue!);
             },
-            items: <int>[1, 2, 3, 4, 5].map((int value) {
+            items: <int>[15, 4, 3, 2, 1].map((int value) {
               return DropdownMenuItem<int>(
                 value: value,
                 child: Row(
