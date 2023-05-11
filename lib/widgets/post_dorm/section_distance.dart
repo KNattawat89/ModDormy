@@ -69,7 +69,7 @@ class _DistanceSectionState extends State<DistanceSection> {
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFF2A8089), width: 2),
                     borderRadius: BorderRadius.all(Radius.circular(12.5))),
-                labelText: 'Distance*',
+                labelText: 'Distance* (KM)',
                 labelStyle: TextStyle(color: Color.fromARGB(255, 85, 85, 85))),
             validator: (value) {
               if (value == null || value.isEmpty) {

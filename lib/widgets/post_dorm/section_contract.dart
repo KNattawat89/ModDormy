@@ -71,7 +71,7 @@ class _ContractSectionState extends State<ContractSection> {
                       borderSide:
                           BorderSide(color: Color(0xFF2A8089), width: 2),
                       borderRadius: BorderRadius.all(Radius.circular(12.5))),
-                  labelText: 'Advance payment*',
+                  labelText: 'Advance payment* (Months)',
                   labelStyle:
                       TextStyle(color: Color.fromARGB(255, 85, 85, 85))),
               validator: (value) {
@@ -98,7 +98,7 @@ class _ContractSectionState extends State<ContractSection> {
                       borderSide:
                           BorderSide(color: Color(0xFF2A8089), width: 2),
                       borderRadius: BorderRadius.all(Radius.circular(12.5))),
-                  labelText: 'Electric price*',
+                  labelText: 'Electric price* (baht/unit)',
                   labelStyle:
                       TextStyle(color: Color.fromARGB(255, 85, 85, 85))),
             ),
@@ -119,7 +119,7 @@ class _ContractSectionState extends State<ContractSection> {
                       borderSide:
                           BorderSide(color: Color(0xFF2A8089), width: 2),
                       borderRadius: BorderRadius.all(Radius.circular(12.5))),
-                  labelText: 'Water price*',
+                  labelText: 'Water price* (baht/unit)',
                   labelStyle:
                       TextStyle(color: Color.fromARGB(255, 85, 85, 85))),
             ),
