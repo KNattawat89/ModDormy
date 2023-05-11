@@ -16,6 +16,7 @@ class RoomDetail extends StatefulWidget {
   final Dorm dorm;
   final int roomNo;
   final String ownerId;
+
   const RoomDetail(
       {super.key,
       required this.roomNo,
@@ -105,7 +106,7 @@ class _RoomDetailState extends State<RoomDetail> {
     }
     return Scaffold(
       appBar: const MyAppbar(),
-      drawer: const MyDrawer(),
+      endDrawer: const MyDrawer(),
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(20),
@@ -519,22 +520,23 @@ class _RoomDetailState extends State<RoomDetail> {
                       children: const [CircularProgressIndicator()],
                     )
                   : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ownerInfo!.profileImage == null
-                            ? const CircleAvatar(
-                                radius: 30,
-                                backgroundColor: Colors.transparent,
-                                backgroundImage:
-                                    AssetImage('assets/images/profileNull.png'))
-                            : CircleAvatar(
-                                radius: 30,
-                                backgroundColor: Colors.transparent,
-                                backgroundImage: NetworkImage(
-                                  ownerInfo!.profileImage.toString(),
-                                ),
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ownerInfo!.profileImage == null
+                          ? const CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: AssetImage(
+                                  'assets/images/profileNull.png'))
+                          : CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: NetworkImage(
+                                ownerInfo!.profileImage.toString(),
                               ),
-                        Padding(
+                            ),
+                      Expanded(
+                        child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -543,53 +545,59 @@ class _RoomDetailState extends State<RoomDetail> {
                               Text(
                                 '${ownerInfo!.firstname} ${ownerInfo!.lastname}',
                                 style: const TextStyle(
-                                  fontSize: 16,
-                                ),
+                                    fontSize: 16,
+                                    overflow: TextOverflow.ellipsis),
                               ),
                               const Text(
                                 'Owner',
-                                style:
-                                    TextStyle(fontSize: 16, color: Colors.grey),
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.grey),
                               )
                             ],
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 50,
-                              width: 50,
-                              child: IconButton(
-                                  onPressed: () {
-                                    final Uri url = Uri(
-                                        scheme: 'tel',
-                                        path: ownerInfo!.telephone);
-                                    launchUrl(url);
-                                  },
-                                  icon: const Icon(
-                                    Icons.phone,
-                                    size: 30,
-                                  )),
-                            ),
-                            SizedBox(
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: IconButton(
+                                onPressed: () {
+                                  String url =
+                                      'tel://${ownerInfo!.telephone}';
+                                  launch(url);
+                                },
+                                icon: const Icon(
+                                  Icons.phone,
+                                  size: 30,
+                                )),
+                          ),
+                          SizedBox(
                               height: 35,
                               width: 35,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12.0),
-                                child: Image.network(
-                                  "https://cdn-icons-png.flaticon.com/512/124/124027.png",
-                                  fit: BoxFit.cover,
-                                  height: 30,
-                                  width: 30,
+                              child: GestureDetector(
+                                onTap: () {
+                                  String url =
+                                      'http://line.me/ti/p/~${ownerInfo?.lineId}';
+                                  launch(url);
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  child: Image.network(
+                                    "https://cdn-icons-png.flaticon.com/512/124/124027.png",
+                                    fit: BoxFit.cover,
+                                    height: 30,
+                                    width: 30,
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    )
+                              ))
+                        ],
+                      )
+                    ],
+                  )
             ],
           ),
         ),

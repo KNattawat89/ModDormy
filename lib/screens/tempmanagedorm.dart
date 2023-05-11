@@ -39,11 +39,11 @@ class _tempMDState extends State<tempMD> {
                 child: const Text('post')),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              (const DormDetail(dormId: 37))));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) =>
+                  //             //(const DormDetail(dormId: 37))));
                 },
                 child: const Text('View dorm detail'))
           ],

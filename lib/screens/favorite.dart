@@ -1,15 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/dorm_list.dart';
+import 'package:moddormy_flutter/screens/dorm_detail.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import '../models/dorm_item.dart';
 import '../utilities/caller.dart';
 import '../widgets/dorm_info_home.dart';
 import '../widgets/my_appbar.dart';
+import 'dorm_detail.dart';
 
 class FavoritePage extends StatefulWidget {
-  const FavoritePage({Key? key})
-      : super(key: key);
+  const FavoritePage({Key? key}) : super(key: key);
 
   @override
   State<FavoritePage> createState() => _FavoritePageState();
@@ -28,12 +29,7 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   void initState() {
     super.initState();
-    print("fav screen init state");
-    // if(FavPreload.favs != null){
-    //   setState(() {
-    //     favDorm = FavPreload.favs!;
-    //   });
-    // }
+    debugPrint("fav screen init state");
     if (user != null) {
       getFavDorm();
     }
@@ -53,6 +49,9 @@ class _FavoritePageState extends State<FavoritePage> {
       });
       print("gatfaved");
     } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
       debugPrint(e.toString());
     }
   }
@@ -128,8 +127,14 @@ class _FavoritePageState extends State<FavoritePage> {
                         children: List.generate(favDorm.length, (index) {
                           return GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, '/dorms/${favDorm[index].dormId}');
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => (DormDetail(
+                                            dormId: favDorm[index].dormId,
+                                            dormItem: favDorm[index],
+                                            removeFav: removeFav,
+                                          ))));
                             },
                             child: DormInfoHome(
                               dormItem: favDorm[index],

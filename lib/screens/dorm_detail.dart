@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
@@ -10,12 +12,21 @@ import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/description.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/show_rooms.dart';
 import 'package:moddormy_flutter/widgets/review.dart';
+import 'package:provider/provider.dart';
 
+import '../models/dorm_item.dart';
+import '../models/fav_preload.dart';
 import '../models/review.dart';
+import '../provider/user_provider.dart';
 
 class DormDetail extends StatefulWidget {
-  const DormDetail({Key? key, required this.dormId}) : super(key: key);
+  const DormDetail(
+      {Key? key, required this.dormId, required this.dormItem, this.removeFav})
+      : super(key: key);
   final int dormId;
+  final DormItem dormItem;
+  final Function? removeFav;
+
   @override
   State<DormDetail> createState() => _DormDetailState();
 }
@@ -23,9 +34,10 @@ class DormDetail extends StatefulWidget {
 class _DormDetailState extends State<DormDetail> {
   String? ownerId;
   Dorm? dorm;
-  double rating = 0;
+  double rating = 0.0;
   List<Imagestring> myimages = [];
   String? description;
+
   Future<void> getDormDetail() async {
     try {
       final response = await Caller.dio
@@ -43,7 +55,6 @@ class _DormDetailState extends State<DormDetail> {
         dorm = d;
         description = dorm!.description;
       });
-      print(ownerId);
     } catch (e) {
       debugPrint('$e error dormDetail');
     }
@@ -88,7 +99,74 @@ class _DormDetailState extends State<DormDetail> {
     for (Review review in reviews) {
       sum += review.ratingOverall;
     }
-    rating = sum / reviews.length;
+    if (rating.isFinite) {
+      rating = 0;
+    } else {
+      rating = sum / reviews.length;
+    }
+  }
+
+  User? userLogin = FirebaseAuth.instance.currentUser;
+  void updateIsFav() async {
+    if (userLogin != null) {
+      if (widget.dormItem.isFav) {
+        setState(() {
+          widget.dormItem.isFav = !widget.dormItem.isFav;
+        });
+        try {
+          await Caller.dio.delete(
+              '/api/fav/deleteFav?userId=${userLogin!.uid}&dormId=${widget.dormItem.dormId}');
+          debugPrint('remove fav from home');
+          if (FavPreload.homeReload != null) {
+            FavPreload.homeReload!();
+          }
+        } catch (e) {
+          debugPrint("hi ${e.toString()}");
+        }
+      } else {
+        setState(() {
+          widget.dormItem.isFav = !widget.dormItem.isFav;
+        });
+        try {
+          await Caller.dio.post('/api/fav/postFav', data: {
+            "dorm_id": widget.dormItem.dormId,
+            "user_id": userLogin!.uid
+          });
+          // FavPreload.refreshFav();
+          debugPrint("called post fav");
+        } on DioError catch (e) {
+          debugPrint(e.response.toString());
+          Caller.handle(context, e);
+        }
+      }
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: const Text("Login required"),
+                content: const Text("Please log in to favorite this dorm."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xFFDC6E46),
+                    ),
+                    child: const Text("Cancel"),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
+                    style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: const Color(0xFFDC6E46)),
+                    child: const Text("Login"),
+                  )
+                ],
+              ));
+    }
   }
 
   @override
@@ -97,6 +175,7 @@ class _DormDetailState extends State<DormDetail> {
     getDormDetail();
     getDormImages();
     overallRate(widget.dormId);
+    widget.dormItem.isFav;
   }
 
   @override
@@ -170,9 +249,11 @@ class _DormDetailState extends State<DormDetail> {
                         ),
                         child: IconButton(
                           color: Colors.white,
-                          icon: const Icon(Icons.favorite_border),
+                          icon: widget.dormItem.isFav
+                              ? const Icon(Icons.favorite)
+                              : const Icon(Icons.favorite_outline),
                           onPressed: () {
-                            //Favorite
+                            updateIsFav();
                           },
                         ),
                       ),

@@ -96,157 +96,124 @@ class _DormsEachOwnerState extends State<DormsEachOwner> {
         itemCount: _profileDorms.length,
         itemBuilder: (context, index) {
           final dorm = _profileDorms[index];
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DormDetail(
-                    dormId: dorm.dormId,
-                  ),
-                ),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: SizedBox(
-                width: 530.0,
-                height: 100.0,
-                child: ListTile(
-                  leading: SizedBox(
-                      width: 70.0,
-                      height: 90.0,
-                      child: Image.network(dorm.coverImage
-                          .toString()) // your leading widget here
+          return ListTile(
+            leading: Image.network(dorm.coverImage.toString()),
+            title: Text(dorm.dormName),
+            subtitle: Text(dorm.createdAt.toString().substring(0, 10)),
+            trailing: AspectRatio(
+              aspectRatio: 1.8,
+              child: Row(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  EditForm(dormId: dorm.dormId),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(6, 5),
+                            backgroundColor: const Color(
+                                0xff858585) // Set minimum button size to 80x30
+                            ),
+                        child: const Text("edit"),
                       ),
-                  title: Text(dorm.dormName),
-                  subtitle: Text(dorm.createdAt.toString().substring(0, 10)),
-                  trailing: SizedBox(
-                    width: 100.0,
-                    height: 50.0,
-                    child: Row(
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        EditForm(dormId: dorm.dormId),
-                                  ),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  fixedSize: const Size(6, 5),
-                                  backgroundColor: Color(
-                                      0xff858585) // Set minimum button size to 80x30
-                                  ),
-                              child: const Text("edit"),
-                            ),
-                          ],
-                        ),
-                        const Padding(padding: EdgeInsets.all(5)),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Container(
-                                      child: AlertDialog(
-                                        backgroundColor: Color(0xffDFDADA),
-                                        title: Center(
-                                            child: Text(
-                                          'Are you sure?',
-                                          style: TextStyle(fontSize: 24),
-                                        )),
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              'You will not be able to',
-                                              style: TextStyle(fontSize: 18),
-                                            ),
-                                            Text('recover this dorm!',
-                                                style: TextStyle(fontSize: 18)),
-                                          ],
-                                        ),
-                                        actions: <Widget>[
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor: Color(
-                                                        0xff858585) // set background color
-                                                    // padding:
-                                                    //     const EdgeInsets.symmetric(
-                                                    //         horizontal: 1,
-                                                    //         vertical: 1),
-                                                    // minimumSize:
-                                                    //     const Size(100, 30),
-                                                    ),
-                                                child: const Text('Cancel'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                              const Padding(
-                                                  padding: EdgeInsets.all(3)),
-                                              ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      const Color.fromARGB(
-                                                          237, 215, 106, 56),
-                                                ),
-                                                child: const Text(
-                                                    'Yes, delete it!'),
-                                                onPressed: () async {
-                                                  // Perform API call to delete the dorm
-                                                  await deleteRooms(
-                                                      dorm.dormId);
-                                                  await deleteDorm(dorm.dormId);
-                                                  // Pop the dialog and refresh the dorm list
-                                                  // ignore: use_build_context_synchronously
-                                                  Navigator.of(context).pop();
-                                                  setState(() async {
-                                                    // reload the dorm list
-                                                    _profileDorms =
-                                                        await _fetchDorms(
-                                                                user.userId)
-                                                            as List<
-                                                                ProfileDorm>;
-                                                  });
-                                                },
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: Image.asset(
-                                'assets/images/delete.png',
-                                width: 25.0,
-                                height: 25.0,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                    ],
                   ),
-                ),
+                  const Padding(padding: EdgeInsets.all(4)),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: const Color(0xffDFDADA),
+                                title: const Center(
+                                    child: Text(
+                                  'Are you sure?',
+                                  style: TextStyle(fontSize: 24),
+                                )),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    Text(
+                                      'You will not be able to',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                    Text('recover this dorm!',
+                                        style: TextStyle(fontSize: 18)),
+                                  ],
+                                ),
+                                actions: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: const Color(
+                                                0xff858585) // set background color
+                                            // padding:
+                                            //     const EdgeInsets.symmetric(
+                                            //         horizontal: 1,
+                                            //         vertical: 1),
+                                            // minimumSize:
+                                            //     const Size(100, 30),
+                                            ),
+                                        child: const Text('Cancel'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      const Padding(padding: EdgeInsets.all(3)),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color.fromARGB(
+                                              237, 215, 106, 56),
+                                        ),
+                                        child: const Text('Yes, delete it!'),
+                                        onPressed: () async {
+                                          // Perform API call to delete the dorm
+                                          await deleteRooms(dorm.dormId);
+                                          await deleteDorm(dorm.dormId);
+                                          // Pop the dialog and refresh the dorm list
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.of(context).pop();
+                                          setState(() async {
+                                            // reload the dorm list
+                                            _profileDorms =
+                                                await _fetchDorms(user.userId)
+                                                    as List<ProfileDorm>;
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Image.asset(
+                          'assets/images/delete.png',
+                          width: 25.0,
+                          height: 25.0,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               ),
             ),
+            contentPadding: const EdgeInsets.all(4),
           );
         },
       ),

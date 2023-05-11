@@ -11,7 +11,7 @@ class UserProvider extends ChangeNotifier {
   String _tel;
   String _lineId;
   String _userType;
-  String? _image;
+  String _image;
 
   UserProvider({
     String userId = '',
@@ -23,7 +23,7 @@ class UserProvider extends ChangeNotifier {
     String tel = '',
     String lineId = '',
     String userType = '',
-    //XFile? image,
+    String image = '',
   })  : _userId = userId,
         _profileImage = profileImage,
         _username = username,
@@ -32,7 +32,8 @@ class UserProvider extends ChangeNotifier {
         _email = email,
         _tel = tel,
         _lineId = lineId,
-        _userType = userType;
+        _userType = userType,
+        _image = image;
 
   String get userId => _userId;
 
@@ -52,7 +53,7 @@ class UserProvider extends ChangeNotifier {
 
   String get userType => _userType;
 
-  String? get image => _image;
+  String get image => _image;
 
   void setProfile(String username, String firstname, String lastname,
       String email, String tel, String lineId) {
@@ -65,8 +66,12 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setProfileImage(String image) {
+  void setPreviewImage(String image) {
     _image = image;
+  }
+
+  void setProfileImage(String image) {
+    _profileImage = image;
   }
 
   void setUser(
@@ -93,7 +98,6 @@ class UserProvider extends ChangeNotifier {
   }
 
   void updatedUser(
-    String profileImage,
     String username,
     String firstname,
     String lastname,
@@ -101,7 +105,6 @@ class UserProvider extends ChangeNotifier {
     String tel,
     String lineId,
   ) {
-    _profileImage = profileImage;
     _username = username;
     _firstname = firstname;
     _lastname = lastname;
