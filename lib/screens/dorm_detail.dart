@@ -99,7 +99,8 @@ class _DormDetailState extends State<DormDetail> {
     for (Review review in reviews) {
       sum += review.ratingOverall;
     }
-    if (rating.isFinite) {
+
+    if (reviews.isEmpty) {
       rating = 0;
     } else {
       rating = sum / reviews.length;
@@ -296,7 +297,7 @@ class _DormDetailState extends State<DormDetail> {
                                 Icons.star,
                                 color: Color(0xffDC6E46),
                               ),
-                              unratedColor: Colors.white,
+                              unratedColor: const Color(0xffD9D9D9),
                               itemCount: 5,
                               itemSize: 20.0,
                               direction: Axis.horizontal,
