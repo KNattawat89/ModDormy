@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'login_page.dart';
 class ResetPassPage extends StatelessWidget {
   const ResetPassPage({super.key});
 
@@ -51,9 +53,7 @@ class ResetPassPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12.5)),
                       ),
                       onPressed: () {
-                        Navigator.popUntil(
-                            context, ModalRoute.withName("/login")
-                            );
+                         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginPage()), (route) => false);
                       },
                       child: const Text(
                         "Back to login",

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/fav_preload.dart';
 import 'package:moddormy_flutter/provider/user_provider.dart';
 import 'package:moddormy_flutter/screens/favorite.dart';
+import 'package:moddormy_flutter/screens/home.dart';
+import 'package:moddormy_flutter/screens/profile.dart';
 import 'package:provider/provider.dart';
 
 class MenuTextIcon extends StatelessWidget {
@@ -27,7 +29,8 @@ class MenuTextIcon extends StatelessWidget {
       title: Text(menuName, style: const TextStyle(fontSize: 20)),
       onTap: () async {
         if (route == '/home') {
-          Navigator.popUntil(context, ModalRoute.withName(route));
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+         
           if (FavPreload.homeReload != null) {
             FavPreload.homeReload!();
           }
@@ -35,17 +38,21 @@ class MenuTextIcon extends StatelessWidget {
         } else if (route == '/logout') {
           await FirebaseAuth.instance.signOut();
 
+          // ignore: use_build_context_synchronously
           Provider.of<UserProvider>(context, listen: false).clearUser();
           if (FirebaseAuth.instance.currentUser == null) {
             debugPrint("User sign-out already");
           }
           // ignore: use_build_context_synchronously
-          Navigator.popUntil(context, ModalRoute.withName('/home'));
+           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
           if (FavPreload.homeReload != null) {
             FavPreload.homeReload!();
           }
-        } else {
-          Navigator.pushNamed(context, route);
+        } else if (route == "/profile") {
+          Navigator.push(context, MaterialPageRoute(builder:  (context) => const ProfilePage()));
+        }
+        else if(route == '/fav'){
+             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const FavoritePage()), (route) => false);
         }
       },
     );
