@@ -128,8 +128,8 @@ class _RoomDetailState extends State<RoomDetail> {
           child: ListView(
             children: [
               SizedBox(
-                height: 400,
-                width: 400,
+                height: 350,
+                width: 350,
                 child: Stack(
                   children: [
                     Card(
@@ -262,6 +262,7 @@ class _RoomDetailState extends State<RoomDetail> {
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.15,
                   child: GridView.builder(
+                    physics: const BouncingScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithMaxCrossAxisExtent(
                             maxCrossAxisExtent: 200,

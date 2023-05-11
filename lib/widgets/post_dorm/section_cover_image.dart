@@ -25,6 +25,7 @@ class _CoverImageSectionState extends State<CoverImageSection> {
       });
     }
 
+    //post
     if (widget.post) {
       return Padding(
           padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
@@ -34,32 +35,49 @@ class _CoverImageSectionState extends State<CoverImageSection> {
             children: [
               Row(
                 children: [
-                  const Text('Cover Image : ',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[500]),
-                    onPressed: getImage,
-                    child: Row(
-                      children: const [
-                        Icon(Icons.add),
-                        Text('Cover Image'),
-                      ],
+                  Row(
+                    children: const [
+                      Text('Cover Image',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 20)),
+                      Text(
+                        '*',
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey[500]),
+                      onPressed: getImage,
+                      child: Row(
+                        children: const [
+                          Icon(Icons.add),
+                          Text('Cover Image'),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
               widget.dorm.coverImage == null
                   ? const Text(
-                      'No image selected.',
+                      '',
                       textAlign: TextAlign.center,
                     )
-                  : Image.file(
-                      File(widget.dorm.coverImage!.path),
-                      fit: BoxFit.cover,
-                      height: 400,
-                      width: 400,
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(12.0),
+                      child: Image.file(
+                        File(widget.dorm.coverImage!.path),
+                        fit: BoxFit.cover,
+                        height: 350,
+                        width: 350,
+                      ),
                     ),
             ],
           ));
@@ -73,18 +91,32 @@ class _CoverImageSectionState extends State<CoverImageSection> {
             children: [
               Row(
                 children: [
-                  const Text('Cover Image : ',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[500]),
-                    onPressed: getImage,
-                    child: Row(
-                      children: const [
-                        Icon(Icons.add),
-                        Text('Cover Image'),
-                      ],
+                  Row(
+                    children: const [
+                      Text('Cover Image',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 20)),
+                      Text(
+                        '*',
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey[500]),
+                      onPressed: getImage,
+                      child: Row(
+                        children: const [
+                          Icon(Icons.add),
+                          Text('Cover Image'),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -95,8 +127,8 @@ class _CoverImageSectionState extends State<CoverImageSection> {
                       child: Image.network(
                         widget.dorm.coverimageString,
                         fit: BoxFit.cover,
-                        height: 400,
-                        width: 400,
+                        height: 350,
+                        width: 350,
                       ),
                     )
                   : ClipRRect(
@@ -104,8 +136,8 @@ class _CoverImageSectionState extends State<CoverImageSection> {
                       child: Image.file(
                         File(widget.dorm.coverImage!.path),
                         fit: BoxFit.cover,
-                        height: 400,
-                        width: 400,
+                        height: 350,
+                        width: 350,
                       ),
                     ),
             ],

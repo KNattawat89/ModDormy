@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:moddormy_flutter/models/dorm_item.dart';
 
 import 'package:moddormy_flutter/models/image.dart';
@@ -14,6 +15,7 @@ import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/room_image.dart';
+import 'package:moddormy_flutter/widgets/post_dorm/show_room_conf.dart';
 import '../models/dorm.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -50,19 +52,14 @@ class _DetailScreenState extends State<DetailScreen> {
       setState(() {
         if (d) {
           coverImageFileName = response.data["image"];
-          print('dorm ' + coverImageFileName!);
+          debugPrint('dorm ${coverImageFileName!}');
         } else {
-          // for(var r= 0 ; r<widget.dorm.rooms.length ; r++){
           coverImageList.add(response.data["image"]);
-          //for (var o = 0; o < coverImageList.length; o++) {
-          //print('roomImage $o  ${coverImageList[o]}');
-          //}
-          //}
+          debugPrint('room ${coverImageList.toString()}');
         }
       });
-      return response.data["image"];
     } on DioError catch (e) {
-      print('upload cover image error: ${e.response}');
+      debugPrint('upload cover image error: ${e.response}');
     }
   }
 
@@ -82,7 +79,7 @@ class _DetailScreenState extends State<DetailScreen> {
         print(response.data);
       }
     } on DioError catch (e) {
-      print('upload dorm image error: ${e.response} $e');
+      debugPrint('upload dorm image error: ${e.response} $e');
     }
   }
 
@@ -99,10 +96,10 @@ class _DetailScreenState extends State<DetailScreen> {
         });
         final response =
             await Caller.dio.post("/api/upload/room", data: formData);
-        print(response.data);
+        debugPrint(response.data);
       }
     } on DioError catch (e) {
-      print('upload room image error: ${e.response} $e');
+      debugPrint('upload room image error: ${e.response} $e');
     }
   }
 
@@ -114,9 +111,7 @@ class _DetailScreenState extends State<DetailScreen> {
         data: {
           "DormName": widget.dorm.name,
           "UserId": uid,
-          // ใส่ id ของ user ที่ login อยู่
           "CoverImage": coverImageFileName,
-          //"${widget.dorm.coverImage!.path}", // Upload รูป how?
           "HouseNumber": widget.dorm.houseNo,
           "Street": widget.dorm.street,
           "Soi": widget.dorm.soi,
@@ -147,10 +142,10 @@ class _DetailScreenState extends State<DetailScreen> {
       debugPrint(postdorm.data["id"].toString());
       (uploadDormImages(widget.dorm.imageList, postdorm.data["id"]));
       // ignore: prefer_typing_uninitialized_variables, unused_local_variable
-      print(widget.dorm.rooms.length);
+      debugPrint(widget.dorm.rooms.length.toString());
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
         uploadImage(widget.dorm.rooms[i].coverImage, false);
-        print(coverImageList[i]);
+        debugPrint(coverImageList[i]);
         final postroom =
             await Caller.dio.post("/api/manage-room/postRoom", data: {
           "dormId": postdorm.data["id"],
@@ -169,13 +164,13 @@ class _DetailScreenState extends State<DetailScreen> {
             "tv": widget.dorm.rooms[i].feature.tv,
           }
         });
-        print(postroom.data["room_id"]);
+        debugPrint(postroom.data["room_id"]);
         uploadRoomImages(
             widget.dorm.rooms[i].imageList, postroom.data["room_id"]);
         success = true;
       }
     } on DioError catch (e) {
-      print("room error ${e.response} $e");
+      debugPrint("room error ${e.response} $e");
     }
   }
 
@@ -219,6 +214,7 @@ class _DetailScreenState extends State<DetailScreen> {
             .put('/api/manage-dorm/editDorm?dormId=${widget.dorm.id}', data: {
           "CoverImage": coverImageFileName,
         });
+        debugPrint(result1.data.toString());
       }
       debugPrint(editeddorm.data["id"].toString());
 
@@ -259,7 +255,7 @@ class _DetailScreenState extends State<DetailScreen> {
         }
 
         if (widget.dorm.rooms[i].imageList.isNotEmpty) {
-          print(widget.dorm.rooms[i].id);
+          debugPrint(widget.dorm.rooms[i].id.toString());
           uploadRoomImages(
               widget.dorm.rooms[i].imageList, editedroom.data["room_id"]);
         }
@@ -277,11 +273,11 @@ class _DetailScreenState extends State<DetailScreen> {
       appBar: const MyAppbar(),
       endDrawer: const MyDrawer(),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(24),
         child: ListView(
           children: [
             const Padding(
-              padding: EdgeInsets.all(32),
+              padding: EdgeInsets.all(26),
               child: Text(
                 'Dorm Information',
                 textAlign: TextAlign.center,
@@ -307,7 +303,10 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: Text(
                       textAlign: TextAlign.start,
                       widget.dorm.name,
-                      style: const TextStyle(color: Colors.grey, fontSize: 18),
+                      style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300),
                       softWrap: false,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -333,7 +332,10 @@ class _DetailScreenState extends State<DetailScreen> {
                   Expanded(
                     child: Text(
                       '${widget.dorm.houseNo} ${widget.dorm.soi} ${widget.dorm.street} ${widget.dorm.subDistrict} ${widget.dorm.district} ${widget.dorm.city} ${widget.dorm.zipCode}',
-                      style: const TextStyle(color: Colors.grey, fontSize: 18),
+                      style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300),
                       softWrap: true,
                       maxLines: 10,
                       overflow: TextOverflow.visible,
@@ -354,7 +356,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 16, bottom: 16),
+                    padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
                     child: Text(
                       widget.dorm.description,
                       style: const TextStyle(color: Colors.grey, fontSize: 18),
@@ -375,8 +377,8 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Image.network(
                               widget.dorm.coverimageString,
                               fit: BoxFit.cover,
-                              height: 400,
-                              width: 400,
+                              height: 350,
+                              width: 350,
                             ),
                           )
                         : ClipRRect(
@@ -384,8 +386,8 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Image.file(
                               File(widget.dorm.coverImage!.path),
                               fit: BoxFit.cover,
-                              height: 400,
-                              width: 400,
+                              height: 350,
+                              width: 350,
                             ),
                           ),
                   ),
@@ -397,51 +399,23 @@ class _DetailScreenState extends State<DetailScreen> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                     ),
                   ),
-                  widget.myimages.isNotEmpty
+                  widget.post
+                      //post
                       ? Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            height: 200,
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height * 0.15,
                             child: GridView.builder(
-                              itemCount: widget.myimages.length,
-                              itemBuilder: (BuildContext context, int j) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      child: Image.network(
-                                        widget.myimages[j].image,
-                                        fit: BoxFit.cover,
-                                        width: 100,
-                                        height: 100,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
+                              shrinkWrap: false,
+                              physics: const BouncingScrollPhysics(),
                               gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3),
-                            ),
-                          ),
-                        )
-                      : const SizedBox(
-                          width: 1,
-                          height: 1,
-                        ),
-                  widget.dorm.imageList.isEmpty
-                      ? const SizedBox(
-                          width: 1,
-                          height: 1,
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(left: 8),
-                          child: SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.25,
-                            child: GridView.builder(
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: 200,
+                                      // childAspectRatio: 3 / 2,
+                                      crossAxisSpacing: 0,
+                                      mainAxisSpacing: 0),
+                              scrollDirection: Axis.horizontal,
                               itemCount: widget.dorm.imageList.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Padding(
@@ -457,42 +431,121 @@ class _DetailScreenState extends State<DetailScreen> {
                                   ),
                                 );
                               },
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3),
                             ),
+                          ),
+                        )
+                      :
+                      //edit
+                      SizedBox(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.15,
+                          child: GridView.builder(
+                            shrinkWrap: false,
+                            physics: const BouncingScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 200,
+                                    // childAspectRatio: 3 / 2,
+                                    crossAxisSpacing: 20,
+                                    mainAxisSpacing: 20),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: widget.myimages.length,
+                            itemBuilder: (BuildContext context, int j) {
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(12.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  child: Image.network(
+                                    widget.myimages[j].image,
+                                    fit: BoxFit.cover,
+                                    width: 100,
+                                    height: 100,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                  widget.dorm.imageList.isEmpty
+                      ? const Text(
+                          '',
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 8, 0, 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                                child: Text(
+                                  "Added images :",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18),
+                                ),
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.15,
+                                child: GridView.builder(
+                                  shrinkWrap: false,
+                                  physics: const BouncingScrollPhysics(),
+                                  gridDelegate:
+                                      const SliverGridDelegateWithMaxCrossAxisExtent(
+                                          maxCrossAxisExtent: 200,
+                                          crossAxisSpacing: 20,
+                                          mainAxisSpacing: 20),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: widget.dorm.imageList.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      child: Image.file(
+                                        File(widget.dorm.imageList[index].path),
+                                        fit: BoxFit.cover,
+                                        width: 100,
+                                        height: 100,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'Dorm Features :',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w500),
-                          textAlign: TextAlign.start,
-                        ),
+                      const Text(
+                        'Dorm Features :',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.start,
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+                        padding: const EdgeInsets.fromLTRB(8, 8, 16, 0),
                         child: Row(
                           children: [
                             const Padding(
                               padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
                               child: Icon(Icons.location_pin),
                             ),
-                            Text(
-                                ' Distance away from KMUTT\n${widget.dorm.distance} KM',
-                                style: const TextStyle(fontSize: 18)),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                              child: Text(
+                                  'Distance away from KMUTT\n${widget.dorm.distance} KM',
+                                  style: const TextStyle(fontSize: 18)),
+                            ),
                           ],
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 0, 32),
+                        padding: const EdgeInsets.fromLTRB(8, 0, 0, 32),
                         child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: widget.dorm.feature.toList().length,
                           itemBuilder: (BuildContext context, int index) {
@@ -518,7 +571,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             fontSize: 20, fontWeight: FontWeight.w500),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
                         child: Row(
                           children: [
                             const Text(
@@ -527,15 +580,17 @@ class _DetailScreenState extends State<DetailScreen> {
                                   fontSize: 18, fontWeight: FontWeight.w500),
                             ),
                             Text(
-                              '${widget.dorm.advPayment} months',
+                              '${widget.dorm.advPayment} Months',
                               style: const TextStyle(
-                                  color: Colors.grey, fontSize: 16),
+                                  color: Colors.grey,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
                         child: Row(
                           children: [
                             const Text(
@@ -544,32 +599,36 @@ class _DetailScreenState extends State<DetailScreen> {
                                   fontSize: 18, fontWeight: FontWeight.w500),
                             ),
                             Text(
-                              '${widget.dorm.electric} baht/unit',
+                              '${widget.dorm.electric} Baht/Unit',
                               style: const TextStyle(
-                                  color: Colors.grey, fontSize: 16),
+                                  color: Colors.grey,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
                         child: Row(
                           children: [
                             const Text(
-                              'Water price :',
+                              'Water price : ',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
                             ),
                             Text(
-                              '${widget.dorm.water} baht/unit',
+                              '${widget.dorm.water} Baht/Unit',
                               style: const TextStyle(
-                                  color: Colors.grey, fontSize: 16),
+                                  color: Colors.grey,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
                         child: Row(
                           children: [
                             const Text(
@@ -580,7 +639,9 @@ class _DetailScreenState extends State<DetailScreen> {
                             Text(
                               widget.dorm.other,
                               style: const TextStyle(
-                                  color: Colors.grey, fontSize: 16),
+                                  color: Colors.grey,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
@@ -591,9 +652,10 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
             ),
             const Divider(
-              thickness: 5,
+              thickness: 3,
             ),
             ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: widget.dorm.rooms.length,
               itemBuilder: (BuildContext context, int index) {
@@ -608,48 +670,54 @@ class _DetailScreenState extends State<DetailScreen> {
                           const Text(
                             'Room name : ',
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.w500),
                           ),
                           Text(
                             textAlign: TextAlign.start,
                             widget.dorm.rooms[index].name,
                             style: const TextStyle(
-                                color: Colors.grey, fontSize: 20),
+                                color: Colors.grey,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w300),
                           ),
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                        padding: const EdgeInsets.fromLTRB(24, 16, 8, 0),
                         child: Row(
                           children: [
-                            const Icon(Icons.wallet_rounded),
+                            const Icon(LineIcons.wallet),
                             const Text(
-                              'Price : ',
+                              ' Price : ',
                               style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                                  fontSize: 20, fontWeight: FontWeight.w500),
                             ),
                             Text(
                               '${widget.dorm.rooms[index].price}',
                               style: const TextStyle(
-                                  color: Colors.grey, fontSize: 20),
+                                  color: Colors.grey,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w300),
                             ),
                           ],
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+                        padding: const EdgeInsets.fromLTRB(24, 8, 8, 16),
                         child: Row(
                           children: [
-                            const Icon(Icons.expand_sharp),
+                            const Icon(LineIcons.alternateExpandArrows),
                             const Text(
-                              'Room size : ',
+                              ' Room size : ',
                               style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                                  fontSize: 20, fontWeight: FontWeight.w500),
                             ),
                             Text(
                               widget.dorm.rooms[index].size,
                               style: const TextStyle(
-                                  color: Colors.grey, fontSize: 20),
+                                  color: Colors.grey,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w300),
                             )
                           ],
                         ),
@@ -661,10 +729,10 @@ class _DetailScreenState extends State<DetailScreen> {
                               'Room Description : ',
                               textAlign: TextAlign.start,
                               style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                                  fontSize: 20, fontWeight: FontWeight.w500),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(16.0),
+                              padding: const EdgeInsets.fromLTRB(24, 8, 14, 16),
                               child: Text(
                                 widget.dorm.rooms[index].description,
                                 style: const TextStyle(
@@ -680,41 +748,74 @@ class _DetailScreenState extends State<DetailScreen> {
                               fontSize: 20, fontWeight: FontWeight.w500),
                         ),
                       ),
-                      Center(
-                        child: widget.dorm.coverImage == null
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(12.0),
-                                child: Image.network(
-                                  widget.dorm.rooms[index].coverimageString,
-                                  fit: BoxFit.cover,
-                                  height: 400,
-                                  width: 400,
-                                ),
-                              )
-                            : ClipRRect(
-                                borderRadius: BorderRadius.circular(12.0),
-                                child: Image.file(
-                                  File(widget
-                                      .dorm.rooms[index].coverImage!.path),
-                                  fit: BoxFit.cover,
-                                  height: 400,
-                                  width: 400,
-                                ),
+                      widget.post
+                          //post
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(12.0),
+                              child: Image.file(
+                                File(widget.dorm.rooms[index].coverImage!.path),
+                                fit: BoxFit.cover,
+                                height: 350,
+                                width: 350,
                               ),
-                      ),
+                            )
+
+                          //edit
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(12.0),
+                              child: Image.network(
+                                widget.dorm.rooms[index].coverimageString,
+                                fit: BoxFit.cover,
+                                height: 350,
+                                width: 350,
+                              ),
+                            ),
                       const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                        padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
                         child: Text(
                           'Images :',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w500),
                         ),
                       ),
-                      RPhotosSection(
-                        room: widget.dorm.rooms[index],
-                        post: false,
-                        conf: true,
-                      ),
+                      widget.post
+                          //post
+                          ? Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+                              child: SizedBox(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.15,
+                                child: GridView.builder(
+                                  shrinkWrap: false,
+                                  physics: const BouncingScrollPhysics(),
+                                  gridDelegate:
+                                      const SliverGridDelegateWithMaxCrossAxisExtent(
+                                          maxCrossAxisExtent: 200,
+                                          // childAspectRatio: 3 / 2,
+                                          crossAxisSpacing: 20,
+                                          mainAxisSpacing: 20),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount:
+                                      widget.dorm.rooms[index].imageList.length,
+                                  itemBuilder: (BuildContext context, int i) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      child: Image.file(
+                                        File(widget.dorm.rooms[index]
+                                            .imageList[i].path),
+                                        fit: BoxFit.cover,
+                                        height: 200,
+                                        width: 200,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            )
+
+                          //edit
+                          : ShowRoomImages(room: widget.dorm.rooms[index]),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -750,7 +851,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             ),
                           ),
                           const Divider(
-                            thickness: 5,
+                            thickness: 3,
                           ),
                         ],
                       )
@@ -765,7 +866,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 170,
+                    width: MediaQuery.of(context).size.width * 0.4,
                     height: 40,
                     child: FloatingActionButton.extended(
                         heroTag: "btn1",
@@ -781,7 +882,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     width: 10,
                   ),
                   SizedBox(
-                    width: 170,
+                    width: MediaQuery.of(context).size.width * 0.4,
                     height: 40,
                     child: FloatingActionButton.extended(
                         heroTag: "btn2",

@@ -216,8 +216,8 @@ class _DormDetailState extends State<DormDetail> {
           child: ListView(
             children: [
               SizedBox(
-                height: 400,
-                width: 400,
+                height: 350,
+                width: 350,
                 child: Stack(
                   children: [
                     Card(
@@ -344,10 +344,13 @@ class _DormDetailState extends State<DormDetail> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                 child: SizedBox(
+                  width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.15,
                   child: GridView.builder(
+                    shrinkWrap: false,
+                    physics: const BouncingScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithMaxCrossAxisExtent(
                             maxCrossAxisExtent: 200,

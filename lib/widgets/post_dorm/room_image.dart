@@ -9,11 +9,12 @@ import 'package:moddormy_flutter/utilities/caller.dart';
 class RPhotosSection extends StatefulWidget {
   final Room room;
   final bool post;
-  final bool conf;
 
-  const RPhotosSection(
-      {Key? key, required this.room, required this.post, required this.conf})
-      : super(key: key);
+  const RPhotosSection({
+    Key? key,
+    required this.room,
+    required this.post,
+  }) : super(key: key);
 
   @override
   State<RPhotosSection> createState() => _RPhotosSectionState();
@@ -73,220 +74,260 @@ class _RPhotosSectionState extends State<RPhotosSection> {
 
   @override
   Widget build(BuildContext context) {
+    //post
     if (widget.post) {
       return Padding(
-        padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+        padding: const EdgeInsets.fromLTRB(0, 0, 8, 16),
         child: Column(
           children: [
             Row(
               children: [
-                const Text('Images : ',
-                    style:
-                        TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[500]),
-                  onPressed: getImageFromGallery,
-                  child: Row(
-                    children: const [
-                      Icon(Icons.add),
-                      Text('Images'),
-                    ],
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: const [
+                        Text('Images',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 20)),
+                        Text(
+                          '*       ',
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20),
+                        ),
+                      ],
+                    ),
+                    const Text(
+                      '( Minimum 3 images )  ',
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[500]),
+                    onPressed: getImageFromGallery,
+                    child: Row(
+                      children: const [
+                        Icon(Icons.add),
+                        Text('Images'),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              height: 200,
-              child: GridView.builder(
-                itemCount: widget.room.imageList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.file(
-                          File(widget.room.imageList[index].path),
-                          fit: BoxFit.cover,
-                          width: 200,
-                          height: 200,
-                        ),
-                      ),
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: GestureDetector(
-                          onTap: () => deleteImage(index),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
-                            ),
-                            child: const Icon(Icons.delete_outline,
-                                color: Color(0xff2A8089)),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
-              ),
-            ),
-          ],
-        ),
-      );
-      // Edit conf
-    } else if (widget.conf && widget.post == false) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-        child: Column(
-          children: [
             widget.room.imageList.isEmpty
-                ? const SizedBox(
-                    height: 1,
-                    width: 1,
-                  )
+                ? const Text('')
                 : Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
                     child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: 200,
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.15,
                       child: GridView.builder(
+                        shrinkWrap: false,
+                        physics: const BouncingScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 200,
+                                crossAxisSpacing: 20,
+                                mainAxisSpacing: 20),
+                        scrollDirection: Axis.horizontal,
                         itemCount: widget.room.imageList.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12.0),
-                              child: Image.file(
-                                File(widget.room.imageList[index].path),
-                                fit: BoxFit.cover,
-                                width: 200,
-                                height: 200,
+                          return Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12.0),
+                                child: Image.file(
+                                  File(widget.room.imageList[index].path),
+                                  fit: BoxFit.cover,
+                                  width: 200,
+                                  height: 200,
+                                ),
                               ),
-                            ),
+                              Positioned(
+                                top: 9,
+                                right: 10,
+                                child: GestureDetector(
+                                  onTap: () => deleteImage(index),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(7),
+                                    ),
+                                    child: const Icon(Icons.delete_outline,
+                                        color: Color(0xFFDC6E46)),
+                                  ),
+                                ),
+                              ),
+                            ],
                           );
                         },
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3),
                       ),
                     ),
                   ),
           ],
         ),
       );
-      //edit Form?
+
+      //edit
     } else {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
-        child: Column(
-          children: [
-            Row(
-              children: const [
-                Text('Images : ',
-                    style:
-                        TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
-              ],
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              height: 200,
-              child: GridView.builder(
-                itemCount: myRimages.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Stack(
+      if (myRimages.isEmpty) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [CircularProgressIndicator()],
+        );
+      } else {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      Row(
+                        children: const [
+                          Text('Images',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 20)),
+                          Text(
+                            '*       ',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey[500]),
+                      onPressed: getImageFromGallery,
+                      child: Row(
+                        children: const [
+                          Icon(Icons.add),
+                          Text('Images'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: myRimages.length,
+                    itemBuilder: (BuildContext context, int j) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12.0),
                           child: Image.network(
-                            myRimages[index].image,
+                            myRimages[j].image,
                             fit: BoxFit.cover,
                             width: 100,
                             height: 100,
                           ),
                         ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              widget.room.imageList.isEmpty
+                  ? const Text(
+                      '',
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                            child: Text(
+                              "Added images :",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 18),
+                            ),
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height * 0.15,
+                            child: GridView.builder(
+                              shrinkWrap: false,
+                              physics: const BouncingScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: 200,
+                                      crossAxisSpacing: 20,
+                                      mainAxisSpacing: 20),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: widget.room.imageList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      child: Image.file(
+                                        File(widget.room.imageList[index].path),
+                                        fit: BoxFit.cover,
+                                        width: 200,
+                                        height: 200,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 9,
+                                      right: 10,
+                                      child: GestureDetector(
+                                        onTap: () => deleteImage(index),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(7),
+                                          ),
+                                          child: const Icon(
+                                              Icons.delete_outline,
+                                              color: Color(0xFFDC6E46)),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  );
-                },
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
-              ),
-            ),
-            SizedBox(
-              height: 37,
-              width: 120,
-              child: ElevatedButton(
-                style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.grey[500]),
-                onPressed: getImageFromGallery,
-                child: Row(
-                  children: const [
-                    Icon(Icons.add),
-                    Text('Images'),
-                  ],
-                ),
-              ),
-            ),
-            Row(
-              children: const [
-                Text('New Images : ',
-                    style:
-                        TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 200,
-                child: GridView.builder(
-                  itemCount: widget.room.imageList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12.0),
-                            child: Image.file(
-                              File(widget.room.imageList[index].path),
-                              fit: BoxFit.cover,
-                              width: 200,
-                              height: 200,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 8,
-                          right: 8,
-                          child: GestureDetector(
-                            onTap: () => deleteImage(index),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              child: const Icon(Icons.delete_outline,
-                                  color: Color(0xff2A8089)),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+                    ),
+            ],
+          ),
+        );
+      }
     }
   }
 }

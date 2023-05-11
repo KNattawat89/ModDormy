@@ -7,7 +7,7 @@ class Caller {
     // 127.0.0.1 -> localhost -> when using IOS emulator
     // 10.0.2.2 or IP of your network -> when using android emulator
     baseUrl: "http://moddormy.ivelse.com:8000",
-    connectTimeout: const Duration(seconds: 5),
+    connectTimeout: const Duration(seconds: 15),
     receiveTimeout: const Duration(seconds: 10),
   );
 

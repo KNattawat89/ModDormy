@@ -64,7 +64,6 @@ class _EditFormState extends State<EditForm> {
       debugPrint('$e error image');
     }
   }
-  
 
   @override
   void initState() {

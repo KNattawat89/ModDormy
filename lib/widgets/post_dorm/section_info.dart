@@ -19,10 +19,10 @@ class _InfoSectionState extends State<InfoSection> {
   final districtController = TextEditingController();
   final cityController = TextEditingController();
   final zipCodeController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
-    // Step 2 <- SEE HERE
     nameController.text = widget.dorm.name;
     houseNoController.text = widget.dorm.houseNo;
     streetController.text = widget.dorm.street;
@@ -72,15 +72,17 @@ class _InfoSectionState extends State<InfoSection> {
                     widget.dorm.name = nameController.text;
                   },
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(12.5))),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF2A8089), width: 2),
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(12.5))),
-                      hintText: 'Dorm Name'),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12.5))),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFF2A8089), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(12.5))),
+                    labelText: 'Dorm Name*',
+                    labelStyle: TextStyle(
+                      color: Color.fromARGB(255, 85, 85, 85),
+                    ),
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty || value == '') {
                       return 'required';
@@ -137,7 +139,8 @@ class _InfoSectionState extends State<InfoSection> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
                       labelText: 'House No.*',
-                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
+                      labelStyle:
+                          TextStyle(color: Color.fromARGB(255, 85, 85, 85))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -166,7 +169,8 @@ class _InfoSectionState extends State<InfoSection> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
                       labelText: 'Soi',
-                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
+                      labelStyle:
+                          TextStyle(color: Color.fromARGB(255, 85, 85, 85))),
                 ),
               ),
             )
@@ -192,7 +196,8 @@ class _InfoSectionState extends State<InfoSection> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
                       labelText: 'Street*',
-                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
+                      labelStyle:
+                          TextStyle(color: Color.fromARGB(255, 85, 85, 85))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -224,7 +229,8 @@ class _InfoSectionState extends State<InfoSection> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
                       labelText: 'Sub-district*',
-                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
+                      labelStyle:
+                          TextStyle(color: Color.fromARGB(255, 85, 85, 85))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -256,7 +262,8 @@ class _InfoSectionState extends State<InfoSection> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
                       labelText: 'District*',
-                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
+                      labelStyle:
+                          TextStyle(color: Color.fromARGB(255, 85, 85, 85))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -288,7 +295,8 @@ class _InfoSectionState extends State<InfoSection> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
                       labelText: 'City*',
-                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
+                      labelStyle:
+                          TextStyle(color: Color.fromARGB(255, 85, 85, 85))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'required';
@@ -302,10 +310,12 @@ class _InfoSectionState extends State<InfoSection> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
-                  // keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.number,
                   controller: zipCodeController,
                   onChanged: (value) {
-                    widget.dorm.zipCode = int.parse(zipCodeController.text);
+                    if (value != null) {
+                      widget.dorm.zipCode = int.parse(zipCodeController.text);
+                    }
                   },
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(
@@ -317,9 +327,13 @@ class _InfoSectionState extends State<InfoSection> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.5))),
                       labelText: 'Zipcode*',
-                      labelStyle: TextStyle(color: Color(0xFF2A8089))),
+                      labelStyle:
+                          TextStyle(color: Color.fromARGB(255, 85, 85, 85))),
                   validator: (value) {
-                    if (value == null || value.isEmpty || value.length != 5) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        value.length != 5 ||
+                        !RegExp(r'^[0-9]+$').hasMatch(value)) {
                       return 'required 5 digit number';
                     }
                     return null;

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/screens/confirm_page.dart';
@@ -17,7 +19,11 @@ class DormForm extends StatefulWidget {
   final bool post;
   List<Imagestring> myimages;
 
-   DormForm({Key? key, required this.dorm, required this.post, required this.myimages})
+  DormForm(
+      {Key? key,
+      required this.dorm,
+      required this.post,
+      required this.myimages})
       : super(key: key);
 
   @override
@@ -60,13 +66,12 @@ class _DormFormState extends State<DormForm> {
               dorm: widget.dorm,
               post: widget.post,
               myimages: widget.myimages,
-
             ),
             FeatureSection(dorm: widget.dorm),
             DistanceSection(dorm: widget.dorm),
             ContractSection(dorm: widget.dorm),
             const Divider(
-              thickness: 5,
+              thickness: 3,
             ),
             RoomsSection(
               dorm: widget.dorm,
@@ -78,7 +83,69 @@ class _DormFormState extends State<DormForm> {
                 child: FloatingActionButton.extended(
                   backgroundColor: const Color(0xFFDC6E46),
                   onPressed: () {
-                    if (formKey.currentState!.validate()) {
+                    //post
+                    if (formKey.currentState!.validate() && widget.post) {
+                      if (widget.dorm.coverImage == null) {
+                        debugPrint('Please select dorm cover image');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              backgroundColor: Color.fromARGB(255, 85, 85, 85),
+                              content: Text(
+                                'Please select dorm cover image',
+                                style: TextStyle(color: Colors.red),
+                              )),
+                        );
+                      } else if (widget.dorm.imageList.length < 3) {
+                        debugPrint('Please select at least 3 dorm images');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              backgroundColor: Color.fromARGB(255, 85, 85, 85),
+                              content: Text(
+                                'Please select at least 3 dorm images',
+                                style: TextStyle(color: Colors.red),
+                              )),
+                        );
+                      } else if (widget.dorm.rooms.isEmpty) {
+                        debugPrint('Please add at least 1 room');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              backgroundColor: Color.fromARGB(255, 85, 85, 85),
+                              content: Text(
+                                'Please add at least 1 room',
+                                style: TextStyle(color: Colors.red),
+                              )),
+                        );
+                      } else if (widget.dorm.rooms[0].coverImage == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 85, 85, 85),
+                              content: Text(
+                                'Please select room ${widget.dorm.rooms[0].name} cover image',
+                                style: const TextStyle(color: Colors.red),
+                              )),
+                        );
+                      } else if (widget.dorm.rooms[0].imageList.length < 3) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 85, 85, 85),
+                              content: Text(
+                                'Please select at least 3 room ${widget.dorm.rooms[0].name} images',
+                                style: const TextStyle(color: Colors.red),
+                              )),
+                        );
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DetailScreen(
+                                      dorm: widget.dorm,
+                                      post: widget.post,
+                                      myimages: widget.myimages,
+                                    )));
+                      }
+                    } else {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
