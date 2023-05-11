@@ -1,17 +1,12 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/profile_reload.dart';
-import 'package:moddormy_flutter/screens/edit_profile.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/screens/post_form.dart';
 import 'package:moddormy_flutter/widgets/dorms_each_owner.dart';
 import 'package:moddormy_flutter/widgets/edit_user_form.dart';
-
-// import 'package:moddormy_flutter/widgets/dorms_each_owner.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {});
   }
 
+  @override
   void initState() {
     super.initState();
     ProfilePreload.profileReload = refreshState;
@@ -52,27 +48,21 @@ class _ProfilePageState extends State<ProfilePage> {
               padding: const EdgeInsets.all(25.0),
               child: Column(children: [
                 Column(children: [
-                  Container(
-                    // width: 150,
-                    // height: 150,
-                    // decoration: BoxDecoration(
-                    //   shape: BoxShape.circle),
-                    child: Stack(children: [
-                      user.profileImage == "" || user.profileImage == null
-                          ? const CircleAvatar(
-                              backgroundImage: AssetImage(
-                                'assets/images/profileNull.png',
-                              ),
-                              radius: 80,
-                            )
-                          : CircleAvatar(
-                              radius: 80,
-                              backgroundImage: NetworkImage(
-                                "http://moddormy.ivelse.com:8000${user.profileImage}",
-                              ),
+                  Stack(children: [
+                    user.profileImage == "" || user.profileImage == null
+                        ? const CircleAvatar(
+                            backgroundImage: AssetImage(
+                              'assets/images/profileNull.png',
                             ),
-                    ]),
-                  ),
+                            radius: 80,
+                          )
+                        : CircleAvatar(
+                            radius: 80,
+                            backgroundImage: NetworkImage(
+                              "http://moddormy.ivelse.com:8000${user.profileImage}",
+                            ),
+                          ),
+                  ]),
                 ]),
                 const SizedBox(height: 10),
                 Text(
@@ -115,7 +105,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         padding: const EdgeInsets.fromLTRB(22, 8, 8, 8),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
-                          //mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             if (user.firstname != null &&
                                 user.lastname != null &&
@@ -135,7 +124,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ],
                               )
                             else
-                              const Text("Name  :     -"),
+                              Row(
+                                children: const [
+                                  Expanded(child: Text("Name  :     -")),
+                                ],
+                              ),
                             const Padding(padding: EdgeInsets.only(bottom: 4)),
                             if (user.tel != null && user.tel != "")
                               Row(
@@ -148,14 +141,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ],
                               )
                             else
-                              const Text("Tel        :     -"),
+                              Row(
+                                children: const [
+                                  Expanded(child: Text("Tel        :     -")),
+                                ],
+                              ),
                             const Padding(padding: EdgeInsets.only(bottom: 4)),
                             if (user.email != null && user.email != "")
                               Row(
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      "Email  :    ${user.email}",
+                                      "Email   :    ${user.email}",
                                       //style: const TextStyle(fontSize: 15),
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -163,7 +160,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ],
                               )
                             else
-                              const Text("Email  :     -"),
+                              Row(
+                                children: const [
+                                  Expanded(child: Text("Email  :     -")),
+                                ],
+                              ),
                             const Padding(padding: EdgeInsets.only(bottom: 4)),
                             if (user.lineId != null && user.lineId != "")
                               Row(
@@ -178,7 +179,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ],
                               )
                             else
-                              const Text("LineID  :     -"),
+                              Row(
+                                children: const [
+                                  Expanded(child: Text("LineID  :     -")),
+                                ],
+                              ),
                           ],
                         ),
                       ),

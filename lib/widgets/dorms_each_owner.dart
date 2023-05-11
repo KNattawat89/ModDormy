@@ -1,12 +1,9 @@
 // ignore_for_file: unused_local_variable
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/profile_dorm.dart';
 import 'package:moddormy_flutter/models/profile_dorm_list.dart';
 import 'package:moddormy_flutter/provider/user_provider.dart';
-import 'package:moddormy_flutter/screens/dorm_detail.dart';
 import 'package:moddormy_flutter/screens/edit_dorm.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:provider/provider.dart';
@@ -97,7 +94,12 @@ class _DormsEachOwnerState extends State<DormsEachOwner> {
         itemBuilder: (context, index) {
           final dorm = _profileDorms[index];
           return ListTile(
-            leading: Image.network(dorm.coverImage.toString()),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: SizedBox.fromSize(
+                  size: const Size.fromRadius(39),
+                  child: Image.network(dorm.coverImage.toString())),
+            ),
             title: Text(dorm.dormName),
             subtitle: Text(dorm.createdAt.toString().substring(0, 10)),
             trailing: AspectRatio(
