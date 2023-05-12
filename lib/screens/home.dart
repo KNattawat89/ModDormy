@@ -255,7 +255,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SearchBar(
+            MySearchBar(
               filterItem: argument,
             ),
             const SizedBox(

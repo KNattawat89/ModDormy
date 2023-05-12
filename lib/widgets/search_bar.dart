@@ -4,15 +4,15 @@ import 'package:moddormy_flutter/widgets/filter_form.dart';
 
 import '../models/filter_item.dart';
 
-class SearchBar extends StatefulWidget {
-  const SearchBar({Key? key, required this.filterItem}) : super(key: key);
+class MySearchBar extends StatefulWidget {
+  const MySearchBar({Key? key, required this.filterItem}) : super(key: key);
   final FilterItem filterItem;
 
   @override
-  State<SearchBar> createState() => _SearchBarState();
+  State<MySearchBar> createState() => _MySearchBarState();
 }
 
-class _SearchBarState extends State<SearchBar> {
+class _MySearchBarState extends State<MySearchBar> {
   @override
   Widget build(BuildContext context) {
     return Row(
