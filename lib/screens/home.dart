@@ -79,13 +79,13 @@ class _HomePageState extends State<HomePage> {
   //   }
   // }
 
-  void getUserProfile(String uid) async {
+  void getUserProfile(String uid,  UserProvider userProvider) async {
     try {
       final response =
           await Caller.dio.get('/api/profile/getProfile?userId=$uid');
       UserList u = UserList.fromJson(response.data);
       _userData = u.data;
-      Provider.of<UserProvider>(context, listen: false).setUser(
+      userProvider.setUser(
           _userData[0].userId,
           _userData[0].profileImage ?? '',
           _userData[0].username,
@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // _searchController.addListener(_performSearch);
     if (user != null) {
-      getUserProfile(user!.uid);
+      getUserProfile(user!.uid,Provider.of<UserProvider>(context, listen: false));
       getFavDorm(user!.uid);
       // getDormAll(user!.uid);
     }

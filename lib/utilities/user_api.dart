@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '../models/user_item.dart';
 import '../models/user_list.dart';
 import '../provider/user_provider.dart';
@@ -26,7 +28,7 @@ class UserApiService {
           data[0].lineId ?? '',
           data[0].userType);
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
 
     // Return the updated user profile
