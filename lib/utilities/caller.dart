@@ -4,9 +4,11 @@ import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 
 class Caller {
   static BaseOptions options = BaseOptions(
-    baseUrl: "http://127.0.0.1:8000",
-    connectTimeout: const Duration(seconds: 5),
-    receiveTimeout: const Duration(seconds: 3),
+    // 127.0.0.1 -> localhost -> when using IOS emulator
+    // 10.0.2.2 or IP of your network -> when using android emulator
+    baseUrl: "http://moddormy.ivelse.com:8000",
+    connectTimeout: const Duration(seconds: 15),
+    receiveTimeout: const Duration(seconds: 10),
   );
 
   static Dio dio = Dio(options);
@@ -17,7 +19,8 @@ class Caller {
 
   static handle(BuildContext context, DioError error) {
     if (error.response == null) {
-      FlutterPlatformAlert.showAlert(windowTitle: 'Something went wrong', text: error.message!);
+      FlutterPlatformAlert.showAlert(
+          windowTitle: 'Something went wrong', text: error.message!);
       return;
     }
 
@@ -33,12 +36,12 @@ class Caller {
           error.response!.data["error"] == null
               ? Container()
               : Padding(
-            padding: const EdgeInsets.only(top: 4.0),
-            child: Text(
-              error.response!.data["error"],
-              style: const TextStyle(color: Colors.white70),
-            ),
-          ),
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Text(
+                    error.response!.data["error"],
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+                ),
         ],
       ),
     );

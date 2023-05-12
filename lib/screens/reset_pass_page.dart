@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/screens/login_page.dart';
 
+import 'login_page.dart';
 class ResetPassPage extends StatelessWidget {
   const ResetPassPage({super.key});
 
@@ -13,8 +13,8 @@ class ResetPassPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               width: double.infinity,
-              height: 243,
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(20)),
               margin: const EdgeInsets.all(20.0),
@@ -22,14 +22,25 @@ class ResetPassPage extends StatelessWidget {
                 const Padding(
                     padding: EdgeInsets.only(top: 60, bottom: 10),
                     child: Text(
-                      "Password have been reset.",
-                      style: TextStyle(fontSize: 24),
+                      "Check your email",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     )),
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 50.0),
-                  child: Text(
-                    "Please check your email.",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w100),
+               const Padding(
+                  padding:  EdgeInsets.only(bottom: 50.0),
+                  child: 
+                      Flexible(
+                        child: Text(
+                          "Please check your inbox and click in the received link to reset a password",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w100,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                    
                   ),
                 ),
                 SizedBox(
@@ -42,17 +53,16 @@ class ResetPassPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12.5)),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: ((context) => const LoginPage()),
-                            ));
+                         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginPage()), (route) => false);
                       },
                       child: const Text(
                         "Back to login",
                         style: TextStyle(fontSize: 14, color: Colors.black),
                       )),
                 ),
+                const SizedBox(
+                  height: 20,
+                )
               ]),
             ),
           ],

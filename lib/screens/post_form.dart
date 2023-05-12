@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/dorm_feature.dart';
+import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/dorm_form.dart';
@@ -13,6 +14,7 @@ class PostForm extends StatefulWidget {
 }
 
 class _PostFormState extends State<PostForm> {
+  List<Imagestring> myimages = [];
   Dorm dorm = Dorm(
     id: 0,
     name: '',
@@ -21,13 +23,15 @@ class _PostFormState extends State<PostForm> {
     street: '',
     subDistrict: '',
     district: '',
-    city: '',
-    zipCode: '',
+    city: 'Bangkok',
+    zipCode: 10140,
     description: '',
-    advPayment: '',
-    electric: '',
-    water: '',
+    advPayment: 0,
+    electric: 0,
+    water: 0,
     other: '',
+    distance: 0,
+    coverimageString: "",
     feature: DormFeature(
       cctv: false,
       fitness: false,
@@ -44,6 +48,7 @@ class _PostFormState extends State<PostForm> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("post dorm");
     return Scaffold(
       backgroundColor: const Color(0xfffff9f0),
       appBar: const MyAppbar(),
@@ -56,7 +61,11 @@ class _PostFormState extends State<PostForm> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              DormForm(dorm: dorm),
+              DormForm(
+                dorm: dorm,
+                post: true,
+                myimages: myimages,
+              ),
             ],
           ),
         ),

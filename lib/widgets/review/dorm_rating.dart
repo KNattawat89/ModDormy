@@ -1,78 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:moddormy_flutter/models/review.dart';
 
-import 'package:moddormy_flutter/widgets/review/review_mockup.dart';
+// import 'package:moddormy_flutter/widgets/review/review_mockup.dart';
 
-List<Review> reviews = generateMockReviews();
+//List<ReviewM> reviews = generateMockReviews();
 
 class DormRating extends StatelessWidget {
-  const DormRating({super.key});
+  final List<Review> reviews;
+  const DormRating({super.key, required this.reviews});
 
   @override
   Widget build(BuildContext context) {
     Map<String, double> averageRates = _calculateAverageRates(reviews);
     double overallRate = averageRates['overall']!;
-    return Expanded(
-      child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-          height: MediaQuery.of(context).size.height * 0.25,
-          child: Card(
-            color: const Color.fromARGB(255, 191, 189, 194),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            elevation: 8,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                //left side
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Overall Rating'),
-                    Text(overallRate.toStringAsFixed(1),
-                        style: const TextStyle(
-                            fontSize: 48, fontWeight: FontWeight.bold)),
-                    RatingBarIndicator(
-                      rating: averageRates['overall']!,
-                      itemBuilder: (context, index) => const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      itemCount: 5,
-                      itemSize: 20.0,
-                      direction: Axis.horizontal,
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+        height: MediaQuery.of(context).size.height * 0.25,
+        child: Card(
+          color: const Color(0xffDFDADA),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          elevation: 8,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              //left side
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Overall Rating'),
+                  Text(overallRate.toStringAsFixed(1),
+                      style: const TextStyle(
+                          fontSize: 48, fontWeight: FontWeight.bold)),
+                  RatingBarIndicator(
+                    rating: averageRates['overall']!,
+                    itemBuilder: (context, index) => const Icon(
+                      Icons.star,
+                      color: Color(0xffDC6E46),
                     ),
-                    Text(
-                      'Based on ${reviews.length} reviews',
-                      style:const  TextStyle(fontSize: 12),
-                    )
-                  ],
-                ),
+                    unratedColor: Colors.white,
+                    itemCount: 5,
+                    itemSize: 20.0,
+                    direction: Axis.horizontal,
+                  ),
+                  Text(
+                    'Based on ${reviews.length} reviews',
+                    style: const TextStyle(fontSize: 12),
+                  )
+                ],
+              ),
 
-                //divider
-                const VerticalDivider(
-                  color: Colors.white,
-                  thickness: 1,
-                  indent: 20,
-                  endIndent: 20,
-                ),
+              //divider
+              const VerticalDivider(
+                color: Color(0xff858585),
+                thickness: 1,
+                indent: 20,
+                endIndent: 20,
+              ),
 
-                //right side
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildRatingRow('Price', averageRates['price']!),
-                    _buildRatingRow('Location', averageRates['location']!),
-                    _buildRatingRow('Facility', averageRates['facility']!),
-                    _buildRatingRow('Sanitary', averageRates['sanitary']!),
-                    _buildRatingRow('Security', averageRates['security']!),
-                  ],
-                )
-              ],
-            ),
-          )),
-    );
+              //right side
+              Container(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: fiveRates(averageRates))
+            ],
+          ),
+        ));
   }
 }
 
@@ -85,21 +79,27 @@ Map<String, double> _calculateAverageRates(List<Review> reviews) {
   int sumOverallRate = 0;
 
   for (Review review in reviews) {
-    sumPriceRate += review.priceRate;
-    sumLocationRate += review.locationRate;
-    sumFacilityRate += review.facilityRate;
-    sumSanitaryRate += review.sanitaryRate;
-    sumSecurityRate += review.securityRate;
-    sumOverallRate += review.overallRate;
+    sumPriceRate += review.ratingPrice;
+    sumLocationRate += review.ratingLocation;
+    sumFacilityRate += review.ratingFacility;
+    sumSanitaryRate += review.ratingSanitary;
+    sumSecurityRate += review.ratingSecurity;
+    sumOverallRate += review.ratingOverall;
   }
 
   int numberOfReviews = reviews.length;
-  double averagePriceRate = sumPriceRate / numberOfReviews;
-  double averageLocationRate = sumLocationRate / numberOfReviews;
-  double averageFacilityRate = sumFacilityRate / numberOfReviews;
-  double averageSanitaryRate = sumSanitaryRate / numberOfReviews;
-  double averageSecurityRate = sumSecurityRate / numberOfReviews;
-  double averageOverallRate = sumOverallRate / numberOfReviews;
+  double averagePriceRate =
+      numberOfReviews == 0 ? 0 : sumPriceRate / numberOfReviews;
+  double averageLocationRate =
+      numberOfReviews == 0 ? 0 : sumLocationRate / numberOfReviews;
+  double averageFacilityRate =
+      numberOfReviews == 0 ? 0 : sumFacilityRate / numberOfReviews;
+  double averageSanitaryRate =
+      numberOfReviews == 0 ? 0 : sumSanitaryRate / numberOfReviews;
+  double averageSecurityRate =
+      numberOfReviews == 0 ? 0 : sumSecurityRate / numberOfReviews;
+  double averageOverallRate =
+      numberOfReviews == 0 ? 0 : sumOverallRate / numberOfReviews;
 
   return {
     'price': averagePriceRate,
@@ -111,23 +111,66 @@ Map<String, double> _calculateAverageRates(List<Review> reviews) {
   };
 }
 
-Widget _buildRatingRow(String label, double score) {
+Widget fiveRates(Map<String, double> averageRates) {
   return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
-      Text(
-        score.toStringAsFixed(1),
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16.0,
-        ),
+      Column(
+        children: [
+          Text(
+            averageRates['price']!.toStringAsFixed(1),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16.0,
+            ),
+          ),
+          Text(averageRates['location']!.toStringAsFixed(1),
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+          Text(averageRates['facility']!.toStringAsFixed(1),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              )),
+          Text(averageRates['sanitary']!.toStringAsFixed(1),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              )),
+          Text(averageRates['security']!.toStringAsFixed(1),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              )),
+        ],
       ),
-      Text(
-        label,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16.0,
-        ),
+      const SizedBox(
+        width: 10,
+      ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Text('Price',
+              style: TextStyle(
+                fontSize: 16.0,
+              )),
+          Text('Location',
+              style: TextStyle(
+                fontSize: 16.0,
+              )),
+          Text('Facility',
+              style: TextStyle(
+                fontSize: 16.0,
+              )),
+          Text('Sanitary',
+              style: TextStyle(
+                fontSize: 16.0,
+              )),
+          Text('Security',
+              style: TextStyle(
+                fontSize: 16.0,
+              )),
+        ],
       ),
     ],
   );

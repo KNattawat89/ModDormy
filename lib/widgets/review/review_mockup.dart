@@ -1,4 +1,4 @@
-class Review {
+class ReviewM {
   final String userId;
   final String dormId;
   final String reviewId;
@@ -11,7 +11,7 @@ class Review {
   final int securityRate;
   final int overallRate;
 
-  Review({
+  ReviewM({
     required this.userId,
     required this.dormId,
     required this.reviewId,
@@ -26,9 +26,9 @@ class Review {
   });
 }
 
-List<Review> generateMockReviews() {
+List<ReviewM> generateMockReviews() {
   return [
-    Review(
+    ReviewM(
       userId: 'user123',
       dormId: 'dorm456',
       reviewId: 'review1',
@@ -41,7 +41,7 @@ List<Review> generateMockReviews() {
       securityRate: 5,
       overallRate: 5,
     ),
-    Review(
+    ReviewM(
       userId: 'user456',
       dormId: 'dorm123',
       reviewId: 'review2',
@@ -54,7 +54,7 @@ List<Review> generateMockReviews() {
       securityRate: 4,
       overallRate: 3,
     ),
-    Review(
+    ReviewM(
       userId: 'user789',
       dormId: 'dorm456',
       reviewId: 'review3',

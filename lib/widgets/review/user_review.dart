@@ -1,7 +1,23 @@
+// import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+// import 'package:moddormy_flutter/widgets/review/review_mockup.dart';
+
+import '../../models/review.dart';
+import '../../provider/user_provider.dart';
+import '../../utilities/caller.dart';
+
+//List<ReviewM> reviews = generateMockReviews();
 
 class UserReview extends StatefulWidget {
-  const UserReview({super.key});
+  final Function refresh;
+  final List<Review> reviews;
+  const UserReview(
+      {super.key,
+      required this.reviews,
+      required void Function() this.refresh});
 
   @override
   State<UserReview> createState() => _UserReviewState();
@@ -10,68 +26,272 @@ class UserReview extends StatefulWidget {
 class _UserReviewState extends State<UserReview> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
-      height: MediaQuery.of(context).size.height * 0.25,
-      child: Expanded(
-        child: Column(children: [
-          //review header
+    if (widget.reviews.isEmpty) {
+      return const Center(
+        child: Text('No review yet.'),
+      );
+    } else {
+      return SizedBox(
+          // height: MediaQuery.of(context).size.height *
+          //     widget.reviews.length *
+          //     0.226,
+          child: Column(children: [
+        for (var review in widget.reviews)
+          showReview(reviews: review, refresh: widget.refresh),
+      ]));
+    }
+  }
+}
+
+// ignore: camel_case_types
+class showReview extends StatelessWidget {
+  final Review reviews;
+  final Function refresh;
+  const showReview({super.key, required this.reviews, required this.refresh});
+
+  @override
+  Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context);
+    return ListTile(
+      title: userHeader(reviews, user.userId, context, refresh),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+      subtitle: Column(
+        children: [
+          reviewContent(reviews),
+          const Divider(thickness: 0.5, height: 20.0, color: Colors.grey)
+        ],
+      ),
+    );
+  }
+}
+
+Widget userHeader(
+    Review reviews, String userId, BuildContext context, Function refresh) {
+  return Row(
+    children: [
+      showProfileImage(reviews),
+      const SizedBox(width: 10.0),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //username+date
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              //avatar
-              SizedBox(
-                width: MediaQuery.of(context).size.height * 0.25,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const CircleAvatar(
-                      radius: 20,
-                      backgroundImage: NetworkImage(
-                          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
-                    ),
-
-                    //username
-                    Column(
-                      children:const  [
-                        Text('EveInwza007'),
-                        Text('2020-10-10'),
-                      ],
-                    ),
-
-                    //rating
-                    const Text('⭐⭐⭐⭐⭐'),
-                  ],
-                ),
+              Text(
+                reviews.user!.username,
+                style: const TextStyle(color: Colors.black, fontSize: 16),
               ),
-
-              //delete button
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () {},
+              const SizedBox(width: 4.0),
+              Text(
+                DateFormat.yMMMd().format(reviews.createdAt!),
+                style: const TextStyle(color: Colors.grey, fontSize: 12),
               ),
             ],
           ),
 
-          //review detail
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-            height: MediaQuery.of(context).size.height * 0.1,
-            width: MediaQuery.of(context).size.width,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children:const  [
-                Text('1'),
-                VerticalDivider(
-                  color: Colors.black,
-                  thickness: 1,
+          //rating
+          Row(
+            children: [
+              RatingBarIndicator(
+                rating: reviews.ratingOverall.toDouble(),
+                itemBuilder: (context, index) => const Icon(
+                  Icons.star,
+                  color: Color(0xffDC6E46),
                 ),
-                Text('2')
-              ],
-            ),
-          )
-        ]),
+                itemCount: 5,
+                itemSize: 14.0,
+                direction: Axis.horizontal,
+              ),
+              const SizedBox(width: 4.0),
+              Text(
+                '(${reviews.ratingOverall.toStringAsFixed(1)})',
+                style: const TextStyle(fontSize: 12, color: Color(0xff858585)),
+              ),
+            ],
+          ),
+        ],
       ),
+
+      //delete button
+      const Spacer(),
+      showDeleteButton(reviews, userId, context, refresh),
+    ],
+  );
+}
+
+Widget showProfileImage(Review reviews) {
+  if (reviews.user!.profileImage == "" || reviews.user!.profileImage == null) {
+    return const CircleAvatar(
+      backgroundImage: AssetImage('assets/images/profileNull.png'),
+    );
+  } else {
+    return CircleAvatar(
+      backgroundImage: NetworkImage(
+          'http://moddormy.ivelse.com:8000${reviews.user!.profileImage!}'),
     );
   }
+}
+
+Widget showDeleteButton(
+    Review reviews, String userId, BuildContext context, Function refresh) {
+  // final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8000'));
+
+  void deleteDormReview(int reviewId) async {
+    //print(reviewId);
+    try {
+      // ignore: unused_local_variable
+      final response = await Caller.dio
+          .delete('/api/review/deleteDormReview?reviewId=$reviewId');
+      refresh();
+      //print(response.data.toString());
+    } catch (e) {
+      //print(e.toString());
+    }
+  }
+
+  // ignore: unrelated_type_equality_checks
+  if (reviews.user!.userId == userId) {
+    return IconButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                title: const Text(
+                  "Are you sure?",
+                  textAlign: TextAlign.center,
+                ),
+                content: const Text(
+                  "You will not be able to recover this review!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, color: Color(0xff838383)),
+                ),
+                actions: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: ElevatedButton.styleFrom(
+                            elevation: 8,
+                            backgroundColor: const Color(0xff838383),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          child: const Text("Cancel")),
+                      ElevatedButton(
+                          onPressed: () {
+                            // Perform the form submission here
+                            Navigator.pop(context);
+                            deleteDormReview(reviews.reviewId);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 8,
+                            backgroundColor: const Color(0xffDC6E46),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          child: const Text("Yes, delete it!")),
+                    ],
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        icon: Image.asset(
+          'assets/images/delete.png',
+          height: 20,
+          width: 20,
+        ),
+        color: const Color(0xffDC6E46));
+  }
+  return const SizedBox(
+    height: 48,
+    width: 32,
+  );
+}
+
+Widget reviewContent(Review reviews) {
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(flex: 1, child: fiveRates(reviews)),
+        const VerticalDivider(thickness: 0.5, width: 20.0, color: Colors.grey),
+        Expanded(
+          flex: 2,
+          child: Text(
+            reviews.review,
+            maxLines: 5,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget fiveRates(Review reviews) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      Column(
+        children: [
+          Text(
+            reviews.ratingPrice.toStringAsFixed(1),
+            style: const TextStyle(color: Colors.black, fontSize: 14.0),
+          ),
+          Text(
+            reviews.ratingLocation.toStringAsFixed(1),
+            style: const TextStyle(color: Colors.black, fontSize: 14.0),
+          ),
+          Text(
+            reviews.ratingFacility.toStringAsFixed(1),
+            style: const TextStyle(color: Colors.black, fontSize: 14.0),
+          ),
+          Text(
+            reviews.ratingSanitary.toStringAsFixed(1),
+            style: const TextStyle(color: Colors.black, fontSize: 14.0),
+          ),
+          Text(
+            reviews.ratingSecurity.toStringAsFixed(1),
+            style: const TextStyle(color: Colors.black, fontSize: 14.0),
+          ),
+        ],
+      ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Text(
+            'Price',
+            style: TextStyle(color: Colors.black, fontSize: 14.0),
+          ),
+          Text(
+            'Location',
+            style: TextStyle(color: Colors.black, fontSize: 14.0),
+          ),
+          Text(
+            'Facility',
+            style: TextStyle(color: Colors.black, fontSize: 14.0),
+          ),
+          Text(
+            'Sanitary',
+            style: TextStyle(color: Colors.black, fontSize: 14.0),
+          ),
+          Text(
+            'Security',
+            style: TextStyle(color: Colors.black, fontSize: 14.0),
+          ),
+        ],
+      ),
+    ],
+  );
 }

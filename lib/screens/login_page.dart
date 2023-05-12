@@ -1,7 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/screens/forgotpass_page.dart';
-import 'package:moddormy_flutter/screens/post_form.dart';
+import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/screens/register.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/user_provider.dart';
+import '../utilities/user_api.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -9,6 +14,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xFFFFF8F0),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -38,13 +44,27 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  bool _hindOfOpen = true;
   final _formKey = GlobalKey<FormState>();
   final _user = TextEditingController();
   final _pass = TextEditingController();
   bool err = false;
+  bool _isLoading = false;
+  String message = "";
+
+  void _toggle() {
+    setState(() {
+      _hindOfOpen = !_hindOfOpen;
+    });
+  }
+
+  final userApiService = UserApiService();
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+
     return Form(
         key: _formKey,
         child: Column(
@@ -65,19 +85,22 @@ class _LoginFormState extends State<LoginForm> {
               height: 65,
               child: TextFormField(
                 controller: _user,
+                autofocus: true,
                 style: const TextStyle(fontSize: 18),
                 decoration: const InputDecoration(
                     // isDense: true,
                     prefixIcon: Icon(Icons.person),
+                    prefixIconColor: Color(0xFF2A8089),
                     // contentPadding: EdgeInsets.zero,
                     filled: true,
                     fillColor: Colors.white,
                     hintText: "Type your email",
-                    
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFF2A8089), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(50.0))),
                     border: OutlineInputBorder(
-                      
                         borderRadius: BorderRadius.all(Radius.circular(50.0)))),
-               
               ),
             ),
             Padding(
@@ -98,12 +121,26 @@ class _LoginFormState extends State<LoginForm> {
               child: TextFormField(
                 controller: _pass,
                 style: const TextStyle(fontSize: 18),
+                obscureText: _hindOfOpen,
                 decoration: InputDecoration(
+                    focusColor: const Color(0xFF2A8089),
+                    // focusColor: const Color(0xFF2A8089),
                     hintText: "Type your password",
                     prefixIcon: const Icon(Icons.key),
+                    prefixIconColor: const Color(0xFF2A8089),
                     filled: true,
                     fillColor: Colors.white,
+                    suffixIcon: IconButton(
+                        onPressed: _toggle,
+                        icon: _hindOfOpen
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off)),
+                    suffixIconColor: const Color(0xFF2A8089),
                     disabledBorder: InputBorder.none,
+                    focusedBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFF2A8089), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(50.0))),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50.0),
                     )),
@@ -115,11 +152,7 @@ class _LoginFormState extends State<LoginForm> {
               children: [
                 TextButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: ((context) => const ForgotPassPage()),
-                          ));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => (const ForgotPassPage())));
                     },
                     child: const Text(
                       "Forgot password?",
@@ -130,9 +163,33 @@ class _LoginFormState extends State<LoginForm> {
                     )),
               ],
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            SizedBox(
+                width: double.infinity,
+                height: err ? 70 : 0,
+                child: Container(
+                    margin: err
+                        ? const EdgeInsets.only(bottom: 20)
+                        : const EdgeInsets.only(top: 0),
+                    decoration: const BoxDecoration(
+                        color: Color(0xFFFFCDD2),
+                        borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          err
+                              ? Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 15),
+                                  child: Text(
+                                      message == "user-not-found"
+                                          ? "Please check your email"
+                                          : "Please check your email and password",
+                                      style: const TextStyle(
+                                        color: Colors.red,
+                                      )),
+                                )
+                              : const Text("")
+                        ]))),
             SizedBox(
               width: 130,
               height: 39,
@@ -141,17 +198,71 @@ class _LoginFormState extends State<LoginForm> {
                     backgroundColor: const Color(0xFFDC6E46),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.5))),
-                onPressed: () {
-                  if (_formKey.currentState!.validate() & false) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: ((context) => const PostForm()),
-                        ));
-                  } else {
-                    setState(() {
-                      err = !err;
-                    });
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    try {
+                      setState(() {
+                        err = false;
+                        _isLoading = true;
+                      });
+                      if (_isLoading) {
+                        showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                                  content: SizedBox(
+                                    height: 100,
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            CircularProgressIndicator(
+                                                color: Color(0xFFDC6E46)),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text("Logging in...")
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ));
+
+                        final userCredential = await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                                email: _user.text, password: _pass.text);
+                        // print(userCredential.user?.uid);
+                        await UserApiService.getUserProfile(
+                            userCredential.user!.uid, userProvider);
+                            setState(() {
+                              _isLoading = false;
+                            });
+                      }
+                      if (_isLoading == false) {
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+                      }
+                      // ignore: use_build_context_synchronously
+                    } on FirebaseAuthException catch (e) {
+                      setState(() {
+                        err = true;
+                        message = e.code;
+                        _isLoading = false;
+                      });
+
+                      if (_isLoading == false) {
+                         Navigator.of(context).pop();
+                      }
+                      if (e.code == 'user-not-found') {
+                        debugPrint('No user found for that email.');
+                      } else if (e.code == 'wrong-password') {
+                        debugPrint('Wrong password provided for that user.');
+                      }
+                    }
                   }
                 },
                 child: const Text(
@@ -160,17 +271,6 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ),
-               Container(
-                    
-                   margin: err? const EdgeInsets.only(top:30) : const EdgeInsets.only(top:0),
-                         padding: err? const EdgeInsets.symmetric(horizontal: 30, vertical: 12) : const EdgeInsets.all(0),
-                    decoration: const BoxDecoration(
-                       color: Color(0xFFFFCDD2),
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))
-                    ),
-                    child: err? const Text("Enter the correct email and password",style: TextStyle(color: Colors.red,)) : const Text("")
-                   ),
-            
             const SizedBox(
               height: 10,
             ),
@@ -183,11 +283,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 TextButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: ((context) => const RegisterPage()),
-                          ));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => (const RegisterPage())));
                     },
                     child: const Text(
                       "Create",
@@ -197,7 +293,7 @@ class _LoginFormState extends State<LoginForm> {
                           decoration: TextDecoration.underline),
                     )),
               ],
-            )
+            ),
           ],
         ));
   }
