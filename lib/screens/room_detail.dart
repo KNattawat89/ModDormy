@@ -118,7 +118,6 @@ class _RoomDetailState extends State<RoomDetail> {
       );
     }
     return Scaffold(
-      backgroundColor: const Color(0xffFFF8F0),
       appBar: const MyAppbar(),
       endDrawer: const MyDrawer(),
       body: Center(
@@ -384,16 +383,12 @@ class _RoomDetailState extends State<RoomDetail> {
                       },
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(8, 8, 0, 0),
-                    child: Text(
-                      'Contract Detail',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                    ),
+                  const Text(
+                    'Contract Detail',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
                     child: Row(
                       children: [
                         const Text(
@@ -410,7 +405,7 @@ class _RoomDetailState extends State<RoomDetail> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
                     child: Row(
                       children: [
                         const Text(
@@ -427,7 +422,7 @@ class _RoomDetailState extends State<RoomDetail> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
                     child: Row(
                       children: [
                         const Text(
@@ -444,7 +439,7 @@ class _RoomDetailState extends State<RoomDetail> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 8, 0, 16),
+                    padding: const EdgeInsets.fromLTRB(8, 8, 0, 16),
                     child: Row(
                       children: [
                         const Text(
