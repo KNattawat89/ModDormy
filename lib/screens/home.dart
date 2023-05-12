@@ -5,7 +5,6 @@ import 'package:moddormy_flutter/models/dorm_list.dart';
 import 'package:moddormy_flutter/models/fav_preload.dart';
 import 'package:moddormy_flutter/models/filter_item.dart';
 import 'package:moddormy_flutter/models/user_item.dart';
-import 'package:moddormy_flutter/screens/favorite.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/dorm_info_home.dart';
 import 'package:moddormy_flutter/widgets/search_bar.dart';
@@ -216,13 +215,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getFavDorm(String uid) async {
-    print("hello");
     try {
       final response = await Caller.dio.get('/api/fav/getFav?userId=$uid');
       DormList d = DormList.fromJson(response.data);
       favDorm = d.data;
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 

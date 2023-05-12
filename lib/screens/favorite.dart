@@ -7,7 +7,6 @@ import '../models/dorm_item.dart';
 import '../utilities/caller.dart';
 import '../widgets/dorm_info_home.dart';
 import '../widgets/my_appbar.dart';
-import 'dorm_detail.dart';
 import 'login_page.dart';
 
 class FavoritePage extends StatefulWidget {
@@ -48,7 +47,6 @@ class _FavoritePageState extends State<FavoritePage> {
         favDorm = d.data;
         _isLoading = false;
       });
-      print("gatfaved");
     } catch (e) {
       setState(() {
         _isLoading = false;
@@ -73,7 +71,7 @@ class _FavoritePageState extends State<FavoritePage> {
                     "Favorite Dorms",
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                   )
-                : Text(''),
+                : const Text(''),
             favDorm.isEmpty
                 ? const SizedBox(
                     height: 0,

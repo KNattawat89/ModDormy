@@ -5,7 +5,6 @@ import 'package:moddormy_flutter/models/filter_controller.dart';
 import 'package:moddormy_flutter/models/filter_item.dart';
 import 'package:moddormy_flutter/widgets/filter_facility.dart';
 import 'package:moddormy_flutter/widgets/rate_in_filter.dart';
-import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:moddormy_flutter/widgets/review/headline_filter.dart';
 
 class FilterForm extends StatefulWidget {

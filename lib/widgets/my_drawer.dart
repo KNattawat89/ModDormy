@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/provider/user_provider.dart';
-import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/screens/login_page.dart';
 import 'package:moddormy_flutter/screens/register.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +12,7 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     UserProvider user = Provider.of<UserProvider>(context);
     return Drawer(
-      backgroundColor: Color(0xFFFFF8F0),
+      backgroundColor: const Color(0xFFFFF8F0),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
