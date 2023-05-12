@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/fav_preload.dart';
 import 'package:moddormy_flutter/provider/user_provider.dart';
-import 'package:moddormy_flutter/screens/favorite.dart';
 import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/screens/profile.dart';
 import 'package:provider/provider.dart';

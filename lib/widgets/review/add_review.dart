@@ -1,10 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:moddormy_flutter/widgets/review.dart';
-// import 'package:moddormy_flutter/models/user_item.dart';
 import 'package:moddormy_flutter/widgets/review/dropdown_section.dart';
 import 'package:moddormy_flutter/widgets/review/star_section.dart';
 import 'package:moddormy_flutter/widgets/review/text_section.dart';

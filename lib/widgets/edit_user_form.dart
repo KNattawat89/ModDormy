@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:moddormy_flutter/models/profile_reload.dart';
 import 'package:moddormy_flutter/screens/profile.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
-// import 'package:moddormy_flutter/widgets/edit_profile_image.dart';
 
 import 'package:provider/provider.dart';
 
@@ -90,7 +89,7 @@ class _EditUserFormState extends State<EditUserForm> {
     }
     final bytes = await file.readAsBytes();
     final formData = FormData.fromMap({
-      'image': await MultipartFile.fromBytes(
+      'image': MultipartFile.fromBytes(
         bytes,
         filename: 'image.jpg',
         // contentType: MediaType.parse('image/jpeg'),
@@ -160,7 +159,7 @@ class _EditUserFormState extends State<EditUserForm> {
                         uploadNewImage();
                       },
                       child: CircleAvatar(
-                        backgroundColor: Color(0xFFDC6E46),
+                        backgroundColor: const Color(0xFFDC6E46),
                         child: Center(
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(6, 5, 5, 5),
