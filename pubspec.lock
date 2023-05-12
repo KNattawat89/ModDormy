@@ -41,14 +41,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
-  bloc:
-    dependency: transitive
-    description:
-      name: bloc
-      sha256: cfcc09c3bdc24ba252e3ecbdb43191fc8ed7b14738c2cfb3bd3bedd0e419ba3c
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.13.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -374,22 +366,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_bloc:
-    dependency: transitive
-    description:
-      name: flutter_bloc
-      sha256: "28a9b6780e35c3c9b6b5d83824800c44e71e0af0b0323504d7d62fc4df998e37"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.13.0"
-  flutter_bloc_extensions:
-    dependency: "direct main"
-    description:
-      name: flutter_bloc_extensions
-      sha256: "7c1f150624effd41b8b7e803042bd7621cf2cace2bef5c57fd9515f7ced2e001"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.2"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -725,14 +701,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.2"
-  rxdart:
-    dependency: transitive
-    description:
-      name: rxdart
-      sha256: "79022a7d6ab5f7d00458ed74c121a75f38c88b1b3fa4bb053f23110b7a2e1241"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.22.6"
   shelf:
     dependency: transitive
     description:

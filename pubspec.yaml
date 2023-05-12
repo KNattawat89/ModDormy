@@ -37,7 +37,6 @@ dependencies:
   firebase_ui_auth: ^1.1.17
   flutter:
     sdk: flutter
-  flutter_bloc_extensions: any
   flutter_platform_alert: ^0.3.0
   flutter_rating_bar: ^4.0.1
   fluttericon: ^2.0.0
