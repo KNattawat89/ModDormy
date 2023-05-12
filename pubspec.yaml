@@ -34,7 +34,6 @@ dependencies:
   firebase_auth: ^4.4.2
   firebase_core: ^2.8.0
   firebase_messaging: ^14.3.0
-  firebase_ui_auth: ^1.1.17
   flutter:
     sdk: flutter
   flutter_platform_alert: ^0.3.0
