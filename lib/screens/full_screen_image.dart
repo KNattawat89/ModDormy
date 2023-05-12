@@ -1,10 +1,13 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
 class FullScreenImageScreen extends StatefulWidget {
   final List<String> imageUrls;
   final int currentIndex;
 
-  FullScreenImageScreen({required this.imageUrls, required this.currentIndex});
+  const FullScreenImageScreen(
+      {super.key, required this.imageUrls, required this.currentIndex});
 
   @override
   _FullScreenImageScreenState createState() => _FullScreenImageScreenState();

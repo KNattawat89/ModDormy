@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
 import 'package:moddormy_flutter/models/room.dart';
 import 'package:moddormy_flutter/screens/room_detail.dart';

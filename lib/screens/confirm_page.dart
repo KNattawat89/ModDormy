@@ -4,17 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:moddormy_flutter/models/dorm_item.dart';
-
 import 'package:moddormy_flutter/models/image.dart';
-import 'package:moddormy_flutter/screens/dorm_detail.dart';
-
 import 'package:moddormy_flutter/screens/splash.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
-import 'package:moddormy_flutter/widgets/post_dorm/room_image.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/show_room_conf.dart';
 import '../models/dorm.dart';
 
@@ -93,7 +88,7 @@ class _DetailScreenState extends State<DetailScreen> {
         });
         final response =
             await Caller.dio.post("/api/upload/dorm", data: formData);
-        print(response.data);
+        debugPrint(response.data.toString());
       }
     } on DioError catch (e) {
       debugPrint('upload dorm image error: ${e.response} $e');
@@ -114,6 +109,7 @@ class _DetailScreenState extends State<DetailScreen> {
         });
         final response =
             await Caller.dio.post("/api/upload/room", data: formData);
+        debugPrint(response.data.toString());
       }
     } on DioError catch (e) {
       debugPrint('upload room image error: ${e.response} $e');
@@ -282,7 +278,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (widget.post) {
       uploadDormCoverImage(widget.dorm.coverImage);
@@ -304,7 +299,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 

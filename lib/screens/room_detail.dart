@@ -1,7 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:dio/dio.dart';
 import 'package:moddormy_flutter/screens/full_screen_image.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/description.dart';
-import 'package:moddormy_flutter/widgets/post_dorm/section_description.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
@@ -13,7 +14,6 @@ import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';
-import 'package:moddormy_flutter/widgets/room_feature_mapping.dart';
 
 class RoomDetail extends StatefulWidget {
   final Dorm dorm;
@@ -74,8 +74,6 @@ class _RoomDetailState extends State<RoomDetail> {
       final response = await Caller.dio
           .get('/api/profile/getProfile?userId=${widget.ownerId}');
       UserList owner = UserList.fromJson(response.data);
-      print("owner data :");
-      print(owner.data);
 
       setState(() {
         ownerInfo = owner.data[0];

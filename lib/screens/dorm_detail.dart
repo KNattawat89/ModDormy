@@ -12,12 +12,9 @@ import 'package:moddormy_flutter/widgets/my_drawer.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/description.dart';
 import 'package:moddormy_flutter/widgets/post_dorm/show_rooms.dart';
 import 'package:moddormy_flutter/widgets/review.dart';
-import 'package:provider/provider.dart';
-
 import '../models/dorm_item.dart';
 import '../models/fav_preload.dart';
 import '../models/review.dart';
-import '../provider/user_provider.dart';
 
 class DormDetail extends StatefulWidget {
   const DormDetail(

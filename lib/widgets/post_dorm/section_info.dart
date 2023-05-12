@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 import '../../models/dorm.dart';
@@ -313,9 +315,7 @@ class _InfoSectionState extends State<InfoSection> {
                   keyboardType: TextInputType.number,
                   controller: zipCodeController,
                   onChanged: (value) {
-                    if (value != null) {
-                      widget.dorm.zipCode = int.parse(zipCodeController.text);
-                    }
+                    widget.dorm.zipCode = int.tryParse(zipCodeController.text)!;
                   },
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(

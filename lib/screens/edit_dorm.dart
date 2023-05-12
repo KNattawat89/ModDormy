@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/dorm.dart';
-import 'package:moddormy_flutter/models/dorm_feature.dart';
 import 'package:moddormy_flutter/models/image.dart';
 import 'package:moddormy_flutter/models/room.dart';
-import 'package:moddormy_flutter/models/room_frature.dart';
 import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:moddormy_flutter/widgets/my_appbar.dart';
 import 'package:moddormy_flutter/widgets/my_drawer.dart';

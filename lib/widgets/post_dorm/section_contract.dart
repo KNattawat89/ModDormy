@@ -18,7 +18,6 @@ class _ContractSectionState extends State<ContractSection> {
   final otherController = TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     advPaymentController.text = widget.dorm.advPayment.toString();
     electricController.text = widget.dorm.electric.toString();
@@ -36,7 +35,7 @@ class _ContractSectionState extends State<ContractSection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               children: const [
                 Text(

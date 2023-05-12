@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:moddormy_flutter/widgets/icon_feature_mapping.dart';
 
 class FeatureRow extends StatelessWidget {

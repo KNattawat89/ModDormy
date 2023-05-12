@@ -13,7 +13,6 @@ class _DistanceSectionState extends State<DistanceSection> {
   final distanceController = TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     distanceController.text = widget.dorm.distance.toString();
   }
