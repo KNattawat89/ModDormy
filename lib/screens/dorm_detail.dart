@@ -422,7 +422,7 @@ class _DormDetailState extends State<DormDetail> {
                         TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+                padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
                 child: Row(
                   children: [
                     const Text(
@@ -438,7 +438,7 @@ class _DormDetailState extends State<DormDetail> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+                padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
                 child: Row(
                   children: [
                     const Text(
@@ -454,7 +454,7 @@ class _DormDetailState extends State<DormDetail> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+                padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
                 child: Row(
                   children: [
                     const Text(
@@ -470,7 +470,7 @@ class _DormDetailState extends State<DormDetail> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 0, 16),
+                padding: const EdgeInsets.fromLTRB(24, 8, 0, 16),
                 child: Row(
                   children: [
                     const Text(
