@@ -128,7 +128,7 @@ class _RoomItemState extends State<RoomItem> {
                   child: Column(
                     children: [
                       TextFormField(
-                        //keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.number,
                         controller: priceController,
                         onChanged: (value) {
                           widget.room.price = int.parse(priceController.text);

@@ -38,9 +38,10 @@ class _DetailScreenState extends State<DetailScreen> {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   String? coverImageFileName;
   List<String> coverImageList = [];
+  bool _isLoading = true;
   bool success = false;
 
-  void uploadImage(XFile? file, bool d) async {
+  void uploadDormCoverImage(XFile? file) async {
     try {
       String fileName = file!.path.split('/').last;
       FormData formData = FormData.fromMap({
@@ -50,16 +51,32 @@ class _DetailScreenState extends State<DetailScreen> {
           await Caller.dio.post("/api/upload/coverImage", data: formData);
 
       setState(() {
-        if (d) {
-          coverImageFileName = response.data["image"];
-          debugPrint('dorm ${coverImageFileName!}');
-        } else {
-          coverImageList.add(response.data["image"]);
-          debugPrint('room ${coverImageList.toString()}');
+        coverImageFileName = response.data["image"];
+        debugPrint('dorm ${coverImageFileName!}');
+      });
+    } on DioError catch (e) {
+      debugPrint('upload dorm cover image error: ${e.response}');
+    }
+  }
+
+  void uploadRoomCoverImage(XFile? file) async {
+    try {
+      String fileName = file!.path.split('/').last;
+      FormData formData = FormData.fromMap({
+        "image": await MultipartFile.fromFile(file.path, filename: fileName),
+      });
+      final response =
+          await Caller.dio.post("/api/upload/coverImage", data: formData);
+      debugPrint('upload room cover image response: ${response.data}');
+      setState(() {
+        coverImageList.add(response.data["image"]);
+        debugPrint('room ${coverImageList.toString()}');
+        for (var i = 0; i < coverImageList.length; i++) {
+          debugPrint('room ${coverImageList[i]}');
         }
       });
     } on DioError catch (e) {
-      debugPrint('upload cover image error: ${e.response}');
+      debugPrint('upload room cover image error: ${e.response}');
     }
   }
 
@@ -84,6 +101,7 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   void uploadRoomImages(List<XFile> file, int id) async {
+    debugPrint('upload room images');
     try {
       for (var i = 0; i < file.length; i++) {
         String fileName = file[i].path.split('/').last;
@@ -96,15 +114,13 @@ class _DetailScreenState extends State<DetailScreen> {
         });
         final response =
             await Caller.dio.post("/api/upload/room", data: formData);
-        debugPrint(response.data);
       }
     } on DioError catch (e) {
       debugPrint('upload room image error: ${e.response} $e');
     }
   }
 
-  void postDormDetail() async {
-    uploadImage(widget.dorm.coverImage, true);
+  Future<void> postDormDetail() async {
     try {
       final postdorm = await Caller.dio.post(
         "/api/manage-dorm/postDorm",
@@ -141,11 +157,10 @@ class _DetailScreenState extends State<DetailScreen> {
       );
       debugPrint(postdorm.data["id"].toString());
       (uploadDormImages(widget.dorm.imageList, postdorm.data["id"]));
-      // ignore: prefer_typing_uninitialized_variables, unused_local_variable
+
       debugPrint(widget.dorm.rooms.length.toString());
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
-        uploadImage(widget.dorm.rooms[i].coverImage, false);
-        debugPrint(coverImageList[i]);
+        // uploadRoomCoverImage(widget.dorm.rooms[i].coverImage);
         final postroom =
             await Caller.dio.post("/api/manage-room/postRoom", data: {
           "dormId": postdorm.data["id"],
@@ -164,11 +179,14 @@ class _DetailScreenState extends State<DetailScreen> {
             "tv": widget.dorm.rooms[i].feature.tv,
           }
         });
-        debugPrint(postroom.data["room_id"]);
+        debugPrint(postroom.data["room_id"].toString());
         uploadRoomImages(
             widget.dorm.rooms[i].imageList, postroom.data["room_id"]);
-        success = true;
       }
+      setState(() {
+        _isLoading = false;
+        success = true;
+      });
     } on DioError catch (e) {
       debugPrint("room error ${e.response} $e");
     }
@@ -209,7 +227,7 @@ class _DetailScreenState extends State<DetailScreen> {
         },
       );
       if (widget.dorm.coverImage != null) {
-        uploadImage(widget.dorm.coverImage, true);
+        uploadDormCoverImage(widget.dorm.coverImage);
         final result1 = await Caller.dio
             .put('/api/manage-dorm/editDorm?dormId=${widget.dorm.id}', data: {
           "CoverImage": coverImageFileName,
@@ -246,7 +264,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
         debugPrint(editedroom.data.toString());
         if (widget.dorm.rooms[i].coverImage != null) {
-          uploadImage(widget.dorm.rooms[i].coverImage, false);
+          uploadRoomCoverImage(widget.dorm.rooms[i].coverImage);
           editedroom = await Caller.dio.put(
               "/api/manage-room/editRoom?roomId=${widget.dorm.rooms[i].id}",
               data: {
@@ -264,6 +282,24 @@ class _DetailScreenState extends State<DetailScreen> {
       debugPrint('room error');
       debugPrint(e.toString());
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.post) {
+      uploadDormCoverImage(widget.dorm.coverImage);
+      for (var i = 0; i < widget.dorm.rooms.length; i++) {
+        uploadRoomCoverImage(widget.dorm.rooms[i].coverImage);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -374,12 +410,20 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: widget.dorm.coverImage == null
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(12.0),
-                            child: Image.network(
-                              widget.dorm.coverimageString,
-                              fit: BoxFit.cover,
-                              height: 350,
-                              width: 350,
-                            ),
+                            child: widget.dorm.coverimageString == '' ||
+                                    widget.dorm.coverimageString.isEmpty
+                                ? Image.asset(
+                                    'assets/images/no-image.png',
+                                    fit: BoxFit.cover,
+                                    height: 350,
+                                    width: 350,
+                                  )
+                                : Image.network(
+                                    widget.dorm.coverimageString,
+                                    fit: BoxFit.cover,
+                                    height: 350,
+                                    width: 350,
+                                  ),
                           )
                         : ClipRRect(
                             borderRadius: BorderRadius.circular(12.0),
@@ -399,11 +443,45 @@ class _DetailScreenState extends State<DetailScreen> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                     ),
                   ),
-                  widget.post
-                      //post
-                      ? Padding(
-                          padding: const EdgeInsets.only(left: 8),
-                          child: SizedBox(
+                  if (widget.post && widget.dorm.imageList.isNotEmpty)
+                    SizedBox(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      child: GridView.builder(
+                        shrinkWrap: false,
+                        physics: const BouncingScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 200,
+                                // childAspectRatio: 3 / 2,
+                                crossAxisSpacing: 20,
+                                mainAxisSpacing: 20),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.dorm.imageList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: Image.file(
+                              File(widget.dorm.imageList[index].path),
+                              fit: BoxFit.cover,
+                              width: 200,
+                              height: 200,
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  else
+                    Column(
+                      children: [
+                        if (widget.myimages.isEmpty)
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: const [CircularProgressIndicator()],
+                          )
+                        else
+                          SizedBox(
                             width: double.infinity,
                             height: MediaQuery.of(context).size.height * 0.15,
                             child: GridView.builder(
@@ -413,117 +491,121 @@ class _DetailScreenState extends State<DetailScreen> {
                                   const SliverGridDelegateWithMaxCrossAxisExtent(
                                       maxCrossAxisExtent: 200,
                                       // childAspectRatio: 3 / 2,
-                                      crossAxisSpacing: 0,
-                                      mainAxisSpacing: 0),
+                                      crossAxisSpacing: 20,
+                                      mainAxisSpacing: 20),
                               scrollDirection: Axis.horizontal,
-                              itemCount: widget.dorm.imageList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                              itemCount: widget.myimages.length,
+                              itemBuilder: (BuildContext context, int j) {
+                                return ClipRRect(
+                                  borderRadius: BorderRadius.circular(12.0),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(12.0),
-                                    child: Image.file(
-                                      File(widget.dorm.imageList[index].path),
-                                      fit: BoxFit.cover,
-                                      width: 200,
-                                      height: 200,
-                                    ),
+                                    child: widget.myimages.isEmpty
+                                        ? Image.asset(
+                                            'assets/images/no-image.png',
+                                            fit: BoxFit.cover,
+                                            height: 350,
+                                            width: 350,
+                                          )
+                                        : Image.network(
+                                            widget.myimages[j].image,
+                                            fit: BoxFit.cover,
+                                            width: 200,
+                                            height: 200,
+                                          ),
                                   ),
                                 );
                               },
                             ),
                           ),
-                        )
-                      :
-                      //edit
-                      SizedBox(
-                          width: double.infinity,
-                          height: MediaQuery.of(context).size.height * 0.15,
-                          child: GridView.builder(
-                            shrinkWrap: false,
-                            physics: const BouncingScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 200,
-                                    // childAspectRatio: 3 / 2,
-                                    crossAxisSpacing: 20,
-                                    mainAxisSpacing: 20),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: widget.myimages.length,
-                            itemBuilder: (BuildContext context, int j) {
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(12.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  child: Image.network(
-                                    widget.myimages[j].image,
-                                    fit: BoxFit.cover,
-                                    width: 100,
-                                    height: 100,
+                        if (widget.dorm.imageList.isEmpty && widget.post)
+                          const Text(
+                            '',
+                          )
+                        else
+                          widget.dorm.imageList.isEmpty
+                              ? const Text('')
+                              : Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 8, 0, 8),
+                                        child: Text(
+                                          "Added images :",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 18),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: double.infinity,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.15,
+                                        child: widget.dorm.imageList.isEmpty
+                                            ? const Center(
+                                                child: Text(
+                                                  'Unable to load images',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: Colors.grey),
+                                                ),
+                                              )
+                                            : GridView.builder(
+                                                shrinkWrap: false,
+                                                physics:
+                                                    const BouncingScrollPhysics(),
+                                                gridDelegate:
+                                                    const SliverGridDelegateWithMaxCrossAxisExtent(
+                                                        maxCrossAxisExtent: 200,
+                                                        crossAxisSpacing: 20,
+                                                        mainAxisSpacing: 20),
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: widget
+                                                    .dorm.imageList.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0),
+                                                    child: Image.file(
+                                                      File(widget
+                                                          .dorm
+                                                          .imageList[index]
+                                                          .path),
+                                                      fit: BoxFit.cover,
+                                                      width: 100,
+                                                      height: 100,
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              );
-                            },
-                          ),
-                        ),
-                  widget.dorm.imageList.isEmpty
-                      ? const Text(
-                          '',
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 8, 0, 16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-                                child: Text(
-                                  "Added images :",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18),
-                                ),
-                              ),
-                              SizedBox(
-                                width: double.infinity,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.15,
-                                child: GridView.builder(
-                                  shrinkWrap: false,
-                                  physics: const BouncingScrollPhysics(),
-                                  gridDelegate:
-                                      const SliverGridDelegateWithMaxCrossAxisExtent(
-                                          maxCrossAxisExtent: 200,
-                                          crossAxisSpacing: 20,
-                                          mainAxisSpacing: 20),
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: widget.dorm.imageList.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return ClipRRect(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      child: Image.file(
-                                        File(widget.dorm.imageList[index].path),
-                                        fit: BoxFit.cover,
-                                        width: 100,
-                                        height: 100,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                      ],
+                    ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Dorm Features :',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
-                        textAlign: TextAlign.start,
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                        child: Text(
+                          'Dorm Features :',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
+                          textAlign: TextAlign.start,
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(8, 8, 16, 0),
@@ -741,7 +823,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             ),
                           ]),
                       const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                        padding: EdgeInsets.fromLTRB(0, 8, 0, 16),
                         child: Text(
                           'Cover Images :',
                           style: TextStyle(
@@ -763,12 +845,20 @@ class _DetailScreenState extends State<DetailScreen> {
                           //edit
                           : ClipRRect(
                               borderRadius: BorderRadius.circular(12.0),
-                              child: Image.network(
-                                widget.dorm.rooms[index].coverimageString,
-                                fit: BoxFit.cover,
-                                height: 350,
-                                width: 350,
-                              ),
+                              child: widget.dorm.rooms[index].coverimageString
+                                      .isEmpty
+                                  ? Image.asset(
+                                      'assets/images/no-image.png',
+                                      fit: BoxFit.cover,
+                                      height: 350,
+                                      width: 350,
+                                    )
+                                  : Image.network(
+                                      widget.dorm.rooms[index].coverimageString,
+                                      fit: BoxFit.cover,
+                                      height: 350,
+                                      width: 350,
+                                    ),
                             ),
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
@@ -786,31 +876,43 @@ class _DetailScreenState extends State<DetailScreen> {
                                 width: double.infinity,
                                 height:
                                     MediaQuery.of(context).size.height * 0.15,
-                                child: GridView.builder(
-                                  shrinkWrap: false,
-                                  physics: const BouncingScrollPhysics(),
-                                  gridDelegate:
-                                      const SliverGridDelegateWithMaxCrossAxisExtent(
-                                          maxCrossAxisExtent: 200,
-                                          // childAspectRatio: 3 / 2,
-                                          crossAxisSpacing: 20,
-                                          mainAxisSpacing: 20),
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount:
-                                      widget.dorm.rooms[index].imageList.length,
-                                  itemBuilder: (BuildContext context, int i) {
-                                    return ClipRRect(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      child: Image.file(
-                                        File(widget.dorm.rooms[index]
-                                            .imageList[i].path),
-                                        fit: BoxFit.cover,
-                                        height: 200,
-                                        width: 200,
+                                child: widget
+                                        .dorm.rooms[index].imageList.isEmpty
+                                    ? const Center(
+                                        child: Text(
+                                          'Unable to load images',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      )
+                                    : GridView.builder(
+                                        shrinkWrap: false,
+                                        physics: const BouncingScrollPhysics(),
+                                        gridDelegate:
+                                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                                                maxCrossAxisExtent: 200,
+                                                // childAspectRatio: 3 / 2,
+                                                crossAxisSpacing: 20,
+                                                mainAxisSpacing: 20),
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: widget
+                                            .dorm.rooms[index].imageList.length,
+                                        itemBuilder:
+                                            (BuildContext context, int i) {
+                                          return ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                            child: Image.file(
+                                              File(widget.dorm.rooms[index]
+                                                  .imageList[i].path),
+                                              fit: BoxFit.cover,
+                                              height: 200,
+                                              width: 200,
+                                            ),
+                                          );
+                                        },
                                       ),
-                                    );
-                                  },
-                                ),
                               ),
                             )
 
@@ -887,160 +989,239 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: FloatingActionButton.extended(
                         heroTag: "btn2",
                         backgroundColor: const Color(0xFFDC6E46),
-                        onPressed: () {
-                          //post
+                        onPressed: () async {
                           if (widget.post) {
                             postDormDetail();
-                            //success
-                            if (success) {
-                              showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  backgroundColor: const Color(0xFFD9D9D9),
-                                  title: const Icon(
-                                    Icons.verified_rounded,
-                                    color: Color(0xff2a8089),
-                                    size: 100,
-                                  ),
-                                  content: const Text(
-                                    'Your dorm information has been posted!',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  actions: <Widget>[
-                                    Center(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              const Color(0xFFDC6E46),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                        ),
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text('Go to post'),
-                                      ),
-                                    ),
-                                  ],
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                backgroundColor: const Color(0xFFD9D9D9),
+                                title: const Icon(
+                                  Icons.verified_rounded,
+                                  color: Color(0xff2a8089),
+                                  size: 100,
                                 ),
-                              );
-                              //fail
-                            } else {
-                              showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  backgroundColor: const Color(0xFFD9D9D9),
-                                  title: const Icon(
-                                    Icons.cancel_outlined,
-                                    color: Color.fromARGB(255, 137, 42, 42),
-                                    size: 100,
-                                  ),
-                                  content: const Text(
-                                    'Something went wrong try again later',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  actions: <Widget>[
-                                    Center(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              const Color(0xFFDC6E46),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                        ),
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text('Go to Back'),
-                                      ),
-                                    ),
-                                  ],
+                                content: const Text(
+                                  'Your dorm information has been posted!',
+                                  textAlign: TextAlign.center,
                                 ),
-                              );
-                            }
-                          } else {
-                            updateDormDetail();
-                            if (success) {
-                              showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  backgroundColor: const Color(0xFFD9D9D9),
-                                  title: const Icon(
-                                    Icons.verified_rounded,
-                                    color: Color(0xff2a8089),
-                                    size: 100,
-                                  ),
-                                  content: const Text(
-                                    'Your dorm information has been updated!',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  actions: <Widget>[
-                                    Center(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              const Color(0xFFDC6E46),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
+                                actions: <Widget>[
+                                  Center(
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xFFDC6E46),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                         ),
-                                        onPressed: () => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    (DormDetail(
-                                                        dormId: widget.dorm.id,
-                                                        dormItem: DormItem(
-                                                            coverImage: '',
-                                                            dormId:
-                                                                widget.dorm.id,
-                                                            dormName: widget
-                                                                .dorm.name,
-                                                            isFav: false,
-                                                            maxPrice: 0,
-                                                            minPrice: 0,
-                                                            overallRate: 0))))),
-                                        child: const Text('Go to post'),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            } else {
-                              showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  backgroundColor: const Color(0xFFD9D9D9),
-                                  title: const Icon(
-                                    Icons.cancel_outlined,
-                                    color: Color.fromARGB(255, 137, 42, 42),
-                                    size: 100,
-                                  ),
-                                  content: const Text(
-                                    'Something went wrong try again later',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  actions: <Widget>[
-                                    Center(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              const Color(0xFFDC6E46),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
+                                      onPressed: () {
+                                        Navigator.pop(
+                                            context); // Close the success dialog
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const Splash(),
                                           ),
-                                        ),
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text('Go to Back'),
-                                      ),
+                                        );
+                                      },
+                                      child: const Text('Go to post'),
                                     ),
-                                  ],
-                                ),
-                              );
-                            }
+                                  ),
+                                ],
+                              ),
+                            );
                           }
+                          if (widget.post == false) {
+                            updateDormDetail();
+                          }
+
+                          //success
+                          //   if (_isLoading) {
+                          //     showDialog(
+                          //       context: context,
+                          //       builder: (BuildContext context) {
+                          //         return const Center(
+                          //           child: CircularProgressIndicator(),
+                          //         );
+                          //       },
+                          //     );
+                          //   } else {
+                          //     // Wait for postDormDetail to complete
+                          //     await postDormDetail();
+
+                          //     if (success == true && _isLoading == false) {
+                          //       Navigator.pop(
+                          //           context); // Close the progress dialog
+                          //       // ignore: use_build_context_synchronously
+                          //       showDialog<String>(
+                          //         context: context,
+                          //         builder: (BuildContext context) =>
+                          //             AlertDialog(
+                          //           backgroundColor: const Color(0xFFD9D9D9),
+                          //           title: const Icon(
+                          //             Icons.verified_rounded,
+                          //             color: Color(0xff2a8089),
+                          //             size: 100,
+                          //           ),
+                          //           content: const Text(
+                          //             'Your dorm information has been posted!',
+                          //             textAlign: TextAlign.center,
+                          //           ),
+                          //           actions: <Widget>[
+                          //             Center(
+                          //               child: ElevatedButton(
+                          //                 style: ElevatedButton.styleFrom(
+                          //                   backgroundColor:
+                          //                       const Color(0xFFDC6E46),
+                          //                   shape: RoundedRectangleBorder(
+                          //                     borderRadius:
+                          //                         BorderRadius.circular(20),
+                          //                   ),
+                          //                 ),
+                          //                 onPressed: () {
+                          //                   Navigator.pop(
+                          //                       context); // Close the success dialog
+                          //                   Navigator.push(
+                          //                     context,
+                          //                     MaterialPageRoute(
+                          //                       builder: (context) =>
+                          //                           const Splash(),
+                          //                     ),
+                          //                   );
+                          //                 },
+                          //                 child: const Text('Go to post'),
+                          //               ),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       );
+                          //     } else if (success == false &&
+                          //         _isLoading == false) {
+                          //       Navigator.pop(
+                          //           context); // Close the progress dialog
+                          //       showDialog<String>(
+                          //         context: context,
+                          //         builder: (BuildContext context) =>
+                          //             AlertDialog(
+                          //           backgroundColor: const Color(0xFFD9D9D9),
+                          //           title: const Icon(
+                          //             Icons.cancel_outlined,
+                          //             color: Color.fromARGB(255, 137, 42, 42),
+                          //             size: 100,
+                          //           ),
+                          //           content: const Text(
+                          //             'Something went wrong. Please try again later.',
+                          //             textAlign: TextAlign.center,
+                          //           ),
+                          //           actions: <Widget>[
+                          //             Center(
+                          //               child: ElevatedButton(
+                          //                 style: ElevatedButton.styleFrom(
+                          //                   backgroundColor:
+                          //                       const Color(0xFFDC6E46),
+                          //                   shape: RoundedRectangleBorder(
+                          //                     borderRadius:
+                          //                         BorderRadius.circular(20),
+                          //                   ),
+                          //                 ),
+                          //                 onPressed: () =>
+                          //                     Navigator.pop(context),
+                          //                 child: const Text('Go to Back'),
+                          //               ),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       );
+                          //     }
+                          //   }
+                          // } else {
+                          //   updateDormDetail();
+                          //   if (success) {
+                          //     showDialog<String>(
+                          //       context: context,
+                          //       builder: (BuildContext context) => AlertDialog(
+                          //         backgroundColor: const Color(0xFFD9D9D9),
+                          //         title: const Icon(
+                          //           Icons.verified_rounded,
+                          //           color: Color(0xff2a8089),
+                          //           size: 100,
+                          //         ),
+                          //         content: const Text(
+                          //           'Your dorm information has been updated!',
+                          //           textAlign: TextAlign.center,
+                          //         ),
+                          //         actions: <Widget>[
+                          //           Center(
+                          //             child: ElevatedButton(
+                          //               style: ElevatedButton.styleFrom(
+                          //                 backgroundColor:
+                          //                     const Color(0xFFDC6E46),
+                          //                 shape: RoundedRectangleBorder(
+                          //                   borderRadius:
+                          //                       BorderRadius.circular(20),
+                          //                 ),
+                          //               ),
+                          //               onPressed: () => Navigator.push(
+                          //                   context,
+                          //                   MaterialPageRoute(
+                          //                       builder: (context) =>
+                          //                           (DormDetail(
+                          //                               dormId: widget.dorm.id,
+                          //                               dormItem: DormItem(
+                          //                                   coverImage: '',
+                          //                                   dormId:
+                          //                                       widget.dorm.id,
+                          //                                   dormName: widget
+                          //                                       .dorm.name,
+                          //                                   isFav: false,
+                          //                                   maxPrice: 0,
+                          //                                   minPrice: 0,
+                          //                                   overallRate: 0))))),
+                          //               child: const Text('Go to post'),
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     );
+                          //   } else {
+                          //     showDialog<String>(
+                          //       context: context,
+                          //       builder: (BuildContext context) => AlertDialog(
+                          //         backgroundColor: const Color(0xFFD9D9D9),
+                          //         title: const Icon(
+                          //           Icons.cancel_outlined,
+                          //           color: Color.fromARGB(255, 137, 42, 42),
+                          //           size: 100,
+                          //         ),
+                          //         content: const Text(
+                          //           'Something went wrong unable to update dorm\n please try again later',
+                          //           textAlign: TextAlign.center,
+                          //         ),
+                          //         actions: <Widget>[
+                          //           Center(
+                          //             child: ElevatedButton(
+                          //               style: ElevatedButton.styleFrom(
+                          //                 backgroundColor:
+                          //                     const Color(0xFFDC6E46),
+                          //                 shape: RoundedRectangleBorder(
+                          //                   borderRadius:
+                          //                       BorderRadius.circular(20),
+                          //                 ),
+                          //               ),
+                          //               onPressed: () => Navigator.pop(context),
+                          //               child: const Text('Go to Back'),
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     );
+                          //   }
                         },
                         label: const Text('Confirm')),
                   ),
