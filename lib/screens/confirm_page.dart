@@ -197,8 +197,7 @@ class _DetailScreenState extends State<DetailScreen> {
       final editeddorm = await Caller.dio.put(
         '/api/manage-dorm/editDorm?dormId=${widget.dorm.id}',
         data: {
-          "dorm_name": widget.dorm
-              .name, //"${widget.dorm.coverImage!.path}", // Upload รูป how?
+          "dorm_name": widget.dorm.name,
           "house_number": widget.dorm.houseNo,
           "street": widget.dorm.street,
           "soi": widget.dorm.soi,
@@ -227,12 +226,11 @@ class _DetailScreenState extends State<DetailScreen> {
         },
       );
       if (widget.dorm.coverImage != null) {
-        uploadDormCoverImage(widget.dorm.coverImage);
         final result1 = await Caller.dio
             .put('/api/manage-dorm/editDorm?dormId=${widget.dorm.id}', data: {
-          "CoverImage": coverImageFileName,
+          "cover_image": coverImageFileName,
         });
-        debugPrint(result1.data.toString());
+        debugPrint('DormCover${result1.data}');
       }
       debugPrint(editeddorm.data["id"].toString());
 
@@ -246,7 +244,7 @@ class _DetailScreenState extends State<DetailScreen> {
         editedroom = await Caller.dio.put(
             "/api/manage-room/editRoom?roomId=${widget.dorm.rooms[i].id}",
             data: {
-              "dorm_id": widget.dorm.rooms[i].id,
+              "dorm_id": editeddorm.data["id"],
               "room_Name": widget.dorm.rooms[i].name,
               "price": widget.dorm.rooms[i].price,
               "desc": widget.dorm.rooms[i].description,
@@ -264,11 +262,10 @@ class _DetailScreenState extends State<DetailScreen> {
 
         debugPrint(editedroom.data.toString());
         if (widget.dorm.rooms[i].coverImage != null) {
-          uploadRoomCoverImage(widget.dorm.rooms[i].coverImage);
           editedroom = await Caller.dio.put(
               "/api/manage-room/editRoom?roomId=${widget.dorm.rooms[i].id}",
               data: {
-                "CoverImage": coverImageList[i],
+                "cover_image": coverImageList[i],
               });
         }
 
@@ -278,9 +275,9 @@ class _DetailScreenState extends State<DetailScreen> {
               widget.dorm.rooms[i].imageList, editedroom.data["room_id"]);
         }
       }
-    } catch (e) {
+    } on DioError catch (e) {
       debugPrint('room error');
-      debugPrint(e.toString());
+      debugPrint(e.response.toString());
     }
   }
 
@@ -292,6 +289,16 @@ class _DetailScreenState extends State<DetailScreen> {
       uploadDormCoverImage(widget.dorm.coverImage);
       for (var i = 0; i < widget.dorm.rooms.length; i++) {
         uploadRoomCoverImage(widget.dorm.rooms[i].coverImage);
+      }
+    }
+    if (widget.post == false) {
+      if (widget.dorm.coverImage != null) {
+        uploadDormCoverImage(widget.dorm.coverImage);
+      }
+      for (var i = 0; i < widget.dorm.rooms.length; i++) {
+        if (widget.dorm.rooms[i].coverImage != null) {
+          uploadRoomCoverImage(widget.dorm.rooms[i].coverImage);
+        }
       }
     }
   }
