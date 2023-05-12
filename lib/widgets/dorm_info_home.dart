@@ -82,6 +82,7 @@ class _DormInfoHomeState extends State<DormInfoHome> {
 
                 await Caller.dio.delete(
                     '/api/fav/deleteFav?userId=${user.userId}&dormId=${widget.dormItem.dormId}');
+                // ignore: use_build_context_synchronously
                 Navigator.pop(context);
                 debugPrint('remove fav from fav');
                 if (FavPreload.homeReload != null) {
