@@ -34,7 +34,8 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
           icon: Image.asset('assets/logo/Logo.png'),
           onPressed: () => {
                 if (FavPreload.homeReload != null) {FavPreload.homeReload!()},
-                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false)
+                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false),
+                 Navigator.pushNamed(context, "/home")
               }),
       leadingWidth: 100,
     );

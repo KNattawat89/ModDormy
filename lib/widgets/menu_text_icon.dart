@@ -30,6 +30,7 @@ class MenuTextIcon extends StatelessWidget {
       onTap: () async {
         if (route == '/home') {
             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+            Navigator.pushNamed(context, "/home");
          
           if (FavPreload.homeReload != null) {
             FavPreload.homeReload!();
@@ -45,6 +46,8 @@ class MenuTextIcon extends StatelessWidget {
           }
           // ignore: use_build_context_synchronously
            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+           // ignore: use_build_context_synchronously
+           Navigator.pushNamed(context, "/home");
           if (FavPreload.homeReload != null) {
             FavPreload.homeReload!();
           }
@@ -52,7 +55,9 @@ class MenuTextIcon extends StatelessWidget {
           Navigator.push(context, MaterialPageRoute(builder:  (context) => const ProfilePage()));
         }
         else if(route == '/fav'){
-             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const FavoritePage()), (route) => false);
+              Navigator.pushNamed(context, "/fav");
+            //  Navigator.push(context, MaterialPageRoute(builder: (context) => const FavoritePage()));
+           
         }
       },
     );
