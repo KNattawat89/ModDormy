@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/models/fav_preload.dart';
 import 'package:moddormy_flutter/provider/user_provider.dart';
 import 'package:moddormy_flutter/screens/favorite.dart';
 import 'package:moddormy_flutter/screens/forgotpass_page.dart';
@@ -11,12 +9,7 @@ import 'package:moddormy_flutter/screens/profile.dart';
 import 'package:moddormy_flutter/screens/register.dart';
 import 'package:moddormy_flutter/screens/reset_pass_page.dart';
 import 'package:moddormy_flutter/screens/splash.dart';
-import 'package:moddormy_flutter/utilities/caller.dart';
 import 'package:provider/provider.dart';
-
-import 'models/dorm_item.dart';
-import 'models/dorm_list.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -42,7 +35,7 @@ class ModDormy extends StatelessWidget {
         title: 'ModDormy app',
         initialRoute: '/',
         routes: {
-          '/fav': (context) => FavoritePage(),
+          '/fav': (context) => const FavoritePage(),
           '/home': (context) => const HomePage(),
           '/login': (context) => const LoginPage(),
           '/register': (context) => const RegisterPage(),
