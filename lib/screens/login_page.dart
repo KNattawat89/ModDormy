@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/models/user_item.dart';
 import 'package:moddormy_flutter/screens/forgotpass_page.dart';
 import 'package:moddormy_flutter/screens/home.dart';
 import 'package:moddormy_flutter/screens/register.dart';
@@ -52,7 +51,6 @@ class _LoginFormState extends State<LoginForm> {
   bool err = false;
   bool _isLoading = false;
   String message = "";
-  List<UserItem> _data = [];
 
   void _toggle() {
     setState(() {

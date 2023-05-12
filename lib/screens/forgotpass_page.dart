@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/screens/reset_pass_page.dart';
-import 'package:moddormy_flutter/screens/login_page.dart';
 
 class ForgotPassPage extends StatelessWidget {
   const ForgotPassPage({super.key});
