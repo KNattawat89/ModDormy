@@ -10,6 +10,8 @@ import 'package:moddormy_flutter/screens/register.dart';
 import 'package:moddormy_flutter/screens/reset_pass_page.dart';
 import 'package:moddormy_flutter/screens/splash.dart';
 import 'package:provider/provider.dart';
+
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

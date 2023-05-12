@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:moddormy_flutter/screens/home.dart';
 import 'dart:io';
-import 'package:moddormy_flutter/screens/login_page.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);

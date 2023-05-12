@@ -1,6 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
-
-import 'dart:io';
+// ignore_for_file: unnecessary_null_comparison, prefer_final_fields, non_constant_identifier_names, library_private_types_in_public_api
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -82,6 +80,7 @@ class _EditUserFormState extends State<EditUserForm> {
   void dispose() {
     super.dispose();
   }
+
   void uploadNewImage() async {
     final user = Provider.of<UserProvider>(context, listen: false);
     XFile? file = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -120,10 +119,10 @@ class _EditUserFormState extends State<EditUserForm> {
     //   user.setProfileImage(file);
     // });
   }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context, listen: false);
-
 
     return Scaffold(
       endDrawer: const MyDrawer(),
@@ -135,62 +134,46 @@ class _EditUserFormState extends State<EditUserForm> {
             // Other widgets here
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Column(children: [
-                Container(
-                  // width: 150,
-                  // height: 150,
-                  // decoration: BoxDecoration(
-                  //   shape: BoxShape.circle),
-                  child: Stack(children: [
-                    newImage
-                        ? CircleAvatar(
-                            radius: 80,
-                            backgroundImage: NetworkImage(
-                                "http://moddormy.ivelse.com:8000${user.image}"),
-                          )
-                        : user.profileImage == "" || user.profileImage == null
-                            ? const CircleAvatar(
-                                radius: 80,
-                                backgroundImage:
-                                    AssetImage('assets/images/profileNull.png'),
-                              )
-                            : CircleAvatar(
-                                radius: 80,
-                                backgroundImage: NetworkImage(
-                                    "http://moddormy.ivelse.com:8000${user.profileImage}"),
-                              ),
-                    Positioned(
-                      bottom: 2,
-                      right: 2,
-                      child: GestureDetector(
-                        onTap: () {
-                         uploadNewImage();
-                        },
-                        child: CircleAvatar(
-                          backgroundColor: Color(0xFFDC6E46),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(6, 5, 5, 5),
-                              child: Image.asset(
-                                'assets/images/edit.png',
-                                scale: 25,
-                              ),
+                Stack(children: [
+                  newImage
+                      ? CircleAvatar(
+                          radius: 80,
+                          backgroundImage: NetworkImage(
+                              "http://moddormy.ivelse.com:8000${user.image}"),
+                        )
+                      : user.profileImage == "" || user.profileImage == null
+                          ? const CircleAvatar(
+                              radius: 80,
+                              backgroundImage:
+                                  AssetImage('assets/images/profileNull.png'),
+                            )
+                          : CircleAvatar(
+                              radius: 80,
+                              backgroundImage: NetworkImage(
+                                  "http://moddormy.ivelse.com:8000${user.profileImage}"),
+                            ),
+                  Positioned(
+                    bottom: 2,
+                    right: 2,
+                    child: GestureDetector(
+                      onTap: () {
+                        uploadNewImage();
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Color(0xFFDC6E46),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(6, 5, 5, 5),
+                            child: Image.asset(
+                              'assets/images/edit.png',
+                              scale: 25,
                             ),
                           ),
                         ),
                       ),
-                    )
-                  ]),
-                  // child: GestureDetector(
-                  //     onTap: () {
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) =>
-                  //               const EditProfileImage(),
-                  //         ),
-                  //       );
-                  //     },
-                ),
+                    ),
+                  )
+                ]),
               ]),
             ]),
 
@@ -343,53 +326,77 @@ class _EditUserFormState extends State<EditUserForm> {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 1, vertical: 1),
-                      minimumSize: const Size(100, 40),
-                      backgroundColor: Colors.grey),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ProfilePage(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
+                FloatingActionButton.extended(
+                    backgroundColor: Colors.grey,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProfilePage(),
+                        ),
+                      );
+                    },
+                    label: const Text('Cancel')),
+                // ElevatedButton(
+                //   style: ElevatedButton.styleFrom(
+                //       padding: const EdgeInsets.symmetric(
+                //           horizontal: 1, vertical: 1),
+                //       minimumSize: const Size(100, 40),
+                //       backgroundColor: Colors.grey),
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => const ProfilePage(),
+                //       ),
+                //     );
+                //   },
+                //   child: const Text(
+                //     'Cancel',
+                //     style: TextStyle(fontSize: 18),
+                //   ),
+                // ),
                 // SizedBox(
                 //   width: 30,
                 // ),
-                ElevatedButton(
-                  onPressed: () async {
-                    await editData(user.userId);
-                    // ignore: use_build_context_synchronously
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ProfilePage(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(
-                        237, 215, 106, 56), // set background color
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
-                    minimumSize: const Size(100, 40),
-                  ),
-                  child: const Text(
-                    'Save',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
+                const Padding(padding: EdgeInsets.fromLTRB(28, 0, 30, 0)),
+                FloatingActionButton.extended(
+                    backgroundColor: const Color.fromARGB(237, 215, 106, 56),
+                    onPressed: () async {
+                      await editData(user.userId);
+                      // ignore: use_build_context_synchronously
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProfilePage(),
+                        ),
+                      );
+                    },
+                    label: const Text('Save')),
+                // ElevatedButton(
+                //   onPressed: () async {
+                //     await editData(user.userId);
+                //     // ignore: use_build_context_synchronously
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => const ProfilePage(),
+                //       ),
+                //     );
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: const Color.fromARGB(
+                //         237, 215, 106, 56), // set background color
+                //     padding:
+                //         const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
+                //     minimumSize: const Size(100, 40),
+                //   ),
+                //   child: const Text(
+                //     'Save',
+                //     style: TextStyle(fontSize: 18),
+                //   ),
               ],
             )
           ]),
