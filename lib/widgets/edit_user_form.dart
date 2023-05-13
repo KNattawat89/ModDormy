@@ -328,17 +328,20 @@ class _EditUserFormState extends State<EditUserForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FloatingActionButton.extended(
-                    backgroundColor: Colors.grey,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ProfilePage(),
-                        ),
-                      );
-                    },
-                    label: const Text('Cancel')),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  child: FloatingActionButton.extended(
+                      backgroundColor: Colors.grey,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ProfilePage(),
+                          ),
+                        );
+                      },
+                      label: const Text('Cancel')),
+                ),
                 // ElevatedButton(
                 //   style: ElevatedButton.styleFrom(
                 //       padding: const EdgeInsets.symmetric(
@@ -362,19 +365,22 @@ class _EditUserFormState extends State<EditUserForm> {
                 //   width: 30,
                 // ),
                 const Padding(padding: EdgeInsets.fromLTRB(28, 0, 30, 0)),
-                FloatingActionButton.extended(
-                    backgroundColor: const Color.fromARGB(237, 215, 106, 56),
-                    onPressed: () async {
-                      await editData(user.userId);
-                      // ignore: use_build_context_synchronously
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ProfilePage(),
-                        ),
-                      );
-                    },
-                    label: const Text('Save')),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  child: FloatingActionButton.extended(
+                      backgroundColor: const Color.fromARGB(237, 215, 106, 56),
+                      onPressed: () async {
+                        await editData(user.userId);
+                        // ignore: use_build_context_synchronously
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ProfilePage(),
+                          ),
+                        );
+                      },
+                      label: const Text('Save')),
+                ),
                 // ElevatedButton(
                 //   onPressed: () async {
                 //     await editData(user.userId);
