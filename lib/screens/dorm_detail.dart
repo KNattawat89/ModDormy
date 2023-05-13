@@ -118,6 +118,7 @@ class _DormDetailState extends State<DormDetail> {
           if (FavPreload.homeReload != null) {
             FavPreload.homeReload!();
           }
+          widget.removeFav!(widget.dormItem.dormId);
         } catch (e) {
           debugPrint("hi ${e.toString()}");
         }

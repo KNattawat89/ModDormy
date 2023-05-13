@@ -106,7 +106,7 @@ class _ContractSectionState extends State<ContractSection> {
             //water price
             padding: const EdgeInsets.all(8),
             child: TextFormField(
-              //keyboardType: TextInputType.number,
+              keyboardType: TextInputType.number,
               controller: waterController,
               onChanged: (value) {
                 widget.dorm.water = double.parse(waterController.text);
