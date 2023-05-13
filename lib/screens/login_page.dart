@@ -21,8 +21,20 @@ class LoginPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Flex(direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                GestureDetector(child: 
+                const Icon(Icons.arrow_back),
+                 onTap: () {
+                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage(),), (route) => false);
+                 },
+                )
+               
+              ],
+              ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30.0),
+                padding: const EdgeInsets.only(bottom: 30.0, top: 100.0),
                 child: Image.asset(
                   'assets/logo/Logo2.png',
                   width: 184,
