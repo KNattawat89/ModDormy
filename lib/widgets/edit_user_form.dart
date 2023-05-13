@@ -124,6 +124,7 @@ class _EditUserFormState extends State<EditUserForm> {
     final user = Provider.of<UserProvider>(context, listen: false);
 
     return Scaffold(
+      backgroundColor: const Color(0xFFFFF8F0),
       endDrawer: const MyDrawer(),
       appBar: const MyAppbar(),
       body: SingleChildScrollView(
