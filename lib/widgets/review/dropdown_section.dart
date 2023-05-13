@@ -295,7 +295,7 @@ class _DropdownSectionState extends State<DropdownSection> {
             onChanged: (int? newValue) {
               setState(() => widget.review.ratingSecurity = newValue!);
             },
-            items: <int>[15, 4, 3, 2, 1].map((int value) {
+            items: <int>[5, 4, 3, 2, 1].map((int value) {
               return DropdownMenuItem<int>(
                 value: value,
                 child: Row(
