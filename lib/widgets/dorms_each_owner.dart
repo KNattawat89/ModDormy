@@ -103,7 +103,8 @@ class _DormsEachOwnerState extends State<DormsEachOwner> {
               borderRadius: BorderRadius.circular(12),
               child: SizedBox.fromSize(
                   size: const Size.fromRadius(39),
-                  child: Image.network(dorm.coverImage.toString())),
+                  child: Image.network(dorm.coverImage.toString(),
+                      fit: BoxFit.cover)),
             ),
             title: Text(
               dorm.dormName,
