@@ -179,11 +179,49 @@ class _RPhotosSectionState extends State<RPhotosSection> {
       //edit
     } else {
       if (myRimages.isEmpty) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [CircularProgressIndicator()],
-        );
+        return Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: const [
+                            Text('Images',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 20)),
+                            Text(
+                              '*       ',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey[500]),
+                        onPressed: getImageFromGallery,
+                        child: Row(
+                          children: const [
+                            Icon(Icons.add),
+                            Text('Images'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ));
       } else {
         return Padding(
           padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
