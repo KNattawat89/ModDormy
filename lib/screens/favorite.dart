@@ -137,6 +137,7 @@ class _FavoritePageState extends State<FavoritePage> {
                                                 dormId: favDorm[index].dormId,
                                                 dormItem: favDorm[index],
                                                 removeFav: removeFav,
+                                                previousPath: "fav",
                                               ))));
                                 },
                                 child: DormInfoHome(
