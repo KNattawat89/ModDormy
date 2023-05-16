@@ -484,6 +484,7 @@ class _DormDetailState extends State<DormDetail> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 8, 0, 16),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       'Other : ',
@@ -492,9 +493,14 @@ class _DormDetailState extends State<DormDetail> {
                           fontWeight: FontWeight.w500,
                           overflow: TextOverflow.ellipsis),
                     ),
-                    Text(
-                      dorm!.other,
-                      style: const TextStyle(color: Colors.grey, fontSize: 16),
+                    Expanded(
+                      child: Text(
+                        dorm!.other,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
                   ],
                 ),
