@@ -124,7 +124,8 @@ class _RCoverImageSectionState extends State<RCoverImageSection> {
               widget.room.coverImage == null
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(12.0),
-                      child: widget.room.coverimageString == ''
+                      child: widget.room.coverimageString == null ||
+                              widget.room.coverimageString == ''
                           ? const Text(
                               '',
                               textAlign: TextAlign.center,
