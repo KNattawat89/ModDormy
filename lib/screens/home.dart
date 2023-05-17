@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
   //   }
   // }
 
-  void getUserProfile(String uid,  UserProvider userProvider) async {
+  void getUserProfile(String uid, UserProvider userProvider) async {
     try {
       final response =
           await Caller.dio.get('/api/profile/getProfile?userId=$uid');
@@ -194,24 +194,21 @@ class _HomePageState extends State<HomePage> {
     // }
   }
 
+  void refreshState() {
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
     // _searchController.addListener(_performSearch);
     if (user != null) {
-      getUserProfile(user!.uid,Provider.of<UserProvider>(context, listen: false));
+      getUserProfile(
+          user!.uid, Provider.of<UserProvider>(context, listen: false));
       getFavDorm(user!.uid);
       // getDormAll(user!.uid);
     }
-
     FavPreload.homeReload = refreshState;
-    // else {
-    //   getAllDorm();
-    // }
-    // if (argument != null) {
-    //   argument = argument!;
-    // }
-    // refreshData();
   }
 
   void getFavDorm(String uid) async {
@@ -237,10 +234,6 @@ class _HomePageState extends State<HomePage> {
             .contains(argument.search.toLowerCase()))
         .toList();
     return filteredData;
-  }
-
-  void refreshState() {
-    setState(() {});
   }
 
   @override
@@ -349,6 +342,7 @@ class _HomePageState extends State<HomePage> {
                                     builder: (context) => (DormDetail(
                                           dormId: filteredData[index].dormId,
                                           dormItem: filteredData[index],
+                                          previousPath: "home",
                                         ))));
                           },
                           child: DormInfoHome(
