@@ -36,7 +36,7 @@ class ResetPassPage extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 15,
-                            fontWeight: FontWeight.w100,
+                            fontWeight: FontWeight.w200,
                           ),
                           textAlign: TextAlign.center,
                         ),

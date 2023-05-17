@@ -18,11 +18,16 @@ import '../models/review.dart';
 
 class DormDetail extends StatefulWidget {
   const DormDetail(
-      {Key? key, required this.dormId, required this.dormItem, this.removeFav})
+      {Key? key,
+      required this.dormId,
+      required this.dormItem,
+      this.removeFav,
+      this.previousPath})
       : super(key: key);
   final int dormId;
   final DormItem dormItem;
   final Function? removeFav;
+  final String? previousPath;
 
   @override
   State<DormDetail> createState() => _DormDetailState();
@@ -105,6 +110,7 @@ class _DormDetailState extends State<DormDetail> {
   }
 
   User? userLogin = FirebaseAuth.instance.currentUser;
+
   void updateIsFav() async {
     if (userLogin != null) {
       if (widget.dormItem.isFav) {
@@ -115,11 +121,14 @@ class _DormDetailState extends State<DormDetail> {
           await Caller.dio.delete(
               '/api/fav/deleteFav?userId=${userLogin!.uid}&dormId=${widget.dormItem.dormId}');
           debugPrint('remove fav from home');
+          if (widget.previousPath == "fav") {
+            widget.removeFav!(widget.dormItem.dormId);
+          }
           if (FavPreload.homeReload != null) {
             FavPreload.homeReload!();
           }
         } catch (e) {
-          debugPrint("hi ${e.toString()}");
+          debugPrint("hi detail ${e.toString()}");
         }
       } else {
         setState(() {
@@ -130,8 +139,10 @@ class _DormDetailState extends State<DormDetail> {
             "dorm_id": widget.dormItem.dormId,
             "user_id": userLogin!.uid
           });
-          // FavPreload.refreshFav();
           debugPrint("called post fav");
+          if (FavPreload.homeReload != null) {
+            FavPreload.homeReload!();
+          }
         } on DioError catch (e) {
           debugPrint(e.response.toString());
           Caller.handle(context, e);
@@ -422,7 +433,7 @@ class _DormDetailState extends State<DormDetail> {
                         TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+                padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
                 child: Row(
                   children: [
                     const Text(
@@ -438,7 +449,7 @@ class _DormDetailState extends State<DormDetail> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+                padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
                 child: Row(
                   children: [
                     const Text(
@@ -454,7 +465,7 @@ class _DormDetailState extends State<DormDetail> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+                padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
                 child: Row(
                   children: [
                     const Text(
@@ -470,8 +481,9 @@ class _DormDetailState extends State<DormDetail> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 0, 16),
+                padding: const EdgeInsets.fromLTRB(24, 8, 0, 16),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       'Other : ',
@@ -480,9 +492,14 @@ class _DormDetailState extends State<DormDetail> {
                           fontWeight: FontWeight.w500,
                           overflow: TextOverflow.ellipsis),
                     ),
-                    Text(
-                      dorm!.other,
-                      style: const TextStyle(color: Colors.grey, fontSize: 16),
+                    Expanded(
+                      child: Text(
+                        dorm!.other,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
                   ],
                 ),

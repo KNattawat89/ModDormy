@@ -1045,7 +1045,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                             ),
                                           );
                                         },
-                                        child: const Text('Go to post'),
+                                        child: const Text('Go to home'),
                                       ),
                                     ),
                                   ],
@@ -1087,7 +1087,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                             ),
                                           );
                                         },
-                                        child: const Text('Go to post'),
+                                        child: const Text('Go to home'),
                                       ),
                                     ),
                                   ],
@@ -1124,7 +1124,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                           ),
                                         ),
                                         onPressed: () => Navigator.pop(context),
-                                        child: const Text('Go to Back'),
+                                        child: const Text('Go to home'),
                                       ),
                                     ),
                                   ],

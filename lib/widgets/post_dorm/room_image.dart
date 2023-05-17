@@ -179,11 +179,99 @@ class _RPhotosSectionState extends State<RPhotosSection> {
       //edit
     } else {
       if (myRimages.isEmpty) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [CircularProgressIndicator()],
-        );
+        return Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: const [
+                            Text('Images',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 20)),
+                            Text(
+                              '*       ',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey[500]),
+                        onPressed: getImageFromGallery,
+                        child: Row(
+                          children: const [
+                            Icon(Icons.add),
+                            Text('Images'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                widget.room.imageList.isEmpty
+                    ? const Text('')
+                    : Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.15,
+                          child: GridView.builder(
+                            shrinkWrap: false,
+                            physics: const BouncingScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 200,
+                                    crossAxisSpacing: 20,
+                                    mainAxisSpacing: 20),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: widget.room.imageList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    child: Image.file(
+                                      File(widget.room.imageList[index].path),
+                                      fit: BoxFit.cover,
+                                      width: 200,
+                                      height: 200,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 9,
+                                    right: 10,
+                                    child: GestureDetector(
+                                      onTap: () => deleteImage(index),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(7),
+                                        ),
+                                        child: const Icon(Icons.delete_outline,
+                                            color: Color(0xFFDC6E46)),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+              ],
+            ));
       } else {
         return Padding(
           padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),

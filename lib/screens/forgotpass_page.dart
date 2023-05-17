@@ -34,13 +34,20 @@ class ForgotForm extends StatefulWidget {
 }
 
 class _ForgotFormState extends State<ForgotForm> {
+  bool err = false;
   Future verifyEmail() async {
     try {
+      setState(() {
+        err = false;
+      });
       await FirebaseAuth.instance.sendPasswordResetEmail(email: _email.text);
       //ignore: use_build_context_synchronously
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => (const ResetPassPage())));
     } on FirebaseAuthException catch (e) {
+      setState(() {
+        err = true;
+      });
       debugPrint(e.message);
     }
   }
@@ -99,9 +106,32 @@ class _ForgotFormState extends State<ForgotForm> {
                   },
                 ),
               ),
-              const SizedBox(
-                height: 30,
+               SizedBox(
+                height: err ? 20 : 30
               ),
+              SizedBox(
+                  width: double.infinity,
+                  height: err ? 70 : 0,
+                  child: Container(
+                      margin: err
+                          ? const EdgeInsets.only(bottom: 20)
+                          : const EdgeInsets.only(top: 0),
+                      decoration: const BoxDecoration(
+                          color: Color(0xFFFFCDD2),
+                          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            err
+                                ? const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    child: Text("There is no such email in our system.",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                        )),
+                                  )
+                                : const Text("")
+                          ]))),
               Row(
                 // mainAxisAlignment: MainAxisAlignment.,
                 children: [

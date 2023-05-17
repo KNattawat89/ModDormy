@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:moddormy_flutter/models/profile_dorm.dart';
@@ -19,9 +19,10 @@ class DormsEachOwner extends StatefulWidget {
 class _DormsEachOwnerState extends State<DormsEachOwner> {
   List<ProfileDorm> _profileDorms = [];
 
-  Future<void> _fetchDorms(String userId) async {
+  void _fetchDorms(String userId) async {
     final response =
         await Caller.dio.get('/api/profile/getProfileDorm?userId=$userId');
+    print("500");
     if (response.statusCode == 200) {
       ProfileDormList data1 = ProfileDormList.fromJson(response.data);
       setState(() {
@@ -32,23 +33,27 @@ class _DormsEachOwnerState extends State<DormsEachOwner> {
     }
   }
 
-  Future<void> deleteRooms(int dormId) async {
+  void deleteRooms(int dormId) async {
     try {
       final response1 =
           await Caller.dio.delete('/api/manage-room/deleteRoom?dormId=$dormId');
       //print(response1.data.toString());
+      print("900");
     } catch (e) {
-      //print(e.toString());
+      print(e.toString());
     }
   }
 
-  Future<void> deleteDorm(int dormId) async {
+  void deleteDorm(int dormId) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     try {
-      final response2 =
-          await Caller.dio.delete('/api/manage-dorm/deleteDorm?dormId=$dormId');
+      await Caller.dio.delete('/api/manage-room/deleteRoom?dormId=$dormId');
+      await Caller.dio.delete('/api/manage-dorm/deleteDorm?dormId=$dormId');
+      print("700");
+      _fetchDorms(userProvider.userId);
       //print(response2.data.toString());
     } catch (e) {
-      //print(e.toString());
+      print(e.toString());
     }
   }
 
@@ -98,7 +103,8 @@ class _DormsEachOwnerState extends State<DormsEachOwner> {
               borderRadius: BorderRadius.circular(12),
               child: SizedBox.fromSize(
                   size: const Size.fromRadius(39),
-                  child: Image.network(dorm.coverImage.toString())),
+                  child: Image.network(dorm.coverImage.toString(),
+                      fit: BoxFit.cover)),
             ),
             title: Text(
               dorm.dormName,
@@ -185,19 +191,19 @@ class _DormsEachOwnerState extends State<DormsEachOwner> {
                                               237, 215, 106, 56),
                                         ),
                                         child: const Text('Yes, delete it!'),
-                                        onPressed: () async {
+                                        onPressed: () {
                                           // Perform API call to delete the dorm
-                                          await deleteRooms(dorm.dormId);
-                                          await deleteDorm(dorm.dormId);
+                                          //deleteRooms(dorm.dormId);
+                                          deleteDorm(dorm.dormId);
                                           // Pop the dialog and refresh the dorm list
                                           // ignore: use_build_context_synchronously
                                           Navigator.of(context).pop();
-                                          setState(() async {
-                                            // reload the dorm list
-                                            _profileDorms =
-                                                await _fetchDorms(user.userId)
-                                                    as List<ProfileDorm>;
-                                          });
+                                          // setState(() async {
+                                          //   // reload the dorm list
+
+                                          //       _fetchDorms(user.userId)
+                                          //           ;
+                                          // });
                                         },
                                       ),
                                     ],
