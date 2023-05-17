@@ -112,6 +112,7 @@ class _DormDetailState extends State<DormDetail> {
   User? userLogin = FirebaseAuth.instance.currentUser;
 
   void updateIsFav() async {
+    // ignore: unused_local_variable
     final String currentRouteName = ModalRoute.of(context)?.settings.name ?? "";
     if (userLogin != null) {
       if (widget.dormItem.isFav) {
