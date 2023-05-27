@@ -29,8 +29,7 @@ class ResetPassPage extends StatelessWidget {
                const Padding(
                   padding:  EdgeInsets.only(bottom: 50.0),
                   child: 
-                      Flexible(
-                        child: Text(
+                       Text(
                           "Please check your inbox and click in the received link to reset a password",
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -42,7 +41,7 @@ class ResetPassPage extends StatelessWidget {
                         ),
                     
                   ),
-                ),
+
                 SizedBox(
                   width: 130,
                   height: 39,

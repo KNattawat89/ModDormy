@@ -331,6 +331,7 @@ class _EditUserFormState extends State<EditUserForm> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.3,
                   child: FloatingActionButton.extended(
+                    heroTag: 'btn1',
                       backgroundColor: Colors.grey,
                       onPressed: () {
                         Navigator.push(
@@ -368,6 +369,7 @@ class _EditUserFormState extends State<EditUserForm> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.3,
                   child: FloatingActionButton.extended(
+                    heroTag: 'btn2',
                       backgroundColor: const Color.fromARGB(237, 215, 106, 56),
                       onPressed: () async {
                         await editData(user.userId);
