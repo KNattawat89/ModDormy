@@ -117,6 +117,8 @@ class _DormInfoHomeState extends State<DormInfoHome> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: const Text("Login required"),
             content: const Text("Please log in to favorite this dorm."),
             actions: [
@@ -125,7 +127,7 @@ class _DormInfoHomeState extends State<DormInfoHome> {
                   Navigator.pop(context);
                 },
                 style: TextButton.styleFrom(
-                  foregroundColor: const Color(0xFFDC6E46),
+                  foregroundColor: Colors.black,
                 ),
                 child: const Text("Cancel"),
               ),
