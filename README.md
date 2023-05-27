@@ -45,7 +45,7 @@ ModDormy supports two types of users:
 1. **Customer**: Regular app users who are not dormitory owners. They can access the following features:
    - Write reviews.
    - View dormitories (even without logging in).
-   - Use the "Profile," "Favorite," and "Manage Dorm and Room" features.
+   - Use the "Profile" and "Favorite" features.
 
 2. **Dormitory Owner**: Users who own dormitories and have additional privileges. They cannot write reviews but can perform the following actions:
    - Add, edit, and delete dormitories and rooms.
